@@ -1,0 +1,19 @@
+{
+  "name": "rgsoft",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "coverage": "pnpm -r coverage"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "tsup": "^8.1.0",
+    "vitest": "^2.0.3",
+    "@vitest/coverage-v8": "^2.0.3"
+  }
+}
