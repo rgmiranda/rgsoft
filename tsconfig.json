@@ -1,9 +1,9 @@
 {
   "files": [],
   "references": [
-    { "path": "./packages/math" }
+    { "path": "./packages/math" },
+    { "path": "./packages/linear" }
     //,
-    //{ "path": "./packages/geometry" },
     //{ "path": "./packages/stats" }
   ]
 }
