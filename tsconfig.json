@@ -2,8 +2,7 @@
   "files": [],
   "references": [
     { "path": "./packages/math" },
-    { "path": "./packages/linear" }
-    //,
-    //{ "path": "./packages/stats" }
+    { "path": "./packages/linear" },
+    { "path": "./packages/lsystem" }
   ]
 }
