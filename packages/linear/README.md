@@ -1,5 +1,5 @@
 # Linear
-Yet another JS math library
+Linear math library
 
 ## Installation
 
