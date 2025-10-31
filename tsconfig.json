@@ -3,6 +3,7 @@
   "references": [
     { "path": "./packages/math" },
     { "path": "./packages/linear" },
-    { "path": "./packages/lsystem" }
+    { "path": "./packages/lsystem" },
+    { "path": "./packages/stats" }
   ]
 }
