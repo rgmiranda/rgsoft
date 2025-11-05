@@ -1,7 +1,7 @@
 {
-  "name": "@rgsoft/graph",
+  "name": "@rgsoft/geometry",
   "version": "1.0.0",
-  "description": "Graphs library",
+  "description": "Geometry library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,7 +18,11 @@
     "url": "git+https://github.com/rgmiranda/rgsoft.git"
   },
   "keywords": [
-    "graph"
+    "geometry",
+    "line",
+    "segment",
+    "planes",
+    "polygon"
   ],
   "author": "Ricardo Miranda <rgmiranda@live.com.ar>",
   "license": "MIT",
@@ -26,6 +30,9 @@
     "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
   "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "dependencies": {
+    "@rgsoft/linear": "workspace:^"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.3",
     "ts-node": "^10.9.2",

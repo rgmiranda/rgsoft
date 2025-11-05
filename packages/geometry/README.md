@@ -1,5 +1,5 @@
-# Graph
-Graphs library
+# Geometry
+Geometry library
 
 ## Installation
 
