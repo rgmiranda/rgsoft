@@ -1,4 +1,4 @@
-import { EPSILON } from "./constants";
+import { EPSILON } from "@rgsoft/math";
 
 export class Vector {
   private _mag?: number;

@@ -7,9 +7,9 @@ export class Segment {
   public readonly direction: Vector2;
 
   constructor(public readonly start: Vector2, public readonly end: Vector2) {
-    this.length = Vector2.sub(start, end).mag;
-    this.midpoint = start.copy().add(end).mult(0.5);
-    this.direction = end.copy().sub(start).normalize();
+    this.length = start.sub(end).mag;
+    this.midpoint = start.add(end).mult(0.5);
+    this.direction = end.sub(start).normalize();
   }
 
   /**
