@@ -1,7 +1,7 @@
 import { Vector2 } from "@rgsoft/linear";
+import { EPSILON } from "@rgsoft/math";
 
 export class Line {
-  private static readonly EPSILON = 1e-10;
 
   constructor(
     public readonly a: number,
@@ -10,7 +10,7 @@ export class Line {
   ) {}
 
   private static normalizeZero(n: number): number {
-    return Math.abs(n) < Line.EPSILON ? 0 : n;
+    return Math.abs(n) < EPSILON ? 0 : n;
   }
 
   static fromPoints(p: Vector2, q: Vector2): Line {
@@ -21,7 +21,7 @@ export class Line {
   }
 
   static mediatrix(p: Vector2, q: Vector2): Line {
-    const mid = p.copy().add(q).mult(0.5);
+    const mid = p.add(q).mult(0.5);
     const dx = q.x - p.x;
     const dy = q.y - p.y;
 
@@ -40,10 +40,10 @@ export class Line {
 
     const x = (this.b * line.c - line.b * this.c) / det;
     const y = (line.a * this.c - this.a * line.c) / det;
-    return new Vector2(x, y);
+    return new Vector2([x, y]);
   }
 
-  containsPoint(p: Vector2, tolerance = Line.EPSILON): boolean {
+  containsPoint(p: Vector2, tolerance = EPSILON): boolean {
     return Math.abs(this.a * p.x + this.b * p.y + this.c) < tolerance;
   }
 
@@ -61,12 +61,12 @@ export class Line {
 
   get yInterceptPoint(): Vector2 | null {
     const y = this.yIntercept;
-    return y === null ? null : new Vector2(0, y);
+    return y === null ? null : new Vector2([0, y]);
   }
 
   get xInterceptPoint(): Vector2 | null {
     const x = this.xIntercept;
-    return x === null ? null : new Vector2(x, 0);
+    return x === null ? null : new Vector2([x, 0]);
   }
 
   toString(): string {
