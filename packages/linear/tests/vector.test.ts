@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Vector } from "../src";
-import { HALF_PI, PI, SQRT2 } from "@rgsoft/math";
+import { SQRT2 } from "@rgsoft/math";
 
 describe(Vector.name, () => {
   it("creates new instance", () => {
@@ -14,6 +14,13 @@ describe(Vector.name, () => {
 
     const w = v.add(new Vector([1, 0]));
     expect(w.mag).toBe(Math.SQRT2);
+  });
+
+  it("fails on invalid index", () => {
+    const v = new Vector([0, 1]);
+    expect(() => v.at(0.5)).toThrowError("Index must be an integer");
+    expect(() => v.at(-1)).toThrowError('Index out of range');
+    expect(() => v.at(2)).toThrowError('Index out of range');
   });
 
   it("sets magnitude", () => {
@@ -74,69 +81,134 @@ describe(Vector.name, () => {
     expect(v.at(1)).toBe(1);
   });
 
-  it("calculates the dot product", () => {
-    let v = new Vector([-2, 3]);
-    let u = new Vector([2, 3]);
-    expect(v.dot(u)).toBe(5);
-    expect(u.dot(v)).toBe(5);
-    u = u.mult(4);
-    expect(u.dot(v)).toBe(20);
-    v = v.mult(0.5);
-    expect(u.dot(v)).toBe(10);
+  describe('dot product', () => {
+    it("calculates the dot product", () => {
+      let v = new Vector([-2, 3]);
+      let u = new Vector([2, 3]);
+      expect(v.dot(u)).toBe(5);
+      expect(u.dot(v)).toBe(5);
+      u = u.mult(4);
+      expect(u.dot(v)).toBe(20);
+      v = v.mult(0.5);
+      expect(u.dot(v)).toBe(10);
+    });
+
+    it("fails on different dimension", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.dot(w)).toThrowError("Dimension mismatch");
+    });
   });
 
-  it("adds a vector", () => {
-    let v = new Vector([-2, 3]);
-    v = v.add(new Vector([3, -5]));
-    expect(v.at(0)).toBe(1);
-    expect(v.at(1)).toBe(-2);
+  describe('vector addition and subtraction', () => {
+    it("adds a vector", () => {
+      let v = new Vector([-2, 3]);
+      v = v.add(new Vector([3, -5]));
+      expect(v.at(0)).toBe(1);
+      expect(v.at(1)).toBe(-2);
+    });
+
+    it("subs a vector", () => {
+      let v = new Vector([-2, 3]);
+      v = v.sub(new Vector([3, -5]));
+      expect(v.at(0)).toBe(-5);
+      expect(v.at(1)).toBe(8);
+    });
+
+    it("fails on dimension mismatch", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.add(w)).toThrowError("Dimension mismatch");
+      expect(() => v.sub(w)).toThrowError("Dimension mismatch");
+    });
+
   });
 
-  it("subs a vector", () => {
-    let v = new Vector([-2, 3]);
-    v = v.sub(new Vector([3, -5]));
-    expect(v.at(0)).toBe(-5);
-    expect(v.at(1)).toBe(8);
+  describe('distance calculation', () => {
+    it("calculates distance against another vector", () => {
+      const v = new Vector([7, 2]);
+      const d = v.dist(new Vector([3, -1]));
+      expect(d).toBe(5);
+    });
+
+    it("fails on dimension mismatch", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.dist(w)).toThrowError("Dimension mismatch");
+    });
   });
 
-  it("calculates distance against another vector", () => {
-    const v = new Vector([7, 2]);
-    const d = v.dist(new Vector([3, -1]));
-    expect(d).toBe(5);
+  describe('equality check', () => {
+    it("verifies equality with another vector", () => {
+      const v1 = new Vector([7, 2]);
+      const v2 = new Vector([7, 2]);
+      const v3 = new Vector([9, 2]);
+      expect(v1.equals(v2)).toBeTruthy();
+      expect(v1.equals(v3)).toBeFalsy();
+    });
+
+    it("fails on dimension mismatch", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.equals(w)).toThrowError("Dimension mismatch");
+    });
   });
 
-  it("verifies equality with another vector", () => {
-    const v1 = new Vector([7, 2]);
-    const v2 = new Vector([7, 2]);
-    const v3 = new Vector([9, 2]);
-    expect(v1.equals(v2)).toBeTruthy();
-    expect(v1.equals(v3)).toBeFalsy();
+  describe('angle calculation', () => {
+    it("calculates angle against another vector", () => {
+      let v1 = new Vector([1, 0]);
+      let v2 = new Vector([0, 1]);
+      expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.5, 6);
+
+      v2 = new Vector([1, 1]);
+      expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.25, 6);
+
+      v1 = new Vector([-1, 1]);
+      expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.5, 6);
+    });
+
+    it("fails on dimension mismatch", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.angleTo(w)).toThrowError("Dimension mismatch");
+    });
+
+    it("fails on zero vector", () => {
+      const v = new Vector([0, 1]);
+      const w = Vector.getZero(2);
+      expect(() => v.angleTo(w)).toThrowError(
+        "Cannot compute angle with a zero vector"
+      );
+    });
   });
 
-  it("calculates angle against another vector", () => {
-    let v1 = new Vector([1, 0]);
-    let v2 = new Vector([0, 1]);
-    expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.5, 6);
+  describe('projection calculation', () => {
+    it("calculates projection on another vector", () => {
+      let v1 = new Vector([3, 4]);
+      let v2 = new Vector([1, 2]);
+      let proj = v1.projection(v2);
+      expect(proj.at(0)).toBe(2.2);
+      expect(proj.at(1)).toBe(4.4);
 
-    v2 = new Vector([1, 1]);
-    expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.25, 6);
+      v1 = new Vector([-2, 2]);
+      v2 = new Vector([1, 1]);
+      proj = v1.projection(v2);
+      expect(proj.at(0)).toBe(0);
+      expect(proj.at(1)).toBe(0);
 
-    v1 = new Vector([-1, 1]);
-    expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.5, 6);
-  });
+      v1 = new Vector([-2, 2]);
+      v2 = new Vector([0, 0]);
+      proj = v1.projection(v2);
+      expect(proj.at(0)).toBe(0);
+      expect(proj.at(1)).toBe(0);
+    });
 
-  it("calculates projection on another vector", () => {
-    let v1 = new Vector([3, 4]);
-    let v2 = new Vector([1, 2]);
-    let proj = v1.projection(v2);
-    expect(proj.at(0)).toBe(2.2);
-    expect(proj.at(1)).toBe(4.4);
+    it("fails on dimension mismatch", () => {
+      const v = new Vector([0, 1]);
+      const w = new Vector([0, 1, 0]);
+      expect(() => v.projection(w)).toThrowError("Dimension mismatch");
+    });
 
-    v1 = new Vector([-2, 2]);
-    v2 = new Vector([1, 1]);
-    proj = v1.projection(v2);
-    expect(proj.at(0)).toBe(0);
-    expect(proj.at(1)).toBe(0);
   });
 
   it("clones a vector", () => {
@@ -147,13 +219,26 @@ describe(Vector.name, () => {
     expect(cv).toBeInstanceOf(Vector);
   });
 
-  it("limits a vector magnitude", () => {
-    let v = new Vector([8, -6]);
-    expect(v.mag).toBe(10);
-    v = v.limit(5);
-    expect(v.mag).toBeCloseTo(5, 6);
-    expect(v.at(0)).toBeCloseTo(4, 6);
-    expect(v.at(1)).toBeCloseTo(-3, 6);
+  describe('magnitude limiting', () => {
+    it("limits a vector magnitude", () => {
+      let v = new Vector([8, -6]);
+      expect(v.mag).toBe(10);
+      v = v.limit(5);
+      expect(v.mag).toBeCloseTo(5, 6);
+      expect(v.at(0)).toBeCloseTo(4, 6);
+      expect(v.at(1)).toBeCloseTo(-3, 6);
+
+      v = v.limit(6);
+      expect(v.mag).toBeCloseTo(5, 6);
+      expect(v.at(0)).toBeCloseTo(4, 6);
+      expect(v.at(1)).toBeCloseTo(-3, 6);
+    });
+
+    it("fails on negative magnitude", () => {
+      const v = new Vector([0, 1]);
+      expect(() => v.limit(-5)).toThrowError("Magnitude cannot be negative");
+    });
+
   });
 
   it("detects the zero vector", () => {

@@ -8,6 +8,12 @@ describe(Vector3.name, () => {
     expect(v).toBeInstanceOf(Vector3);
   });
 
+  it("fails on wrong number of elements", () => {
+    expect(() => new Vector3(JSON.parse("[0, 1]"))).toThrowError(
+      "Must contain three elements"
+    );
+  });
+
   it("calculates magnitude", () => {
     let v = new Vector3([0, 1, 0]);
     expect(v.mag).toBe(1);
@@ -176,6 +182,11 @@ describe(Vector3.name, () => {
     v = v.rotateY(PI);
     expect(v.x).toBeCloseTo(-1, 6);
     expect(v.y).toBeCloseTo(-1, 6);
+    expect(v.z).toBeCloseTo(1, 6);
+
+    v = v.rotateZ(PI);
+    expect(v.x).toBeCloseTo(1, 6);
+    expect(v.y).toBeCloseTo(1, 6);
     expect(v.z).toBeCloseTo(1, 6);
   });
 

@@ -10,7 +10,7 @@ export class Vector2 extends Vector {
   constructor(values: [number, number]) {
     super(values);
     if (values.length !== 2) {
-      throw new Error("Values must contain two elements");
+      throw new Error("Must contain two elements");
     }
     this.x = values[0];
     this.y = values[1];

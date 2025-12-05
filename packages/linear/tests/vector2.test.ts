@@ -8,6 +8,12 @@ describe(Vector2.name, () => {
     expect(v).toBeInstanceOf(Vector2);
   });
 
+  it("fails on wrong number of elements", () => {
+    expect(() => new Vector2(JSON.parse("[0, 1, 3]"))).toThrowError(
+      "Must contain two elements"
+    );
+  });
+
   it("calculates magnitude", () => {
     const v = new Vector2([0, 1]);
     expect(v.mag).toBe(1);
@@ -180,6 +186,10 @@ describe(Vector2.name, () => {
     w = v.rotate(-HALF_PI);
     expect(w.x).toBe(2);
     expect(w.y).toBe(-7);
+
+    w = v.rotate(3 * HALF_PI);
+    expect(w.x).toBeCloseTo(2, 6);
+    expect(w.y).toBeCloseTo(-7, 6);
   });
 
   it("limits a vector magnitude", () => {

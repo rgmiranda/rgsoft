@@ -64,7 +64,7 @@ export class Vector {
     if (!Number.isInteger(i)) {
       throw new Error("Index must be an integer");
     }
-    if (i < 0 || i > this._values.length) {
+    if (i < 0 || i >= this._values.length) {
       throw new Error("Index out of range");
     }
     return this._values[i];
@@ -120,6 +120,9 @@ export class Vector {
   }
 
   equals(v: this, epsilon = EPSILON): boolean {
+    if (this.dim !== v.dim) {
+      throw new Error("Dimension mismatch");
+    }
     const dists = this._values.map((e, i) => e - v.at(i));
     return (
       dists.reduce((prev, curr) => prev + curr * curr, 0) <= epsilon * epsilon

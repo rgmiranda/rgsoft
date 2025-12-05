@@ -11,7 +11,7 @@ export class Vector3 extends Vector {
   constructor(values: [number, number, number]) {
     super(values);
     if (values.length !== 3) {
-      throw new Error("Values must contain two elements");
+      throw new Error("Must contain three elements");
     }
     this.x = values[0];
     this.y = values[1];
