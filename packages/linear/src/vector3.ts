@@ -20,6 +20,10 @@ export class Vector3 extends Vector {
     this.polar = Math.atan2(Math.sqrt(this.x ** 2 + this.y ** 2), this.z);
   }
 
+  static getZero(): Vector3 {
+    return V3_ZERO;
+  }
+
   /**
    *
    * @param { number } angle
@@ -79,9 +83,5 @@ export class Vector3 extends Vector {
     const y = r * Math.sin(theta) * Math.sin(phi);
     const z = r * Math.cos(theta);
     return new Vector3([x, y, z]);
-  }
-
-  get zero(): Vector3 {
-    return V3_ZERO;
   }
 }

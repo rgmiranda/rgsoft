@@ -200,4 +200,15 @@ describe(Vector2.name, () => {
     expect(v.x).toBeCloseTo(-Math.SQRT1_2, 6);
     expect(v.y).toBeCloseTo(Math.SQRT1_2, 6);
   });
+
+  it("detects the zero vector", () => {
+    let v = Vector2.getZero();
+    expect(v.isZero).toBeTruthy();
+
+    v = new Vector2([0, 0]);
+    expect(v.isZero).toBeTruthy();
+
+    v = new Vector2([1, 0]);
+    expect(v.isZero).toBeFalsy();
+  });
 });

@@ -29,16 +29,25 @@ export class Vector {
   /**
    * Returns the zero vector of the same subclass and dimension.
    */
-  get zero(): Vector {
+  static getZero(dim: number): Vector {
+    let zero = this._zeros.get(dim);
 
-    let zeroVector = Vector._zeros.get(this.dim);
-    if (!zeroVector) {
-      const values = Array(this.dim).fill(0);
-      zeroVector = new Vector(values);
-      Vector._zeros.set(this.dim, zeroVector);
+    if (!zero) {
+      zero = new this(Array(dim).fill(0)); // respeta subclases
+      this._zeros.set(dim, zero);
     }
 
-    return zeroVector as this;
+    return zero;
+  }
+
+  /**
+   * Determines if the vector is a zero vector.
+   */
+  get isZero(): boolean {
+    return (
+      this._values.reduce((prev, curr) => prev + curr * curr, 0) <=
+      EPSILON * EPSILON
+    );
   }
 
   /**
@@ -130,7 +139,7 @@ export class Vector {
     const dp = this.dot(onto);
     const denom = onto.dot(onto);
     if (denom === 0) {
-      return this.zero;
+      return Vector.getZero(this.dim) as this;
     }
     return onto.mult(dp / denom);
   }

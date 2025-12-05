@@ -218,4 +218,15 @@ describe(Vector3.name, () => {
   it.each(crossProductTestData)("calculates the cross product", (u, v, w) => {
     expect(w.equals(u.cross(v))).toBeTruthy();
   });
+
+  it("detects the zero vector", () => {
+    let v = Vector3.getZero();
+    expect(v.isZero).toBeTruthy();
+
+    v = new Vector3([0, 0, 0]);
+    expect(v.isZero).toBeTruthy();
+
+    v = new Vector3([1, 0, 0]);
+    expect(v.isZero).toBeFalsy();
+  });
 });

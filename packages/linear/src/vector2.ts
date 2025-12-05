@@ -10,7 +10,7 @@ export class Vector2 extends Vector {
   constructor(values: [number, number]) {
     super(values);
     if (values.length !== 2) {
-      throw new Error('Values must contain two elements')
+      throw new Error("Values must contain two elements");
     }
     this.x = values[0];
     this.y = values[1];
@@ -19,6 +19,10 @@ export class Vector2 extends Vector {
     } else {
       this.angle = 0;
     }
+  }
+
+  static getZero(): Vector2 {
+    return V2_ZERO;
   }
 
   /**
@@ -57,9 +61,5 @@ export class Vector2 extends Vector {
     const y = Math.sin(angle) * radius;
     const instance = new Vector2([x, y]);
     return instance;
-  }
-
-  get zero(): Vector2 {
-    return V2_ZERO;
   }
 }
