@@ -1,4 +1,4 @@
-import { Line } from "./line";
+import { Line2 } from "./line2";
 import { Vector2, getOrientation } from "@rgsoft/linear";
 
 export class Segment {
@@ -80,7 +80,7 @@ export class Segment {
     return false; // Doesn't fall in any of the above cases
   }
 
-  toLine(): Line {
-    return Line.fromPoints(this.start, this.end);
+  toLine(): Line2 {
+    return Line2.fromPoints(this.start, this.end);
   }
 }

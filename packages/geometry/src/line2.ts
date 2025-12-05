@@ -1,7 +1,7 @@
 import { Vector2 } from "@rgsoft/linear";
 import { EPSILON } from "@rgsoft/math";
 
-export class Line {
+export class Line2 {
 
   constructor(
     public readonly a: number,
@@ -13,26 +13,26 @@ export class Line {
     return Math.abs(n) < EPSILON ? 0 : n;
   }
 
-  static fromPoints(p: Vector2, q: Vector2): Line {
-    const a = Line.normalizeZero(p.y - q.y);
-    const b = Line.normalizeZero(q.x - p.x);
-    const c = Line.normalizeZero(p.x * q.y - q.x * p.y);
-    return new Line(a, b, c);
+  static fromPoints(p: Vector2, q: Vector2): Line2 {
+    const a = Line2.normalizeZero(p.y - q.y);
+    const b = Line2.normalizeZero(q.x - p.x);
+    const c = Line2.normalizeZero(p.x * q.y - q.x * p.y);
+    return new Line2(a, b, c);
   }
 
-  static mediatrix(p: Vector2, q: Vector2): Line {
+  static mediatrix(p: Vector2, q: Vector2): Line2 {
     const mid = p.add(q).mult(0.5);
     const dx = q.x - p.x;
     const dy = q.y - p.y;
 
     // Perpendicular slope => (-dy, dx)
-    const a = Line.normalizeZero(-dx);
-    const b = Line.normalizeZero(-dy);
-    const c = Line.normalizeZero(-(a * mid.x + b * mid.y));
-    return new Line(a, b, c);
+    const a = Line2.normalizeZero(-dx);
+    const b = Line2.normalizeZero(-dy);
+    const c = Line2.normalizeZero(-(a * mid.x + b * mid.y));
+    return new Line2(a, b, c);
   }
 
-  intersectionPoint(line: Line): Vector2 {
+  intersectionPoint(line: Line2): Vector2 {
     const det = this.a * line.b - line.a * this.b;
     if (Math.abs(det) < 1e-10) {
       throw new Error("Lines are parallel or coincident");
@@ -48,15 +48,15 @@ export class Line {
   }
 
   get slope(): number {
-    return this.b === 0 ? NaN : Line.normalizeZero(-this.a / this.b);
+    return this.b === 0 ? NaN : Line2.normalizeZero(-this.a / this.b);
   }
 
   get yIntercept(): number | null {
-    return this.b === 0 ? null : Line.normalizeZero(-this.c / this.b);
+    return this.b === 0 ? null : Line2.normalizeZero(-this.c / this.b);
   }
 
   get xIntercept(): number | null {
-    return this.a === 0 ? null : Line.normalizeZero(-this.c / this.a);
+    return this.a === 0 ? null : Line2.normalizeZero(-this.c / this.a);
   }
 
   get yInterceptPoint(): Vector2 | null {

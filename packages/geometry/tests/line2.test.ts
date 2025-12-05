@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { Line } from "../src/line";
+import { Line2 } from "../src/line2";
 import { Vector2 } from "@rgsoft/linear";
 
-describe(Line.name, () => {
+describe(Line2.name, () => {
   it("creates a new instance", () => {
-    const l = new Line(1, 1, 2);
-    expect(l).toBeInstanceOf(Line);
+    const l = new Line2(1, 1, 2);
+    expect(l).toBeInstanceOf(Line2);
     expect(l.toString()).toBe('1x + 1y + 2 = 0');
   });
 
@@ -75,9 +75,9 @@ describe(Line.name, () => {
   it.each(twoPointsData)(
     "creates instance from two points",
     ({ p, q, a, b, c, slope, xIntercept, yIntercept }) => {
-      let l: Line;
-      l = Line.fromPoints(p, q);
-      expect(l).toBeInstanceOf(Line);
+      let l: Line2;
+      l = Line2.fromPoints(p, q);
+      expect(l).toBeInstanceOf(Line2);
       expect(l.a).toBe(a);
       expect(l.b).toBe(b);
       expect(l.c).toBe(c);
@@ -133,8 +133,8 @@ describe(Line.name, () => {
   it.each(mediatrixData)(
     "retrieves mediatrix from two points",
     ({ p, q, a, b, c, slope, xIntercept, yIntercept }) => {
-      const l = Line.mediatrix(p, q);
-      expect(l).toBeInstanceOf(Line);
+      const l = Line2.mediatrix(p, q);
+      expect(l).toBeInstanceOf(Line2);
       expect(l.a).toBe(a);
       expect(l.b).toBe(b);
       expect(l.c).toBe(c);
@@ -146,26 +146,26 @@ describe(Line.name, () => {
 
   const intersectionPointsData = [
     {
-      l1: new Line(1, -1, 0),
-      l2: new Line(1, 1, -2),
+      l1: new Line2(1, -1, 0),
+      l2: new Line2(1, 1, -2),
       x: 1,
       y: 1
     },
     {
-      l1: new Line(1, 0, -1),
-      l2: new Line(1, 1, -2),
+      l1: new Line2(1, 0, -1),
+      l2: new Line2(1, 1, -2),
       x: 1,
       y: 1
     },
     {
-      l1: new Line(1, 0, -1),
-      l2: new Line(1, -1, 0),
+      l1: new Line2(1, 0, -1),
+      l2: new Line2(1, -1, 0),
       x: 1,
       y: 1
     },
     {
-      l1: new Line(1, 0, -1),
-      l2: new Line(0, 1, -1),
+      l1: new Line2(1, 0, -1),
+      l2: new Line2(0, 1, -1),
       x: 1,
       y: 1
     },
@@ -178,8 +178,8 @@ describe(Line.name, () => {
   });
 
   it('fails on parallel lines', () => {
-    const l1 = new Line(1, -1, 3);
-    const l2 = new Line(2, -2, 6);
+    const l1 = new Line2(1, -1, 3);
+    const l2 = new Line2(2, -2, 6);
     expect(() => l1.intersectionPoint(l2)).toThrowError(
       'Lines are parallel or coincident'
     );
@@ -187,27 +187,27 @@ describe(Line.name, () => {
 
   const containingPointsData = [
     {
-      l: new Line(1, -1, 0),
+      l: new Line2(1, -1, 0),
       p: new Vector2([2, 2]),
       expected: true,
     },
     {
-      l: new Line(1, -1, 0),
+      l: new Line2(1, -1, 0),
       p: new Vector2([2, 1]),
       expected: false,
     },
     {
-      l: new Line(1, 1, -1),
+      l: new Line2(1, 1, -1),
       p: new Vector2([1, 0]),
       expected: true,
     },
     {
-      l: new Line(1, 1, -1),
+      l: new Line2(1, 1, -1),
       p: new Vector2([-1, 2]),
       expected: true,
     },
     {
-      l: new Line(1, 1, -1),
+      l: new Line2(1, 1, -1),
       p: new Vector2([1, 2]),
       expected: false,
     },
