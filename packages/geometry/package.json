@@ -31,7 +31,8 @@
   },
   "homepage": "https://github.com/rgmiranda/rgsoft#readme",
   "dependencies": {
-    "@rgsoft/linear": "workspace:^"
+    "@rgsoft/linear": "workspace:^",
+    "@rgsoft/math": "workspace:^"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.3",

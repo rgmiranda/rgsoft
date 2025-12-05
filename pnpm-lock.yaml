@@ -26,6 +26,9 @@ importers:
       '@rgsoft/linear':
         specifier: workspace:^
         version: link:../linear
+      '@rgsoft/math':
+        specifier: workspace:^
+        version: link:../math
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^2.0.3
