@@ -66,12 +66,12 @@ describe(Vector2.name, () => {
 
   it("multiplies a vector", () => {
     let v = new Vector2([0, 3]);
-    v.mult(4);
+    v = v.mult(4);
     expect(v.mag).toBe(12);
     expect(v.y).toBe(12);
 
     v = new Vector2([5, 5]);
-    v.mult(2);
+    v = v.mult(2);
     expect(v.mag).toBeCloseTo(10 * Math.SQRT2, 6);
     expect(v.x).toBe(10);
     expect(v.y).toBe(10);
@@ -84,7 +84,7 @@ describe(Vector2.name, () => {
     expect(v.y).toBe(3);
 
     v = new Vector2([5, 5]);
-    v.div(5);
+    v = v.div(5);
     expect(v.mag).toBeCloseTo(Math.SQRT2, 6);
     expect(v.x).toBe(1);
     expect(v.y).toBe(1);
@@ -130,8 +130,8 @@ describe(Vector2.name, () => {
   });
 
   it("calculates angle against another vector", () => {
-    let v1 = new Vector2([0, 1]);
-    let v2 = new Vector2([1, 0]);
+    let v1 = new Vector2([1, 0]);
+    let v2 = new Vector2([0, 1]);
     expect(v1.angleTo(v2)).toBeCloseTo(Math.PI * 0.5, 6);
 
     v2 = new Vector2([1, 1]);
@@ -148,7 +148,7 @@ describe(Vector2.name, () => {
     expect(proj.x).toBe(2.2);
     expect(proj.y).toBe(4.4);
 
-    v1 = new Vector2([-2, 4]);
+    v1 = new Vector2([-2, 2]);
     v2 = new Vector2([1, 1]);
     proj = v1.projection(v2);
     expect(proj.x).toBe(0);
@@ -170,16 +170,16 @@ describe(Vector2.name, () => {
     expect(w.y).toBe(2);
 
     w = v.rotate(PI);
-    expect(w.x).toBe(-2);
-    expect(w.y).toBe(-7);
+    expect(w.x).toBe(-7);
+    expect(w.y).toBe(-2);
 
     w = v.rotate(HALF_PI);
-    expect(w.x).toBe(-7);
-    expect(w.y).toBe(2);
+    expect(w.x).toBe(-2);
+    expect(w.y).toBe(7);
 
     w = v.rotate(-HALF_PI);
-    expect(w.x).toBe(7);
-    expect(w.y).toBe(-2);
+    expect(w.x).toBe(2);
+    expect(w.y).toBe(-7);
   });
 
   it("limits a vector magnitude", () => {

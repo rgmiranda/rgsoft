@@ -3,7 +3,7 @@ import { EPSILON } from "@rgsoft/math";
 export class Vector {
   private _mag?: number;
   private readonly _values: number[];
-  private static _zerosByClass = new Map<string, Map<number, Vector>>();
+  private static _zeros = new Map<number, Vector>();
 
   /**
    *
@@ -29,21 +29,13 @@ export class Vector {
   /**
    * Returns the zero vector of the same subclass and dimension.
    */
-  get zero(): this {
-    const ctor = this.constructor as new (v: number[]) => this;
-    const className = this.constructor.name;
+  get zero(): Vector {
 
-    let classCache = Vector._zerosByClass.get(className);
-    if (!classCache) {
-      classCache = new Map<number, Vector>();
-      Vector._zerosByClass.set(className, classCache);
-    }
-
-    let zeroVector = classCache.get(this.dim);
+    let zeroVector = Vector._zeros.get(this.dim);
     if (!zeroVector) {
       const values = Array(this.dim).fill(0);
-      zeroVector = new ctor(values);
-      classCache.set(this.dim, zeroVector);
+      zeroVector = new Vector(values);
+      Vector._zeros.set(this.dim, zeroVector);
     }
 
     return zeroVector as this;
@@ -146,15 +138,15 @@ export class Vector {
   /**
    * Calculates the angle to another vector
    * @param { this } v
-   * @returns { this }
+   * @returns { number }
    */
-  angleTo(v: this): this {
+  angleTo(v: this): number {
     const dp = this.dot(v);
     const denom = this.mag * v.mag;
     if (denom === 0) {
       throw new Error("Cannot compute angle with a zero vector");
     }
-    return v.mult(dp / denom);
+    return Math.acos(dp / denom);
   }
 
   /**

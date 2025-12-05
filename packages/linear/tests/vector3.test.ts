@@ -43,7 +43,7 @@ describe(Vector3.name, () => {
 
     v = new Vector3([5, 5, 0]);
     expect(v.mag).toBeCloseTo(SQRT2 * 5, 6);
-    v.normalize();
+    v = v.normalize();
     expect(v.mag).toBeCloseTo(1, 6);
     expect(v.x).toBeCloseTo(Math.SQRT1_2, 6);
     expect(v.y).toBeCloseTo(Math.SQRT1_2, 6);
@@ -93,13 +93,13 @@ describe(Vector3.name, () => {
   });
 
   it("calculates the dot product", () => {
-    const v = new Vector3([-2, 3, 1]);
-    const u = new Vector3([2, 3, 1]);
+    let v = new Vector3([-2, 3, 1]);
+    let u = new Vector3([2, 3, 1]);
     expect(v.dot(u)).toBe(6);
     expect(u.dot(v)).toBe(6);
-    u.mult(4);
+    u = u.mult(4);
     expect(u.dot(v)).toBe(24);
-    v.mult(0.5);
+    v = v.mult(0.5);
     expect(u.dot(v)).toBe(12);
   });
 
@@ -167,22 +167,22 @@ describe(Vector3.name, () => {
   });
 
   it("rotates a vector", () => {
-    const v = new Vector3([1, 1, 1]);
-    v.rotateX(PI);
+    let v = new Vector3([1, 1, 1]);
+    v = v.rotateX(PI);
     expect(v.x).toBeCloseTo(1, 6);
     expect(v.y).toBeCloseTo(-1, 6);
     expect(v.z).toBeCloseTo(-1, 6);
 
-    v.rotateY(PI);
+    v = v.rotateY(PI);
     expect(v.x).toBeCloseTo(-1, 6);
     expect(v.y).toBeCloseTo(-1, 6);
     expect(v.z).toBeCloseTo(1, 6);
   });
 
   it("limits a vector magnitude", () => {
-    const v = new Vector3([12, -6, 4]);
+    let v = new Vector3([12, -6, 4]);
     expect(v.mag).toBe(14);
-    v.limit(7);
+    v = v.limit(7);
     expect(v.mag).toBe(7);
     expect(v.x).toBe(6);
     expect(v.y).toBe(-3);

@@ -1,3 +1,4 @@
+import { V3_ZERO } from "./constants";
 import { Vector } from "./vector";
 
 export class Vector3 extends Vector {
@@ -78,5 +79,9 @@ export class Vector3 extends Vector {
     const y = r * Math.sin(theta) * Math.sin(phi);
     const z = r * Math.cos(theta);
     return new Vector3([x, y, z]);
+  }
+
+  get zero(): Vector3 {
+    return V3_ZERO;
   }
 }

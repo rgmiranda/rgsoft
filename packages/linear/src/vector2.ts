@@ -1,5 +1,6 @@
 import { HALF_PI, PI } from "@rgsoft/math";
 import { Vector } from "./vector";
+import { V2_ZERO } from "./constants";
 
 export class Vector2 extends Vector {
   public readonly angle: number;
@@ -56,5 +57,9 @@ export class Vector2 extends Vector {
     const y = Math.sin(angle) * radius;
     const instance = new Vector2([x, y]);
     return instance;
+  }
+
+  get zero(): Vector2 {
+    return V2_ZERO;
   }
 }
