@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { clamp, lerp, range } from "../src";
+import { approximateTo } from "../src/utils";
 
 describe('Utils', () => {
   describe(range.name, () => {
@@ -92,6 +93,20 @@ describe('Utils', () => {
       );
     });
 
+  });
+
+  describe(approximateTo.name, () => {
+    const testData: [number, number, number, number][] = [
+      [2.999, 3, 1e-6, 2.999],
+      [2.99999, 3, 1e-6, 2.99999],
+      [2.999999, 3, 1e-6, 2.999999],
+      [2.9999999, 3, 1e-6, 3],
+      [2.99999, 3, 1e-4, 3],
+    ];
+
+    it.each(testData)('approximates values to', (n, target, epsilon, expected) => {
+      expect(approximateTo(n, target, epsilon)).toBe(expected);
+    })
   });
 
 });

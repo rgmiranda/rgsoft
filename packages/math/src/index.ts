@@ -14,4 +14,4 @@ export {
     collatz,
     digitalRoots
 } from './number';
-export { range, lerp, clamp } from './utils';
+export { range, lerp, clamp, approximateTo } from './utils';

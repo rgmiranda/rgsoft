@@ -1,10 +1,12 @@
+import { EPSILON } from "./constants";
+
 /**
  * Generates an array of numbers from a `start` (inclusively) to an `end`
  * (exclusively), using a `step`
- * 
- * @param { number } start 
- * @param { number } end 
- * @param { number } step 
+ *
+ * @param { number } start
+ * @param { number } end
+ * @param { number } step
  * @returns { number[] }
  */
 export function range(start: number, end: number, step: number = 1): number[] {
@@ -45,4 +47,8 @@ export function clamp(value: number, lowerBound: number, upperBound: number): nu
     throw new Error('Lower bound must be lower than upper bound');
   }
   return Math.max(Math.min(value, upperBound), lowerBound);
+}
+
+export function approximateTo(n: number, target = 0, epsilon = EPSILON): number {
+  return Math.abs(n - target) < epsilon ? target : n;
 }
