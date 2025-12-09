@@ -1,4 +1,5 @@
 import { EPSILON } from "@rgsoft/math";
+import { Vector } from "./vector";
 
 export type ExtendPosition = 'right' | 'below';
 export type SliceDirection = 'vertical' | 'horizontal';
@@ -94,7 +95,7 @@ export class Matrix {
     this.validateRowIndex(columnData.length - 1);
     this.validateColumnIndex(j);
     const data = this.data;
-    for (let i = 0; i< this._rows; i++) {
+    for (let i = 0; i < this._rows; i++) {
       data[i][j] = normalizeZero(columnData[i]);
     }
     return new Matrix(this._rows, this._cols, data);
@@ -171,8 +172,8 @@ export class Matrix {
     }
     const data = this.data;
     const scaledRow = data[sourceRow].map((v) => normalizeZero(v * scalar));
-    data[targetRow] = data[targetRow].map(
-      (v, j) => normalizeZero(v + scaledRow[j])
+    data[targetRow] = data[targetRow].map((v, j) =>
+      normalizeZero(v + scaledRow[j])
     );
     return new Matrix(this._rows, this._cols, data);
   }
@@ -255,7 +256,9 @@ export class Matrix {
       if (this._rows !== matrix._rows) {
         throw new Error("Cannot extend to the right: row counts must match");
       }
-      const data = this._data.map((row) => [...row].concat(Array(matrix._cols).fill(0)));
+      const data = this._data.map((row) =>
+        [...row].concat(Array(matrix._cols).fill(0))
+      );
       for (let i = 0; i < this._rows; i++) {
         for (let j = 0; j < matrix._cols; j++) {
           data[i][this._cols + j] = matrix.at(i, j);
@@ -345,7 +348,9 @@ export class Matrix {
     if (this._cols !== m._rows) {
       throw new Error("Cannot multiply: columns and rows do not match");
     }
-    const data: number[][] = Array(this._rows).fill(0).map(() => Array(m._cols).fill(0));
+    const data: number[][] = Array(this._rows)
+      .fill(0)
+      .map(() => Array(m._cols).fill(0));
     for (let i = 0; i < this._rows; i++) {
       for (let j = 0; j < m._cols; j++) {
         const row = this.rowAt(i);
@@ -357,8 +362,31 @@ export class Matrix {
     return new Matrix(this._rows, m._cols, data);
   }
 
+  multiplyVector(v: Vector): Vector {
+    if (v.dim !== this._cols) {
+      throw new Error(
+        `Cannot multiply: Matrix is ${this._rows}x${this._cols} but vector has dimension ${v.dim}`
+      );
+    }
+
+    const result = new Array(this._rows).fill(0);
+
+    for (let i = 0; i < this._rows; i++) {
+      const row = this.rowAt(i);
+      let sum = 0;
+      for (let j = 0; j < this._cols; j++) {
+        sum += row[j] * v.at(j);
+      }
+      result[i] = sum;
+    }
+
+    return new Vector(result);
+  }
+
   traspose(): Matrix {
-    const data = Array(this._cols).fill(0).map((_, j) => this.columnAt(j));
+    const data = Array(this._cols)
+      .fill(0)
+      .map((_, j) => this.columnAt(j));
     return new Matrix(this._cols, this._rows, data);
   }
 

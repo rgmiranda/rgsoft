@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Matrix } from "../src";
+import { Matrix, Vector } from "../src";
 
 describe(Matrix.name, () => {
   it("sets and gets elements", () => {
@@ -475,34 +475,52 @@ describe(Matrix.name, () => {
     expect(() => m.invert()).toThrow("Non-invertible matrix");
   });
 
-  it('multiplies a matrix', () => {
-    const m = new Matrix(2, 2, [
-      [1, 1],
-      [0, 6]
-    ]);
-    const n = new Matrix(2, 2, [
-      [0, 1],
-      [-1, 3]
-    ]);
-    const result = m.multiply(n);
-    expect(result.data).toEqual([
-      [-1, 4],
-      [-6, 18],
-    ]);
-  });
+  describe('multiplication', () => {
 
-  it("fails on invalid size for multiply", () => {
-    const m = new Matrix(2, 3, [
-      [1, 0, 3],
-      [0, 6, 3],
-    ]);
-    const n = new Matrix(2, 3, [
-      [1, 0, 3],
-      [0, 6, 3],
-    ]);
-    expect(() => m.multiply(n)).toThrow(
-      "Cannot multiply: columns and rows do not match"
-    );
+    it('multiplies a matrix', () => {
+      const m = new Matrix(2, 2, [
+        [1, 1],
+        [0, 6]
+      ]);
+      const n = new Matrix(2, 2, [
+        [0, 1],
+        [-1, 3]
+      ]);
+      const result = m.multiply(n);
+      expect(result.data).toEqual([
+        [-1, 4],
+        [-6, 18],
+      ]);
+    });
+
+    it('multiplies with a vector', () => {
+      const m = new Matrix(2, 2, [
+        [1, 1],
+        [0, 6]
+      ]);
+      const v = new Vector([-1, 3]);
+      const result = m.multiplyVector(v);
+      expect(result.values).toEqual([2, 18]);
+    });
+
+    it("fails on invalid size for multiply", () => {
+      const m = new Matrix(2, 3, [
+        [1, 0, 3],
+        [0, 6, 3],
+      ]);
+      const n = new Matrix(2, 3, [
+        [1, 0, 3],
+        [0, 6, 3],
+      ]);
+      const v = new Vector([-1, 3]);
+      expect(() => m.multiply(n)).toThrow(
+        "Cannot multiply: columns and rows do not match"
+      );
+      expect(() => m.multiplyVector(v)).toThrow(
+        "Cannot multiply: Matrix is 2x3 but vector has dimension 2"
+      );
+    });
+
   });
 
   it("trasposes a matrix", () => {
