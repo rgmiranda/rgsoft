@@ -1,5 +1,4 @@
 export * from './constants';
-export { gaussJordan } from './gauss-jordan';
 export { getOrientation } from './get-orientation';
 export { Matrix } from './matrix';
 export { Vector } from './vector';

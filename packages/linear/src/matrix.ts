@@ -1,14 +1,19 @@
+import { EPSILON } from "@rgsoft/math";
+
 export type ExtendPosition = 'right' | 'below';
 export type SliceDirection = 'vertical' | 'horizontal';
 
+const normalizeZero: (n: number) => number = (n) => {
+  return Math.abs(n) < EPSILON ? 0 : n;
+}
+
 export class Matrix {
-  private readonly vectors: number[][];
-  private static readonly EPSILON = 1e-10;
+  private readonly _data: readonly (readonly number[])[];
 
   constructor(
     private readonly _rows: number,
     private readonly _cols: number,
-    initialValues?: number[][]
+    values?: number[][]
   ) {
     if (
       !Number.isInteger(_rows) ||
@@ -19,16 +24,14 @@ export class Matrix {
       throw new Error("Matrix dimensions must be positive integers");
     }
 
-    if (initialValues) {
-      if (
-        initialValues.length !== _rows ||
-        initialValues.some((r) => r.length !== _cols)
-      ) {
+    if (values) {
+      if (values.length !== _rows || values.some((r) => r.length !== _cols)) {
         throw new Error("Initial values do not match matrix dimensions");
       }
-      this.vectors = initialValues.map((row) => [...row]);
+      this._data = values.map((row) => Object.freeze([...row]));
+      Object.freeze(this._data);
     } else {
-      this.vectors = Array(_rows)
+      this._data = Array(_rows)
         .fill(0)
         .map(() => Array(_cols).fill(0));
     }
@@ -40,43 +43,61 @@ export class Matrix {
   }
 
   private validateRowIndex(i: number): void {
+    if (!Number.isInteger(i)) {
+      throw new Error("Index must be a positive integer");
+    }
     if (i < 0 || i >= this._rows) {
       throw new Error(`Row index ${i} out of bounds`);
     }
   }
 
   private validateColumnIndex(j: number): void {
+    if (!Number.isInteger(j)) {
+      throw new Error("Index must be a positive integer");
+    }
     if (j < 0 || j >= this._cols) {
       throw new Error(`Column index ${j} out of bounds`);
     }
   }
 
-  get(i: number, j: number): number {
+  at(i: number, j: number): number {
     this.validateIndexes(i, j);
-    return this.vectors[i][j];
+    return this._data[i][j];
   }
 
-  getRow(i: number): number[] {
+  rowAt(i: number): number[] {
     this.validateRowIndex(i);
-    return this.vectors[i];
+    return [...this._data[i]];
   }
 
-  getColumn(j: number): number[] {
+  columnAt(j: number): number[] {
     this.validateColumnIndex(j);
-    return this.vectors.map((r) => r[j]);
+    return this._data.map((r) => r[j]);
   }
 
-  set(value: number, i: number, j: number): void {
+  set(value: number, i: number, j: number): Matrix {
     this.validateIndexes(i, j);
-    this.vectors[i][j] = Matrix.normalizeZero(value);
+    const data = this.data;
+    data[i][j] = normalizeZero(value);
+    return new Matrix(this._rows, this._cols, data);
   }
 
-  clone(): Matrix {
-    return new Matrix(this._rows, this._cols, this.vectors);
+  setRow(rowData: number[], i: number): Matrix {
+    this.validateRowIndex(i);
+    this.validateColumnIndex(rowData.length - 1);
+    const data = this.data;
+    data[i] = rowData.map(normalizeZero);
+    return new Matrix(this._rows, this._cols, data);
   }
 
-  private static normalizeZero(n: number): number {
-    return Math.abs(n) < Matrix.EPSILON ? 0 : n;
+  setColumn(columnData: number[], j: number): Matrix {
+    this.validateRowIndex(columnData.length - 1);
+    this.validateColumnIndex(j);
+    const data = this.data;
+    for (let i = 0; i< this._rows; i++) {
+      data[i][j] = normalizeZero(columnData[i]);
+    }
+    return new Matrix(this._rows, this._cols, data);
   }
 
   /**
@@ -93,11 +114,13 @@ export class Matrix {
    * //  [0,0,1]]
    */
   static identity(size: number): Matrix {
-    const m = new Matrix(size, size);
+    const data = Array(size)
+      .fill(0)
+      .map(() => Array(size).fill(0));
     for (let i = 0; i < size; i++) {
-      m.set(1, i, i);
+      data[i][i] = 1;
     }
-    return m;
+    return new Matrix(size, size, data);
   }
 
   /**
@@ -117,15 +140,9 @@ export class Matrix {
     if (!Number.isFinite(scalar)) {
       throw new Error("Multiplier must be a finite number");
     }
-    if (isNaN(scalar)) {
-      throw new Error("Multiplier must not be NaN");
-    }
-    const m = this.clone();
-    for (let j = 0; j < this._cols; j++) {
-      const updated = m.get(i, j) * scalar;
-      m.set(updated, i, j);
-    }
-    return m;
+    const data = this.data;
+    data[i] = data[i].map((v) => normalizeZero(v * scalar));
+    return new Matrix(this._rows, this._cols, data);
   }
 
   /**
@@ -152,15 +169,12 @@ export class Matrix {
     if (!Number.isFinite(scalar)) {
       throw new Error("Multiplier must be a finite number");
     }
-    if (isNaN(scalar)) {
-      throw new Error("Multiplier must not be NaN");
-    }
-    const m = this.clone();
-    for (let j = 0; j < this._cols; j++) {
-      const updated = m.get(targetRow, j) + m.get(sourceRow, j) * scalar;
-      m.set(updated, targetRow, j);
-    }
-    return m;
+    const data = this.data;
+    const scaledRow = data[sourceRow].map((v) => normalizeZero(v * scalar));
+    data[targetRow] = data[targetRow].map(
+      (v, j) => normalizeZero(v + scaledRow[j])
+    );
+    return new Matrix(this._rows, this._cols, data);
   }
 
   /**
@@ -178,36 +192,34 @@ export class Matrix {
   swapRows(i0: number, i1: number): Matrix {
     this.validateRowIndex(i0);
     this.validateRowIndex(i1);
-    const m = this.clone();
+    const data = this.data;
     if (i0 === i1) {
-      return m;
+      return new Matrix(this._rows, this._cols, data);
     }
-    for (let col = 0; col < this._cols; col++) {
-      const temp = m.get(i0, col);
-      m.set(m.get(i1, col), i0, col);
-      m.set(temp, i1, col);
-    }
-    return m;
+    const aux = data[i0];
+    data[i0] = data[i1];
+    data[i1] = aux;
+    return new Matrix(this._rows, this._cols, data);
   }
 
   get data(): number[][] {
-    return this.vectors.map((row) => [...row]);
+    return this._data.map((row) => [...row]);
   }
 
   reduce(): Matrix {
-    let reduced = this.clone();
+    let reduced: Matrix = this;
     const minSize = Math.min(this._rows, this._cols);
     let row = 0;
     for (let col = 0; col < minSize; col++) {
-      if (reduced.get(row, col) === 0) {
+      if (reduced.at(row, col) === 0) {
         for (let k = col + 1; k < reduced._rows; k++) {
-          if (reduced.get(k, col) !== 0) {
+          if (reduced.at(k, col) !== 0) {
             reduced = reduced.swapRows(k, row);
           }
         }
       }
 
-      const pivot = reduced.get(row, col);
+      const pivot = reduced.at(row, col);
 
       if (pivot === 0) {
         continue;
@@ -216,14 +228,14 @@ export class Matrix {
       reduced = reduced.scaleRow(row, 1 / pivot);
 
       for (let k = row + 1; k < this._rows; k++) {
-        const factor = -reduced.get(k, col);
+        const factor = -reduced.at(k, col);
         if (factor !== 0) {
           reduced = reduced.addScaledRow(row, k, factor);
         }
       }
 
       for (let k = row - 1; k >= 0; k--) {
-        const factor = -reduced.get(k, col);
+        const factor = -reduced.at(k, col);
         if (factor !== 0) {
           reduced = reduced.addScaledRow(row, k, factor);
         }
@@ -243,32 +255,19 @@ export class Matrix {
       if (this._rows !== matrix._rows) {
         throw new Error("Cannot extend to the right: row counts must match");
       }
-      const result = new Matrix(this._rows, this._cols + matrix._cols);
+      const data = this._data.map((row) => [...row].concat(Array(matrix._cols).fill(0)));
       for (let i = 0; i < this._rows; i++) {
-        for (let j = 0; j < this._cols; j++) {
-          result.set(this.get(i, j), i, j);
-        }
         for (let j = 0; j < matrix._cols; j++) {
-          result.set(matrix.get(i, j), i, j + this._cols);
+          data[i][this._cols + j] = matrix.at(i, j);
         }
       }
-      return result;
+      return new Matrix(this._rows, this._cols + matrix._cols, data);
     } else if (direction === "below") {
       if (this._cols !== matrix._cols) {
         throw new Error("Cannot extend below: column counts must match");
       }
-      const result = new Matrix(this._rows + matrix._rows, this._cols);
-      for (let i = 0; i < this._rows; i++) {
-        for (let j = 0; j < this._cols; j++) {
-          result.set(this.get(i, j), i, j);
-        }
-      }
-      for (let i = 0; i < matrix._rows; i++) {
-        for (let j = 0; j < this._cols; j++) {
-          result.set(matrix.get(i, j), i + this._rows, j);
-        }
-      }
-      return result;
+      const data = this.data.concat(matrix.data);
+      return new Matrix(this._rows + matrix._rows, this._cols, data);
     } else {
       throw new Error(`Invalid direction: ${direction}`);
     }
@@ -286,18 +285,14 @@ export class Matrix {
     if (length === undefined) {
       length = this._cols - start;
     }
+
     if (length <= 0) {
       throw new Error("Length must be a positive integer");
     }
     this.validateColumnIndex(start);
     this.validateColumnIndex(start + length - 1);
-    const m = new Matrix(this._rows, length);
-    for (let i = 0; i < this._rows; i++) {
-      for (let j = 0; j < length; j++) {
-        m.set(this.get(i, start + j), i, j);
-      }
-    }
-    return m;
+    const data = this._data.map((row) => row.slice(start, start + length));
+    return new Matrix(this._rows, length, data);
   }
 
   sliceRows(start: number, length?: number): Matrix {
@@ -313,20 +308,15 @@ export class Matrix {
 
     this.validateRowIndex(start + length - 1);
 
-    const m = new Matrix(length, this._cols);
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < this._cols; j++) {
-        m.set(this.get(start + i, j), i, j);
-      }
-    }
-    return m;
+    const data = this.data.slice(start, start + length);
+    return new Matrix(length, this._cols, data);
   }
 
   hasZeroRows(): boolean {
     for (let i = 0; i < this._rows; i++) {
       let isZeroRow = true;
       for (let j = 0; j < this._cols; j++) {
-        if (this.get(i, j) !== 0) {
+        if (this.at(i, j) !== 0) {
           isZeroRow = false;
           break;
         }
@@ -353,32 +343,27 @@ export class Matrix {
 
   multiply(m: Matrix): Matrix {
     if (this._cols !== m._rows) {
-      throw new Error('Cannot multiply: columns and rows do not match');
+      throw new Error("Cannot multiply: columns and rows do not match");
     }
-    const n = new Matrix(this._rows, m._cols);
+    const data: number[][] = Array(this._rows).fill(0).map(() => Array(m._cols).fill(0));
     for (let i = 0; i < this._rows; i++) {
       for (let j = 0; j < m._cols; j++) {
-        const row = this.getRow(i);
-        const col = m.getColumn(j);
+        const row = this.rowAt(i);
+        const col = m.columnAt(j);
         const val = row.reduce((prev, curr, k) => prev + curr * col[k], 0);
-        n.set(val, i, j);
+        data[i][j] = normalizeZero(val);
       }
     }
-    return n;
+    return new Matrix(this._rows, m._cols, data);
   }
 
   traspose(): Matrix {
-    const m = new Matrix(this._cols, this._rows);
-    for (let i = 0; i < this._rows; i++) {
-      for (let j = 0; j < this._cols; j++) {
-        m.set(this.get(i, j), j, i);
-      }
-    }
-    return m;
+    const data = Array(this._cols).fill(0).map((_, j) => this.columnAt(j));
+    return new Matrix(this._cols, this._rows, data);
   }
 
   *[Symbol.iterator](): Generator<number> {
-    for (const row of this.vectors) {
+    for (const row of this._data) {
       for (const value of row) {
         yield value;
       }
@@ -386,7 +371,7 @@ export class Matrix {
   }
 
   *rows(): Generator<number[]> {
-    for (const row of this.vectors) {
+    for (const row of this._data) {
       yield [...row];
     }
   }
@@ -395,7 +380,7 @@ export class Matrix {
     for (let col = 0; col < this._cols; col++) {
       const column: number[] = [];
       for (let row = 0; row < this._rows; row++) {
-        column.push(this.vectors[row][col]);
+        column.push(this._data[row][col]);
       }
       yield column;
     }
@@ -404,7 +389,7 @@ export class Matrix {
   *entries(): Generator<{ row: number; col: number; value: number }> {
     for (let i = 0; i < this._rows; i++) {
       for (let j = 0; j < this._cols; j++) {
-        yield { row: i, col: j, value: this.vectors[i][j] };
+        yield { row: i, col: j, value: this._data[i][j] };
       }
     }
   }
