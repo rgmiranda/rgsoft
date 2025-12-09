@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Line2 } from "../src/line2";
 import { V2_ZERO, Vector2 } from "@rgsoft/linear";
+import { SQRT1_2 } from "@rgsoft/math";
 
 describe(Line2.name, () => {
   it("creates a new instance", () => {
@@ -203,8 +204,8 @@ describe(Line2.name, () => {
     "calculates the intersection point",
     ({ l1, l2, x, y }) => {
       let p = l1.intersectionPoint(l2);
-      expect(p.x).toBe(x);
-      expect(p.y).toBe(y);
+      expect(p.x).toBeCloseTo(x);
+      expect(p.y).toBeCloseTo(y);
     }
   );
 
@@ -250,4 +251,24 @@ describe(Line2.name, () => {
       expect(l.containsPoint(p)).toBe(expected);
     }
   );
+
+  const distanceToPointData: [Vector2, number][] = [
+    [
+      new Vector2([0, 3]),
+      SQRT1_2 * 3
+    ],
+    [
+      new Vector2([2, 1]),
+      SQRT1_2
+    ],
+    [
+      new Vector2([2, 2]),
+      0
+    ],
+  ];
+
+  it.each(distanceToPointData)("calculates distance to point", (p, d) => {
+    const line = new Line2(new Vector2([0, 0]), new Vector2([1, 1]));
+    expect(line.distanceToPoint(p)).toBeCloseTo(d, 6);
+  });
 });

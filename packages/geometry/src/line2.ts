@@ -15,7 +15,7 @@ export class Line2 {
     }
     this.point = point;
     this.direction = direction.normalize();
-    this.normal = new Vector2([-direction.y, direction.x]);
+    this.normal = new Vector2([-this.direction.y, this.direction.x]);
     this.a = approximateTo(direction.y);
     this.b = approximateTo(-direction.x);
     this.c = approximateTo(-(this.a * point.x + this.b * point.y));
@@ -72,6 +72,10 @@ export class Line2 {
   get xInterceptPoint(): Vector2 | null {
     const x = this.xIntercept;
     return x === null ? null : new Vector2([x, 0]);
+  }
+
+  distanceToPoint(p: Vector2): number {
+    return Math.abs(p.sub(this.point).dot(this.normal));
   }
 
   toString(): string {
