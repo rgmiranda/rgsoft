@@ -78,6 +78,12 @@ export class Line2 {
     return Math.abs(p.sub(this.point).dot(this.normal));
   }
 
+  projectPoint(p: Vector2): Vector2 {
+    const diff = this.point.sub(p);
+    const proj = diff.projection(this.normal);
+    return p.add(proj);
+  }
+
   toString(): string {
     return `${this.a}x + ${this.b}y + ${this.c} = 0`;
   }

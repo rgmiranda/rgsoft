@@ -271,4 +271,32 @@ describe(Line2.name, () => {
     const line = new Line2(new Vector2([0, 0]), new Vector2([1, 1]));
     expect(line.distanceToPoint(p)).toBeCloseTo(d, 6);
   });
+
+  const pojectionData: [Vector2, Vector2][] = [
+    [
+      new Vector2([0, 3]),
+      new Vector2([1.5, 1.5])
+    ],
+    [
+      new Vector2([4, 2]),
+      new Vector2([3, 3])
+    ],
+    [
+      new Vector2([4, 2]),
+      new Vector2([3, 3])
+    ],
+    [
+      new Vector2([-7, 1]),
+      new Vector2([-3, -3])
+    ],
+    [
+      new Vector2([2, -2]),
+      new Vector2([0, 0])
+    ],
+  ];
+
+  it.each(pojectionData)("calculates projection of point", (p, proj) => {
+    const line = new Line2(new Vector2([0, 0]), new Vector2([1, 1]));
+    expect(line.projectPoint(p)).toEqual(proj);
+  });
 });
