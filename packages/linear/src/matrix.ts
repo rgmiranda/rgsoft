@@ -1,4 +1,4 @@
-import { EPSILON } from "@rgsoft/math";
+import { approximateTo, EPSILON } from "@rgsoft/math";
 import { Vector } from "./vector";
 
 export type ExtendPosition = 'right' | 'below';
@@ -212,33 +212,38 @@ export class Matrix {
     if (this._cols !== this._rows) {
       throw new Error('Cannot get determinant on non-square matrix');
     }
-    if (!this._det) {
-      let det = 1;
-      let reduced: Matrix = this;
-      for (let col = 0; col < this._cols; col++) {
-        if (reduced.at(col, col) === 0) {
-          for (let row = col + 1; row < reduced._rows; row++) {
-            if (reduced.at(row, col) !== 0) {
-              reduced = reduced.swapRows(row, col);
-            }
-          }
-        }
-        const pivot = reduced.at(col, col);
-        det *= pivot;
-
-        if (pivot === 0) {
-          continue;
-        }
-
-        for (let row = col + 1; row < this._rows; row++) {
-          const factor = -reduced.at(row, col) / pivot;
-          if (factor !== 0) {
-            reduced = reduced.addScaledRow(col, row, factor);
+    if (this._det !== undefined) {
+      return this._det;
+    }
+    let det = 1;
+    let reduced: Matrix = this;
+    let sign = 1;
+    for (let col = 0; col < this._cols; col++) {
+      if (reduced.at(col, col) === 0) {
+        for (let row = col + 1; row < reduced._rows; row++) {
+          if (reduced.at(row, col) !== 0) {
+            reduced = reduced.swapRows(row, col);
+            sign = -sign;
+            break;
           }
         }
       }
-      this._det = det;
+      const pivot = reduced.at(col, col);
+      det *= pivot;
+
+      if (pivot === 0) {
+        continue;
+      }
+
+      for (let row = col + 1; row < reduced._rows; row++) {
+        const factor = -reduced.at(row, col) / pivot;
+        if (factor !== 0) {
+          reduced = reduced.addScaledRow(col, row, factor);
+        }
+      }
     }
+    this._det = approximateTo(sign * det, 0);
+
     return this._det;
   }
 
