@@ -535,4 +535,104 @@ describe(Matrix.name, () => {
       [-4, 3],
     ]);
   });
+
+  describe("determinant", () => {
+
+    const deteminantTestData = [
+      {
+        data: [
+          [1, 4],
+          [0, -3]
+        ],
+        cols: 2,
+        rows: 2,
+        det: -3
+      },
+      {
+        data: [
+          [1, 4],
+          [1, -3]
+        ],
+        cols: 2,
+        rows: 2,
+        det: -7
+      },
+      {
+        data: [
+          [-1, 4, 2],
+          [1, 1, -3],
+          [0, -2, 1],
+        ],
+        cols: 3,
+        rows: 3,
+        det: -3
+      },
+      {
+        data: [
+          [-1, 4, 2],
+          [0, 3, -3],
+          [0, 0, 1],
+        ],
+        cols: 3,
+        rows: 3,
+        det: -3
+      },
+      {
+        data: [
+          [0, 3, -3],
+          [-1, 4, 2],
+          [0, 0, 1],
+        ],
+        cols: 3,
+        rows: 3,
+        det: -3
+      },
+      {
+        data: [
+          [-1, 4, 2],
+          [0, 0, -3],
+          [0, 0, 1],
+        ],
+        cols: 3,
+        rows: 3,
+        det: 0
+      },
+      {
+        data: [
+          [-1, 4, 2],
+          [1, -2, -3],
+          [0, 2, -1],
+        ],
+        cols: 3,
+        rows: 3,
+        det: 0
+      },
+    ];
+
+    it.each(deteminantTestData)('gets the determinant', ({ data, cols, rows, det }) => {
+      let m = new Matrix(rows, cols, data);
+      expect(m.det).toBeCloseTo(det);
+    });
+
+    it('fails on non-square matrixes', () => {
+      let data = [
+        [1, 2, 3],
+        [4, 5, 6],
+      ]
+      let m = new Matrix(2, 3, data);
+      expect(() => m.det).toThrowError(
+        "Cannot get determinant on non-square matrix"
+      );
+      data = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [-7, 5, 10],
+      ]
+      m = new Matrix(4, 3, data);
+      expect(() => m.det).toThrowError(
+        "Cannot get determinant on non-square matrix"
+      );
+    });
+  });
 });

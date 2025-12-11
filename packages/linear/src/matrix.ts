@@ -10,6 +10,7 @@ const normalizeZero: (n: number) => number = (n) => {
 
 export class Matrix {
   private readonly _data: readonly (readonly number[])[];
+  private _det?: number;
 
   constructor(
     private readonly _rows: number,
@@ -205,6 +206,40 @@ export class Matrix {
 
   get data(): number[][] {
     return this._data.map((row) => [...row]);
+  }
+
+  get det(): number {
+    if (this._cols !== this._rows) {
+      throw new Error('Cannot get determinant on non-square matrix');
+    }
+    if (!this._det) {
+      let det = 1;
+      let reduced: Matrix = this;
+      for (let col = 0; col < this._cols; col++) {
+        if (reduced.at(col, col) === 0) {
+          for (let row = col + 1; row < reduced._rows; row++) {
+            if (reduced.at(row, col) !== 0) {
+              reduced = reduced.swapRows(row, col);
+            }
+          }
+        }
+        const pivot = reduced.at(col, col);
+        det *= pivot;
+
+        if (pivot === 0) {
+          continue;
+        }
+
+        for (let row = col + 1; row < this._rows; row++) {
+          const factor = -reduced.at(row, col) / pivot;
+          if (factor !== 0) {
+            reduced = reduced.addScaledRow(col, row, factor);
+          }
+        }
+      }
+      this._det = det;
+    }
+    return this._det;
   }
 
   reduce(): Matrix {
