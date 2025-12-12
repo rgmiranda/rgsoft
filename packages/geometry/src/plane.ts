@@ -1,18 +1,20 @@
 import { Vector3 } from "@rgsoft/linear";
+import { EPSILON } from "@rgsoft/math";
+import { Line3 } from "./line3";
 
 export class Plane {
   /**
-   * Plane normal (always normalized)
+   * Plane normal (always normalized).
    */
   public readonly normal: Vector3;
 
   /**
-   * Constant term d in the equation: n·x + d = 0
+   * Constant term d in the equation: n·x + d = 0.
    */
   public readonly d: number;
 
   /**
-   * Creates an instanca from a normal vector and a number d
+   * Creates an instanca from a normal vector and a number d.
    */
   constructor(normal: Vector3, d: number) {
     this.normal = normal.normalize();
@@ -20,8 +22,8 @@ export class Plane {
   }
 
   /**
-   * Construye un plano a partir de una normal y un punto contenido en el plano.
-   * Ecuación: n·p + d = 0 => d = -n·p
+   * Creates a plane from a normal vector and a point contained in the plane.
+   * Equation: n·p + d = 0 => d = -n·p.
    */
   static fromPointNormal(point: Vector3, normal: Vector3): Plane {
     const n = normal.normalize();
@@ -30,8 +32,7 @@ export class Plane {
   }
 
   /**
-   * Construye un plano a partir de 3 puntos no colineales.
-   * Obtiene la normal usando el producto cruzado.
+   * Creates a plane from 3 non-collinear points.
    */
   static fromPoints(p1: Vector3, p2: Vector3, p3: Vector3): Plane {
     const u = p2.sub(p1);
@@ -43,15 +44,15 @@ export class Plane {
   }
 
   /**
-   * Distancia desde un punto al plano.
-   * Positiva, negativa o cero según el lado del plano.
+   * Distance from a given point to the plane.
+   * Can be positive or negative according to the points position.
    */
   distanceToPoint(point: Vector3): number {
     return this.normal.dot(point) + this.d;
   }
 
   /**
-   * Proyecta un punto sobre el plano.
+   * Normal proyection of a point onto the plane.
    */
   projectPoint(point: Vector3): Vector3 {
     const dist = this.distanceToPoint(point);
@@ -59,24 +60,20 @@ export class Plane {
   }
 
   /**
-   * Intersección con una línea descrita por:
-   * - punto base `p0`
-   * - vector dirección `dir`
-   *
-   * Si la línea es paralela → retorna null.
+   * Intersection point with a line.
+   * If the line is parallel, `null` is returned.
    */
-  intersectLine(p0: Vector3, dir: Vector3): Vector3 | null {
-    const denom = this.normal.dot(dir);
-    if (Math.abs(denom) < 1e-12) {
-      return null; // Paralela o contenida
+  intersectLine(line: Line3): Vector3 | null {
+    const denom = this.normal.dot(line.direction);
+    if (Math.abs(denom) < EPSILON) {
+      return null;
     }
-    const t = -(this.normal.dot(p0) + this.d) / denom;
-    return p0.add(dir.mult(t));
+    const t = -(this.normal.dot(line.point) + this.d) / denom;
+    return line.point.add(line.direction.mult(t));
   }
 
   /**
-   * Retorna una representación en forma:
-   * Ax + By + Cz + D = 0
+   * General equation: `Ax + By + Cz + D = 0`
    */
   toGeneralForm(): { A: number; B: number; C: number; D: number } {
     return {
@@ -88,14 +85,10 @@ export class Plane {
   }
 
   /**
-   * Retorna representación punto-normal:
-   * Un punto cualquiera contenido en el plano + normal
+   * Normal-point form
    */
   toPointNormal(): { point: Vector3; normal: Vector3 } {
-    // Tomamos algún punto sobre el plano:
-    // Resolver: n·x = -d
     const n = this.normal;
-    // Elegimos el eje dominante para evitar divisiones pequeñas
     let point: Vector3;
     if (Math.abs(n.x) >= Math.abs(n.y) && Math.abs(n.x) >= Math.abs(n.z)) {
       point = new Vector3([-this.d / n.x, 0, 0]);

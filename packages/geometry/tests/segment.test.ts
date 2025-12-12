@@ -38,18 +38,38 @@ describe(Segment.name, () => {
       true,
     ],
     [
-      new Segment(new Vector2([-1, 0]), new Vector2([0, 1])),
-      new Segment(new Vector2([0, 1]), new Vector2([1, 0])),
-      true,
-    ],
-    [
       new Segment(new Vector2([0, -1]), new Vector2([-1, 0])),
       new Segment(new Vector2([0, -1]), new Vector2([1, 0])),
       true,
     ],
     [
-      new Segment(new Vector2([-1, 0]), new Vector2([0, -1])),
-      new Segment(new Vector2([0, -1]), new Vector2([1, 0])),
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment(new Vector2([0.5, 0.5]), new Vector2([-1.5, -1.5])),
+      true,
+    ],
+    [
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment(new Vector2([1.5, 1.5]), new Vector2([-0.5, -0.5])),
+      true,
+    ],
+    [
+      new Segment(new Vector2([0.5, 0.5]), new Vector2([-0.5, -0.5])),
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      true,
+    ],
+    [
+      new Segment(new Vector2([1.5, 1.5]), new Vector2([-1.5, -1.5])),
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      true,
+    ],
+    [
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment(new Vector2([-1, -1]), new Vector2([-2, -2])),
+      true,
+    ],
+    [
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment(new Vector2([1, 1]), new Vector2([2, 2])),
       true,
     ],
     [
@@ -60,6 +80,11 @@ describe(Segment.name, () => {
     [
       new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
       new Segment(new Vector2([-1, 1]), new Vector2([-1, 0])),
+      false,
+    ],
+    [
+      new Segment(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment(new Vector2([2, 2]), new Vector2([1.5, 1.5])),
       false,
     ],
   ];
@@ -86,5 +111,12 @@ describe(Segment.name, () => {
     const s = new Segment(new Vector2([1, 0]), new Vector2([1, -1]));
     expect(s.direction.x).toBe(0);
     expect(s.direction.y).toBe(-1);
+  });
+
+  it("generates line from segment", () => {
+    const s = new Segment(new Vector2([1, 0]), new Vector2([1, -1]));
+    const line = s.toLine();
+    expect(line.direction).toEqual(new Vector2([0, -1]));
+    expect(line.point).toEqual(new Vector2([1, 0]));
   });
 });
