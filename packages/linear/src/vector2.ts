@@ -62,4 +62,8 @@ export class Vector2 extends Vector {
     const instance = new Vector2([x, y]);
     return instance;
   }
+
+  cross(v: Vector2): number {
+    return this.x * v.y - v.x * this.y;
+  }
 }

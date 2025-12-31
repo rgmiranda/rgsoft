@@ -221,4 +221,17 @@ describe(Vector2.name, () => {
     v = new Vector2([1, 0]);
     expect(v.isZero).toBeFalsy();
   });
+
+  it("calculates the cross product", () => {
+    let v = new Vector2([0, 1]);
+    let w = new Vector2([1, 0]);
+    expect(v.cross(w)).toBe(-1);
+    expect(w.cross(v)).toBe(1);
+    w = v.mult(2);
+    expect(w.cross(v)).toBe(0);
+    v = new Vector2([1, 1]);
+    w = new Vector2([-1, 1]);
+    expect(v.cross(w)).toBe(2);
+    expect(w.cross(v)).toBe(-2);
+  });
 });
