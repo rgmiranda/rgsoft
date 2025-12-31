@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { clamp, lerp, range } from "../src";
-import { approximateTo } from "../src/utils";
+import { clamp, lerp, range, approximateTo, areClose, isCloseToZero } from "../src";
 
-describe('Utils', () => {
+describe("Utils", () => {
   describe(range.name, () => {
     const fromBaseData: {
       params: [number, number, number];
@@ -64,15 +63,18 @@ describe('Utils', () => {
       [100, 0, 0.75, 25],
     ];
 
-    it.each(testData)('applies lerp', (start, stop, amount, expected) => {
+    it.each(testData)("applies lerp", (start, stop, amount, expected) => {
       expect(lerp(start, stop, amount)).toBe(expected);
     });
 
-    it('fails on invalid amount', () => {
-      expect(() => lerp(0, 10, -0.1)).toThrowError('Amount must be between 0 and 1');
-      expect(() => lerp(0, 10, 2.5)).toThrowError('Amount must be between 0 and 1');
+    it("fails on invalid amount", () => {
+      expect(() => lerp(0, 10, -0.1)).toThrowError(
+        "Amount must be between 0 and 1"
+      );
+      expect(() => lerp(0, 10, 2.5)).toThrowError(
+        "Amount must be between 0 and 1"
+      );
     });
-
   });
 
   describe(clamp.name, () => {
@@ -83,16 +85,18 @@ describe('Utils', () => {
       [55, 0, 10, 10],
     ];
 
-    it.each(testData)('clamps values', (lowerBound, upperBound, value, expected) => {
-      expect(clamp(lowerBound, upperBound, value)).toBe(expected);
-    });
+    it.each(testData)(
+      "clamps values",
+      (lowerBound, upperBound, value, expected) => {
+        expect(clamp(lowerBound, upperBound, value)).toBe(expected);
+      }
+    );
 
-    it('fails on invalid range', () => {
+    it("fails on invalid range", () => {
       expect(() => clamp(20, 10, 0)).toThrowError(
         "Lower bound must be lower than upper bound"
       );
     });
-
   });
 
   describe(approximateTo.name, () => {
@@ -104,9 +108,45 @@ describe('Utils', () => {
       [2.99999, 3, 1e-4, 3],
     ];
 
-    it.each(testData)('approximates values to', (n, target, epsilon, expected) => {
-      expect(approximateTo(n, target, epsilon)).toBe(expected);
-    })
+    it.each(testData)(
+      "approximates values to",
+      (n, target, epsilon, expected) => {
+        expect(approximateTo(n, target, epsilon)).toBe(expected);
+      }
+    );
   });
 
+  describe(areClose.name, () => {
+    const testData: [number, number, number, boolean][] = [
+      [2.999, 3, 1e-6, false],
+      [2.99999, 3, 1e-6, false],
+      [2.999999, 3, 1e-6, false],
+      [2.9999999, 3, 1e-6, true],
+      [2.99999, 3, 1e-4, true],
+    ];
+
+    it.each(testData)(
+      "detects when values are close",
+      (n, m, epsilon, expected) => {
+        expect(areClose(n, m, epsilon)).toBe(expected);
+      }
+    );
+  });
+
+  describe(isCloseToZero.name, () => {
+    const testData: [number, number, boolean][] = [
+      [0.001, 1e-6, false],
+      [0.00001, 1e-6, false],
+      [0.000001, 1e-6, false],
+      [0.00000001, 1e-6, true],
+      [0.00001, 1e-4, true],
+    ];
+
+    it.each(testData)(
+      "detects when a value is close to zero",
+      (n, epsilon, expected) => {
+        expect(isCloseToZero(n, epsilon)).toBe(expected);
+      }
+    );
+  });
 });

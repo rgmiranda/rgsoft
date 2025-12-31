@@ -52,3 +52,11 @@ export function clamp(value: number, lowerBound: number, upperBound: number): nu
 export function approximateTo(n: number, target = 0, epsilon = EPSILON): number {
   return Math.abs(n - target) < epsilon ? target : n;
 }
+
+export function areClose(n: number, m: number, epsilon = EPSILON): boolean {
+  return Math.abs(n - m) < epsilon;
+}
+
+export function isCloseToZero(n: number, epsilon = EPSILON): boolean {
+  return Math.abs(n) < epsilon;
+}
