@@ -1,6 +1,6 @@
+import { Vector2 } from "@rgsoft/linear";
 import { Area } from "./area";
 import { Circle } from "./circle";
-import { Point } from "./point";
 
 export class Rect implements Area {
   constructor(
@@ -20,7 +20,7 @@ export class Rect implements Area {
     }
   }
 
-  contains(p: Point): boolean {
+  contains(p: Vector2): boolean {
     return (
       p.x >= this.x &&
       p.x <= this.x + this.w &&
@@ -30,21 +30,23 @@ export class Rect implements Area {
   }
 
   intersects(area: Area): boolean {
-    if (area instanceof Rect) {
-      return (
-        this.x + this.w > area.x &&
-        this.x < area.x + area.w &&
-        this.y + this.h > area.y &&
-        this.y < area.y + area.h
-      );
-    } else if (area instanceof Circle) {
-      const nx = Math.max(this.x, Math.min(area.x, this.x + this.w));
-      const ny = Math.max(this.y, Math.min(area.y, this.y + this.h));
-      const dx = nx - area.x;
-      const dy = ny - area.y;
-      return area.squaredRadius >= dx * dx + dy * dy;
-    } else {
-      throw new Error("Unrecognized area type");
-    }
+    return area.intersectsRect(this);
+  }
+
+  intersectsRect(area: Rect): boolean {
+    return (
+      this.x + this.w > area.x &&
+      this.x < area.x + area.w &&
+      this.y + this.h > area.y &&
+      this.y < area.y + area.h
+    );
+  }
+
+  intersectsCircle(area: Circle): boolean {
+    const nx = Math.max(this.x, Math.min(area.x, this.x + this.w));
+    const ny = Math.max(this.y, Math.min(area.y, this.y + this.h));
+    const dx = nx - area.x;
+    const dy = ny - area.y;
+    return area.squaredRadius >= dx * dx + dy * dy;
   }
 }

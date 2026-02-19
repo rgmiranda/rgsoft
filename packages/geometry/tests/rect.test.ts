@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { Area, Circle, Point, Rect } from "../src";
+import { Vector2 } from "@rgsoft/linear";
 
 describe(Rect.name, () => {
   let r: Rect;
@@ -67,6 +68,10 @@ describe(Rect.name, () => {
     expect(r).toBeInstanceOf(Rect);
   });
 
+  it.each(boundaryData)("evaluates boundary", ({ x, y, expected }) => {
+    expect(r.contains(new Vector2([ x, y ]))).toBe(expected);
+  });
+
   it("fails on invalid parameters", () => {
     expect(() => new Rect(JSON.parse('"a"'), 8, 8, 8)).toThrowError(
       "x and y coordinates must be numbers",
@@ -79,26 +84,9 @@ describe(Rect.name, () => {
     );
   });
 
-  it.each(boundaryData)("evaluates boundary", ({ x, y, expected }) => {
-    expect(r.contains({ x, y })).toBe(expected);
-  });
-
   it.each(intersectionData)("evaluates intersection", ({ rect, expected }) => {
     expect(r.intersects(rect)).toBe(expected);
     expect(rect.intersects(r)).toBe(expected);
   });
 
-  it("fails on unrecognized area type", () => {
-      class MyArea implements Area {
-        contains(p: Point): boolean {
-          throw new Error("Method not implemented.");
-        }
-        intersects(area: Area): boolean {
-          throw new Error("Method not implemented.");
-        }
-      }
-
-      const a = new MyArea();
-      expect(() => r.intersects(a)).toThrowError("Unrecognized area type");
-    });
 });

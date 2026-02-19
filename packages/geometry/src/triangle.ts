@@ -1,7 +1,9 @@
 import { Vector2 } from "@rgsoft/linear";
 import { Line2 } from "./line2";
+import { Area } from "./area";
+import { Point } from "./point";
 
-export class Triangle {
+export class Triangle implements Area {
 
   public readonly center: Vector2;
 
@@ -17,6 +19,12 @@ export class Triangle {
 
     this.center = med1.intersectionPoint(med2);
     this.radius = Math.sqrt((this.a.x - this.center.x) * (this.a.x - this.center.x) + (this.a.y - this.center.y) * (this.a.y - this.center.y))
+  }
+  contains(p: Point): boolean {
+    throw new Error("Method not implemented.");
+  }
+  intersects(area: Area): boolean {
+    throw new Error("Method not implemented.");
   }
 
   inCircle(point: Vector2): boolean {

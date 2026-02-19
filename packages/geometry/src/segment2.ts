@@ -1,7 +1,7 @@
 import { Line2 } from "./line2";
 import { Vector2, getOrientation } from "@rgsoft/linear";
 
-export class Segment {
+export class Segment2 {
   public readonly length: number;
   public readonly midpoint: Vector2;
   public readonly direction: Vector2;
@@ -40,10 +40,10 @@ export class Segment {
    *
    * Returns true if intersects with this segment
    *
-   * @param { Segment } segment
+   * @param { Segment2 } segment
    * @returns { boolean }
    */
-  intersects(segment: Segment): boolean {
+  intersects(segment: Segment2): boolean {
     // Find the four orientations needed for general and
     // special cases
     let o1 = getOrientation(this.start, this.end, segment.start);

@@ -84,17 +84,4 @@ describe(Circle.name, () => {
     expect(rect.intersects(r)).toBe(expected);
   });
 
-  it("fails on unrecognized area type", () => {
-    class MyArea implements Area {
-      contains(p: Point): boolean {
-        throw new Error("Method not implemented.");
-      }
-      intersects(area: Area): boolean {
-        throw new Error("Method not implemented.");
-      }
-    }
-
-    const a = new MyArea();
-    expect(() => r.intersects(a)).toThrowError("Unrecognized area type");
-  });
 });
