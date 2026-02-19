@@ -10,8 +10,11 @@ export class Circle implements Area {
     public readonly y: number,
     public readonly r: number,
   ) {
-    if (r < 0) {
-      throw new Error("Radius must be positive");
+    if (typeof x !== 'number' || typeof y !== 'number') {
+      throw new Error("x and y coordinates must be numbers");
+    }
+    if (typeof r !== 'number' || r < 0) {
+      throw new Error("Radius must be a positive number");
     }
     this.squaredRadius = r * r;
   }
