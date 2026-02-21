@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { Area, Circle, Point, Rect } from "../src";
+import { Circle, Rect } from "../src";
+import { Vector2 } from "@rgsoft/linear";
 
 describe(Circle.name, () => {
   let r: Circle;
 
   beforeAll(() => {
-    r = new Circle(0, 0, 12);
+    r = new Circle(new Vector2([0, 0]), 12);
   });
 
   const boundaryData = [
@@ -19,47 +20,47 @@ describe(Circle.name, () => {
 
   const intersectionData = [
     {
-      rect: new Rect(0, 0, 12, 12),
+      rect: new Rect(new Vector2([0, 0]), 12, 12),
       expected: true,
     },
     {
-      rect: new Rect(0, 0, 6, 6),
+      rect: new Rect(new Vector2([0, 0]), 6, 6),
       expected: true,
     },
     {
-      rect: new Rect(2, 2, 6, 6),
+      rect: new Rect(new Vector2([2, 2]), 6, 6),
       expected: true,
     },
     {
-      rect: new Rect(6, 6, 12, 12),
+      rect: new Rect(new Vector2([6, 6]), 12, 12),
       expected: true,
     },
     {
-      rect: new Circle(6, 6, 6),
+      rect: new Circle(new Vector2([6, 6]), 6),
       expected: true,
     },
     {
-      rect: new Circle(6, 6, 12),
+      rect: new Circle(new Vector2([6, 6]), 12),
       expected: true,
     },
     {
-      rect: new Circle(18, 18, 8.5),
+      rect: new Circle(new Vector2([18, 18]), 8.5),
       expected: false,
     },
     {
-      rect: new Circle(18, 18, 8.4),
+      rect: new Circle(new Vector2([18, 18]), 8.4),
       expected: false,
     },
     {
-      rect: new Rect(-15, -15, 1, 1),
+      rect: new Rect(new Vector2([-15, -15]), 1, 1),
       expected: false,
     },
     {
-      rect: new Rect(-14, 0, 1, 1),
+      rect: new Rect(new Vector2([-14, 0]), 1, 1),
       expected: false,
     },
     {
-      rect: new Rect(0, -15, 1, 1),
+      rect: new Rect(new Vector2([0, -15]), 1, 1),
       expected: false,
     },
   ];
@@ -69,14 +70,12 @@ describe(Circle.name, () => {
   });
 
   it("fails on invalid parameters", () => {
-    expect(() => new Circle(JSON.parse('"a"'), 4, 5)).toThrowError('x and y coordinates must be numbers');
-    expect(() => new Circle(3, JSON.parse('"a"'), 5)).toThrowError('x and y coordinates must be numbers');
-    expect(() => new Circle(-3, -5.1, JSON.parse('"a"'))).toThrowError('adius must be a positive number');
-    expect(() => new Circle(-3, -5.1, -89)).toThrowError('adius must be a positive number');
+    expect(() => new Circle(new Vector2([-3, -5.1]), JSON.parse('"a"'))).toThrowError('Radius must be a positive number');
+    expect(() => new Circle(new Vector2([-3, -5.1]), -89)).toThrowError('Radius must be a positive number');
   });
 
   it.each(boundaryData)("evaluates boundary", ({ x, y, expected }) => {
-    expect(r.contains({ x, y })).toBe(expected);
+    expect(r.contains(new Vector2([x, y]))).toBe(expected);
   });
 
   it.each(intersectionData)("evaluates intersection", ({ rect, expected }) => {

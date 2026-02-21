@@ -1,3 +1,4 @@
+import { EPSILON } from "@rgsoft/math";
 import { Line2 } from "./line2";
 import { Vector2, getOrientation } from "@rgsoft/linear";
 
@@ -6,10 +7,14 @@ export class Segment2 {
   public readonly midpoint: Vector2;
   public readonly direction: Vector2;
 
-  constructor(public readonly start: Vector2, public readonly end: Vector2) {
-    this.length = start.sub(end).mag;
+  constructor(
+    public readonly start: Vector2,
+    public readonly end: Vector2,
+  ) {
+    const diff = end.sub(start);
+    this.length = diff.mag;
     this.midpoint = start.add(end).mult(0.5);
-    this.direction = end.sub(start).normalize();
+    this.direction = diff.mag === 0 ? diff : diff.normalize();
   }
 
   /**
@@ -18,7 +23,7 @@ export class Segment2 {
    * @param { number } tolerance
    * @returns { boolean }
    */
-  contains(r: Vector2, tolerance: number = 1e-10): boolean {
+  contains(r: Vector2, tolerance: number = EPSILON): boolean {
     const cross =
       (this.end.x - this.start.x) * (r.y - this.start.y) -
       (this.end.y - this.start.y) * (r.x - this.start.x);
@@ -82,5 +87,25 @@ export class Segment2 {
 
   toLine(): Line2 {
     return Line2.fromPoints(this.start, this.end);
+  }
+
+  closestPointTo(p: Vector2): Vector2 {
+    const ab = this.end.sub(this.start);
+    const ap = p.sub(this.start);
+
+    const denom = ab.dot(ab);
+
+    if (denom === 0) {
+      return this.start;
+    }
+
+    let t = ap.dot(ab) / denom;
+    t = Math.max(0, Math.min(1, t));
+
+    return this.start.add(ab.mult(t));
+  }
+
+  distanceToPoint(p: Vector2): number {
+    return p.sub(this.closestPointTo(p)).mag;
   }
 }

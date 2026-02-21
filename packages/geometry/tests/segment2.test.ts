@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Segment2 } from "../src";
 import { Vector2 } from "@rgsoft/linear";
+import { SQRT1_2, SQRT2 } from "@rgsoft/math";
 
 describe(Segment2.name, () => {
   it("creates an instance", () => {
@@ -118,5 +119,64 @@ describe(Segment2.name, () => {
     const line = s.toLine();
     expect(line.direction).toEqual(new Vector2([0, -1]));
     expect(line.point).toEqual(new Vector2([1, 0]));
+  });
+
+  const segmentsClosestPoint: [Segment2, Vector2, Vector2][] = [
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-1, 1]),
+      new Vector2([0, 0]),
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-1, 0]),
+      new Vector2([-0.5, -0.5]),
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-2, 0]),
+      new Vector2([-1, -1]),
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-3, 0]),
+      new Vector2([-1, -1]),
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([2, 0]),
+      new Vector2([1, 1]),
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([3, 0]),
+      new Vector2([1, 1]),
+    ],
+  ];
+
+  it.each(segmentsClosestPoint)('calculates the closest point', (s, p, e) => {
+    expect(s.closestPointTo(p)).toEqual(e);
+  });
+
+  const segmentsDistanceTo: [Segment2, Vector2, number][] = [
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-1, 1]),
+      SQRT2,
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([-1, 0]),
+      SQRT1_2,
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Vector2([2, 1]),
+      1,
+    ],
+  ];
+
+  it.each(segmentsDistanceTo)("calculates the distance to a point", (s, p, d) => {
+    expect(s.distanceToPoint(p)).toBeCloseTo(d);
   });
 });

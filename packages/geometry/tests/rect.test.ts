@@ -1,12 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { Area, Circle, Point, Rect } from "../src";
+import { Circle, Rect } from "../src";
 import { Vector2 } from "@rgsoft/linear";
 
 describe(Rect.name, () => {
   let r: Rect;
 
   beforeAll(() => {
-    r = new Rect(0, 0, 12, 12);
+    r = new Rect(new Vector2([0, 0]), 12, 12);
   });
 
   const boundaryData = [
@@ -19,47 +19,47 @@ describe(Rect.name, () => {
 
   const intersectionData = [
     {
-      rect: new Rect(0, 0, 12, 12),
+      rect: new Rect(new Vector2([0, 0]), 12, 12),
       expected: true,
     },
     {
-      rect: new Rect(0, 0, 6, 6),
+      rect: new Rect(new Vector2([0, 0]), 6, 6),
       expected: true,
     },
     {
-      rect: new Rect(2, 2, 6, 6),
+      rect: new Rect(new Vector2([2, 2]), 6, 6),
       expected: true,
     },
     {
-      rect: new Rect(6, 6, 12, 12),
+      rect: new Rect(new Vector2([6, 6]), 12, 12),
       expected: true,
     },
     {
-      rect: new Circle(6, 6, 6),
+      rect: new Circle(new Vector2([6, 6]), 6),
       expected: true,
     },
     {
-      rect: new Circle(18, 18, 12),
+      rect: new Circle(new Vector2([18, 18]), 12),
       expected: true,
     },
     {
-      rect: new Circle(18, 18, 8.5),
+      rect: new Circle(new Vector2([18, 18]), 8.5),
       expected: true,
     },
     {
-      rect: new Circle(18, 18, 8.4),
+      rect: new Circle(new Vector2([18, 18]), 8.4),
       expected: false,
     },
     {
-      rect: new Rect(-12, -12, 6, 6),
+      rect: new Rect(new Vector2([-12, -12]), 6, 6),
       expected: false,
     },
     {
-      rect: new Rect(-12, -12, 12, 12),
+      rect: new Rect(new Vector2([-12, -12]), 12, 12),
       expected: false,
     },
     {
-      rect: new Rect(12, 12, 1, 1),
+      rect: new Rect(new Vector2([12, 12]), 1, 1),
       expected: false,
     },
   ];
@@ -73,13 +73,10 @@ describe(Rect.name, () => {
   });
 
   it("fails on invalid parameters", () => {
-    expect(() => new Rect(JSON.parse('"a"'), 8, 8, 8)).toThrowError(
-      "x and y coordinates must be numbers",
-    );
-    expect(() => new Rect(8, 8, 8, JSON.parse('"a"'))).toThrowError(
+    expect(() => new Rect(new Vector2([8, 8]), 8, JSON.parse('"a"'))).toThrowError(
       "Width and height must be numbers",
     );
-    expect(() => new Rect(8, 8, 8, -8)).toThrowError(
+    expect(() => new Rect(new Vector2([8, 8]), 8, -8)).toThrowError(
       "Width and height must be positive",
     );
   });
