@@ -57,4 +57,66 @@ describe(Polygon.name, () => {
     expect(polygon.isOnEdge(new Vector2([1, 1]))).toBeFalsy();
     expect(polygon.isOnEdge(new Vector2([2, 2]))).toBeFalsy();
   });
+
+  const intersectionData = [
+      {
+        area: new Polygon([
+          new Vector2([4, 2]),
+          new Vector2([8, 4]),
+          new Vector2([6, 4]),
+        ]),
+        expected: true,
+      },
+      {
+        area: new Polygon([
+          new Vector2([-4, -2]),
+          new Vector2([12, 14]),
+          new Vector2([14, -2]),
+        ]),
+        expected: true,
+      },
+      {
+        area: new Polygon([
+          new Vector2([6, 4]),
+          new Vector2([12, 14]),
+          new Vector2([14, -2]),
+        ]),
+        expected: true,
+      },
+      {
+        area: new Polygon([
+          new Vector2([10, 10]),
+          new Vector2([12, 14]),
+          new Vector2([14, -2]),
+        ]),
+        expected: true,
+      },
+      {
+        area: new Polygon([
+          new Vector2([10, 5]),
+          new Vector2([12, 14]),
+          new Vector2([14, -2]),
+        ]),
+        expected: true,
+      },
+      {
+        area: new Polygon([
+          new Vector2([11, 5]),
+          new Vector2([12, 14]),
+          new Vector2([14, -2]),
+        ]),
+        expected: false,
+      },
+    ];
+
+  it.each(intersectionData)("evaluates intersection", ({ area, expected }) => {
+    const polygon = new Polygon([
+      new Vector2([0, 0]),
+      new Vector2([10, 10]),
+      new Vector2([10, 0]),
+    ]);
+    expect(polygon).toBeInstanceOf(Polygon);
+    expect(polygon.intersects(area)).toBe(expected);
+    expect(area.intersects(polygon)).toBe(expected);
+  });
 });
