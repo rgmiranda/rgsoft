@@ -1,15 +1,15 @@
 import { Vector2 } from "@rgsoft/linear";
 import { Line2 } from "./line2";
-import { Area } from "./area";
-import { Point } from "./point";
+import { Polygon } from "./polygon";
 
-export class Triangle implements Area {
+export class Triangle extends Polygon {
 
   public readonly center: Vector2;
 
   public readonly radius: number;
 
   constructor(public readonly a: Vector2, public readonly b: Vector2, public readonly c: Vector2) {
+    super([a, b, c]);
     const med1 = Line2.mediatrix(a, b);
     const med2 = Line2.mediatrix(b, c);
 
@@ -19,12 +19,6 @@ export class Triangle implements Area {
 
     this.center = med1.intersectionPoint(med2);
     this.radius = Math.sqrt((this.a.x - this.center.x) * (this.a.x - this.center.x) + (this.a.y - this.center.y) * (this.a.y - this.center.y))
-  }
-  contains(p: Point): boolean {
-    throw new Error("Method not implemented.");
-  }
-  intersects(area: Area): boolean {
-    throw new Error("Method not implemented.");
   }
 
   inCircle(point: Vector2): boolean {
