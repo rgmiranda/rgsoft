@@ -3,7 +3,6 @@ export { Circle } from './circle';
 export { Line2 } from './line2';
 export { Line3 } from './line3';
 export { Plane } from './plane';
-export { Point } from './point';
 export { Polygon } from './polygon';
 export { Rect } from './rect';
 export { Segment2 } from './segment2';

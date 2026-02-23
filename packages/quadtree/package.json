@@ -1,0 +1,41 @@
+{
+  "name": "@rgsoft/quadtree",
+  "version": "1.0.0",
+  "description": "Quadtree library",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgmiranda/rgsoft.git"
+  },
+  "keywords": [
+    "quadtree"
+  ],
+  "author": "Ricardo Miranda <rgmiranda@live.com.ar>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rgmiranda/rgsoft/issues"
+  },
+  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "dependencies": {
+    "@rgsoft/linear": "workspace:^",
+    "@rgsoft/geometry": "workspace:^",
+    "@rgsoft/math": "workspace:^"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.3",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.3"
+  }
+}
