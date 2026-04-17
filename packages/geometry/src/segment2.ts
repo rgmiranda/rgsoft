@@ -108,4 +108,11 @@ export class Segment2 {
   distanceToPoint(p: Vector2): number {
     return p.sub(this.closestPointTo(p)).mag;
   }
+
+  equals(s: Segment2): boolean {
+    return (
+      (this.start.equals(s.start) && this.end.equals(s.end)) ||
+      (this.start.equals(s.end) && this.end.equals(s.start))
+    );
+  }
 }

@@ -179,4 +179,31 @@ describe(Segment2.name, () => {
   it.each(segmentsDistanceTo)("calculates the distance to a point", (s, p, d) => {
     expect(s.distanceToPoint(p)).toBeCloseTo(d);
   });
+
+  const segmentsEquality: [Segment2, Segment2, boolean][] = [
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      true,
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment2(new Vector2([-1, -1]), new Vector2([1, 1])),
+      true,
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment2(new Vector2([0, 0]), new Vector2([1, 1])),
+      false,
+    ],
+    [
+      new Segment2(new Vector2([1, 1]), new Vector2([-1, -1])),
+      new Segment2(new Vector2([-0.99, -0.99]), new Vector2([1, 1])),
+      false,
+    ],
+  ];
+
+  it.each(segmentsEquality)("detects equal segments", (s1, s2, e) => {
+    expect(s1.equals(s2)).toBe(e);
+  });
 });

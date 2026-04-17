@@ -2,10 +2,8 @@ import { Vector2 } from "@rgsoft/linear";
 import { Area } from "./area";
 import { Circle } from "./circle";
 import { Polygon } from "./polygon";
-import { Segment2 } from "./segment2";
 
-export class Rect implements Area {
-  public readonly sides: [Segment2, Segment2, Segment2, Segment2];
+export class Rect extends Polygon {
 
   constructor(
     public readonly o: Vector2,
@@ -21,13 +19,7 @@ export class Rect implements Area {
 
     const wv = new Vector2([w, 0]);
     const hv = new Vector2([0, h]);
-
-    this.sides = [
-      new Segment2(o, o.add(wv)),
-      new Segment2(o.add(wv), o.add(wv).add(hv)),
-      new Segment2(o.add(wv).add(hv), o.add(hv)),
-      new Segment2(o.add(hv), o),
-    ];
+    super([o, o.add(wv), o.add(wv).add(hv), o.add(hv)]);
   }
 
   contains(p: Vector2): boolean {
@@ -58,24 +50,5 @@ export class Rect implements Area {
     const dx = nx - area.c.x;
     const dy = ny - area.c.y;
     return area.squaredRadius >= dx * dx + dy * dy;
-  }
-
-  intersectsPolygon(area: Polygon): boolean {
-    for (const s1 of this.sides) {
-      for (const s2 of area.sides) {
-        if (s1.intersects(s2)) {
-          return true;
-        }
-      }
-    }
-
-    if (this.contains(area.vertex[0])) {
-      return true;
-    }
-
-    if (area.contains(this.o)) {
-      return true;
-    }
-    return false;
   }
 }
