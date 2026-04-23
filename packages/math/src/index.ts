@@ -21,4 +21,5 @@ export {
   approximateTo,
   areClose,
   isCloseToZero,
+  mapRange
 } from "./utils";

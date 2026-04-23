@@ -60,3 +60,22 @@ export function areClose(n: number, m: number, epsilon = EPSILON): boolean {
 export function isCloseToZero(n: number, epsilon = EPSILON): boolean {
   return Math.abs(n) < epsilon;
 }
+
+export function mapRange(
+  value: number,
+  inputMin: number,
+  inputMax: number,
+  outputMin: number,
+  outputMax: number,
+  clampValue: boolean = false,
+): number {
+  if (inputMin === inputMax) {
+    throw new Error("Invalid range recieved");
+  }
+  const p = (value - inputMin) / (inputMax - inputMin);
+  let outputVal = outputMin + p * (outputMax - outputMin);
+  if (clampValue) {
+    outputVal = clamp(outputVal, outputMin, outputMax);
+  }
+  return outputVal;
+}

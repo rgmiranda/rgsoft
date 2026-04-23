@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clamp, lerp, range, approximateTo, areClose, isCloseToZero } from "../src";
+import { clamp, lerp, range, approximateTo, areClose, isCloseToZero, mapRange } from "../src";
 
 describe("Utils", () => {
   describe(range.name, () => {
@@ -149,4 +149,82 @@ describe("Utils", () => {
       }
     );
   });
+
+  describe(mapRange.name, () => {
+    const happyTests = [
+      [0, -5, 5, 0, 10, 5],
+      [5, -5, 5, 0, 10, 10],
+      [-5, -5, 5, 0, 10, 0],
+      [-5, -5, 5, 0, 10, 0],
+      [0, 0, 10, 100, 900, 100],
+      [5, 0, 10, 100, 900, 500],
+    ];
+
+    const unclampedTests = [
+      [6, -5, 5, 0, 10, 11],
+      [-6, -5, 5, 0, 10, -1],
+      [11, 0, 10, 100, 900, 980],
+      [12, 0, 10, 100, 900, 1060],
+      [-1, 0, 10, 100, 900, 20],
+      [2, 0, 1, 0, 100, 200],
+    ];
+
+    const clampedTests = [
+      [6, -5, 5, 0, 10, 10],
+      [-6, -5, 5, 0, 10, 0],
+      [11, 0, 10, 100, 900, 900],
+      [12, 0, 10, 100, 900, 900],
+      [-1, 0, 10, 100, 900, 100],
+      [2, 0, 1, 0, 100, 100],
+    ];
+
+    const invertedTests = [
+      [0, -5, 5, 10, 0, 5],
+      [-5, -5, 5, 10, 0, 10],
+      [5, -5, 5, 10, 0, 0],
+      [0, 5, -5, 0, 10, 5],
+      [5, 5, -5, 0, 10, 0],
+      [-5, 5, -5, 0, 10, 10],
+      [0, 5, -5, 10, 0, 5],
+      [5, 5, -5, 10, 0, 10],
+      [-5, 5, -5, 10, 0, 0],
+    ];
+
+    it.each(happyTests)(
+      "maps the range",
+      (val, inputMin, inputMax, outputMin, outputMax, expected) => {
+        expect(mapRange(val, inputMin, inputMax, outputMin, outputMax)).toBe(
+          expected,
+        );
+      },
+    );
+
+    it.each(unclampedTests)(
+      "maps the range without clamping",
+      (val, inputMin, inputMax, outputMin, outputMax, expected) => {
+        expect(
+          mapRange(val, inputMin, inputMax, outputMin, outputMax, false),
+        ).toBeCloseTo(expected, 6);
+      },
+    );
+
+    it.each(clampedTests)(
+      "maps the range with clamping",
+      (val, inputMin, inputMax, outputMin, outputMax, expected) => {
+        expect(
+          mapRange(val, inputMin, inputMax, outputMin, outputMax, true),
+        ).toBeCloseTo(expected, 6);
+      },
+    );
+
+    it.each(invertedTests)(
+      "maps inverted",
+      (val, inputMin, inputMax, outputMin, outputMax, expected) => {
+        expect(
+          mapRange(val, inputMin, inputMax, outputMin, outputMax),
+        ).toBeCloseTo(expected, 5);
+      },
+    );
+  });
+
 });
