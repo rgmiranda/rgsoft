@@ -3,9 +3,11 @@
   "references": [
     { "path": "./packages/geometry" },
     { "path": "./packages/graph" },
-    { "path": "./packages/math" },
     { "path": "./packages/linear" },
     { "path": "./packages/lsystem" },
-    { "path": "./packages/stats" }
+    { "path": "./packages/math" },
+    { "path": "./packages/pixbit" },
+    { "path": "./packages/stats" },
+    { "path": "./packages/voronoi" }
   ]
 }

@@ -1,0 +1,40 @@
+{
+  "name": "@rgsoft/pixbit",
+  "version": "1.0.0",
+  "description": "Image manipulation library",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgmiranda/pixbit.git"
+  },
+  "keywords": [
+    "images",
+    "pixel"
+  ],
+  "author": "Ricardo Miranda <ricardo.gm.85@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rgmiranda/pixbit/issues"
+  },
+  "homepage": "https://github.com/rgmiranda/pixbit#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.3",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.3"
+  },
+  "dependencies": {
+    "@rgsoft/math": "workspace:^"
+  }
+}
