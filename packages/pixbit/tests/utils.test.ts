@@ -7,6 +7,7 @@ import {
   sepiaBlue,
   isHueInRange,
   validateHsl,
+  rgbToHsl,
 } from "../src/utils";
 
 function expectClose(actual: number, expected: number, precision = 5) {
@@ -84,6 +85,32 @@ describe("Utils", () => {
     );
   });
 
+  describe("validateHsl", () => {
+    const okData: Float32Array[] = [
+      new Float32Array([0, 0, 0, 0]),
+      new Float32Array([1, 1, 1, 1]),
+      new Float32Array([0.5, 0.5, 0.5, 0.5]),
+      new Float32Array([0.25, 0.75, 0.5, 0.15]),
+    ];
+
+    it.each(okData)("does not throws any exception on correct data", (data) => {
+      expect(() => validateHsl(data)).not.toThrowError();
+    });
+
+    const wrongData: [Float32Array, string][] = [
+      [new Float32Array([-1, 1, 1, 1]), "Hue must be between 0 and 1"],
+      [new Float32Array([1, -1, 1, 1]), "Saturation must be between 0 and 1"],
+      [new Float32Array([1, 1, 5, 1]), "Luminosity must be between 0 and 1"],
+      [new Float32Array([0, 0, 0, 2]), "Alpha must be between 0 and 1"],
+      [new Float32Array([0.5, 0.5, 0.5]), "Invalid number of elements in array"],
+      [JSON.parse("{}") as Float32Array, "HSLA must be a Float32Array"],
+    ];
+
+    it.each(wrongData)("throws an exception on wrong data", (data, error) => {
+      expect(() => validateHsl(data)).toThrowError(error);
+    });
+  });
+
   describe("getBrightness", () => {
     it("should return 0 for black", () => {
       expect(getBrightness(0, 0, 0)).toBe(0);
@@ -159,7 +186,7 @@ describe("Utils", () => {
     });
   });
 
-  describe("isHueInRange", () => {
+  describe(isHueInRange.name, () => {
     const testData: [number, number, number, boolean][] = [
       [0, 0, 0, true],
       [0, 0, 0, true],
@@ -177,29 +204,26 @@ describe("Utils", () => {
     });
   });
 
-  describe("validateHsl", () => {
-    const okData: Float32Array[] = [
-      new Float32Array([0, 0, 0, 0]),
-      new Float32Array([1, 1, 1, 1]),
-      new Float32Array([0.5, 0.5, 0.5, 0.5]),
-      new Float32Array([0.25, 0.75, 0.5, 0.15]),
+  describe(rgbToHsl.name, () => {
+    const testData: [number, number, number, number, number, number][] = [
+      [0, 0, 0, 0, 0, 0],
+      [255, 255, 255, 0, 0, 1],
+      [255, 0, 0, 0, 1, 0.5],
+      [255, 255, 0, 1/6, 1, 0.5],
+      [255, 0, 255, 5/6, 1, 0.5],
+      [0, 0, 255, 4/6, 1, 0.5],
+      [0, 255, 255, 0.5, 1, 0.5],
+      [0, 255, 0, 1/3, 1, 0.5],
     ];
 
-    it.each(okData)("does not throws any exception on correct data", (data) => {
-      expect(() => validateHsl(data)).not.toThrowError();
-    });
-
-    const wrongData: [Float32Array, string][] = [
-      [new Float32Array([-1, 1, 1, 1]), "Hue must be between 0 and 1"],
-      [new Float32Array([1, -1, 1, 1]), "Saturation must be between 0 and 1"],
-      [new Float32Array([1, 1, 5, 1]), "Luminosity must be between 0 and 1"],
-      [new Float32Array([0, 0, 0, 2]), "Alpha must be between 0 and 1"],
-      [new Float32Array([0.5, 0.5, 0.5]), "Invalid number of elements in array"],
-      [JSON.parse("{}") as Float32Array, "HSLA must be a Float32Array"],
-    ];
-
-    it.each(wrongData)("throws an exception on wrong data", (data, error) => {
-      expect(() => validateHsl(data)).toThrowError(error);
-    });
+    it.each(testData)(
+      "converts RGB to HSL correctly",
+      (r, g, b, h, s, l) => {
+        const [hslH, hslS, hslL] = rgbToHsl(r, g, b);
+        expectClose(hslH, h);
+        expectClose(hslS, s);
+        expectClose(hslL, l);
+      },
+    );
   });
 });
