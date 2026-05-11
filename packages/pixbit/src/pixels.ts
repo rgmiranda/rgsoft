@@ -55,10 +55,10 @@ export function duotone(imageData: ImageData, from: pixel, to: pixel): ImageData
 export function colorPop(
   imageData: ImageData,
   hueTarget: number,
-  threshold: number = 20
+  threshold: number = 20 / 360
 ): ImageData {
   validateRgba(imageData.data);
-  if (hueTarget < 0 || hueTarget > 360) {
+  if (hueTarget < 0 || hueTarget > 1) {
     throw new Error("Invalid hue target");
   }
   const newRgba = [];
@@ -251,10 +251,10 @@ export function hsv(pixels: Uint8ClampedArray): Uint8ClampedArray {
 
 /**
  *
- * @param { Uint8ClampedArray } pixels
+ * @param { Float32Array } pixels
  * @returns { Uint8ClampedArray }
  */
-export function rgba(pixels: Uint8ClampedArray): Uint8ClampedArray {
+export function rgba(pixels: Float32Array): Uint8ClampedArray {
   validateHsl(pixels);
   const rgbPixels = new Uint8ClampedArray(pixels.length);
 

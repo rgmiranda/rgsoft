@@ -5,6 +5,8 @@ import {
   sepiaRed,
   sepiaGreen,
   sepiaBlue,
+  isHueInRange,
+  validateHsl,
 } from "../src/utils";
 
 function expectClose(actual: number, expected: number, precision = 5) {
@@ -154,6 +156,50 @@ describe("Utils", () => {
         const b = sepiaBlue(100, 150, 200);
         expectClose(b, 0.272 * 100 + 0.534 * 150 + 0.131 * 200);
       });
+    });
+  });
+
+  describe("isHueInRange", () => {
+    const testData: [number, number, number, boolean][] = [
+      [0, 0, 0, true],
+      [0, 0, 0, true],
+      [0, 1, 0, true],
+      [1, 1, 0, true],
+      [0.1, 1, 0.2, true],
+      [0.2, 1, 0.1, false],
+      [0.51, 0.5 , 0.015, true],
+      [3.51, 0.5 , 0.015, true],
+      [3.52, 0.5 , 0.015, false],
+    ];
+
+    it.each(testData)("detects hue in range", (h, tgt, thrs, e) => {
+      expect(isHueInRange(h, tgt, thrs)).toBe(e);
+    });
+  });
+
+  describe("validateHsl", () => {
+    const okData: Float32Array[] = [
+      new Float32Array([0, 0, 0, 0]),
+      new Float32Array([1, 1, 1, 1]),
+      new Float32Array([0.5, 0.5, 0.5, 0.5]),
+      new Float32Array([0.25, 0.75, 0.5, 0.15]),
+    ];
+
+    it.each(okData)("does not throws any exception on correct data", (data) => {
+      expect(() => validateHsl(data)).not.toThrowError();
+    });
+
+    const wrongData: [Float32Array, string][] = [
+      [new Float32Array([-1, 1, 1, 1]), "Hue must be between 0 and 1"],
+      [new Float32Array([1, -1, 1, 1]), "Saturation must be between 0 and 1"],
+      [new Float32Array([1, 1, 5, 1]), "Luminosity must be between 0 and 1"],
+      [new Float32Array([0, 0, 0, 2]), "Alpha must be between 0 and 1"],
+      [new Float32Array([0.5, 0.5, 0.5]), "Invalid number of elements in array"],
+      [JSON.parse("{}") as Float32Array, "HSLA must be a Float32Array"],
+    ];
+
+    it.each(wrongData)("throws an exception on wrong data", (data, error) => {
+      expect(() => validateHsl(data)).toThrowError(error);
     });
   });
 });

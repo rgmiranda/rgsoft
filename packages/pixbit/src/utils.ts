@@ -10,17 +10,21 @@ export function validateRgba(rgba: Uint8ClampedArray) {
   }
 }
 
-export function validateHsl(rgba: Uint8ClampedArray) {
-  if (!(rgba instanceof Uint8ClampedArray)) {
-    throw new Error("RGBA must be an array");
+export function validateHsl(hsla: Float32Array) {
+  if (!(hsla instanceof Float32Array)) {
+    throw new Error("HSLA must be a Float32Array");
   }
 
-  if (rgba.length % 4 !== 0) {
+  if (hsla.length % 4 !== 0) {
     throw new Error("Invalid number of elements in array");
   }
 
-  for (let i = 0; i < rgba.length; i += 4) {
-    const [h, s, l, a] = rgba.slice(i, 4);
+  for (let i = 0; i < hsla.length; i += 4) {
+    const h = hsla[i];
+    const s = hsla[i + 1];
+    const l = hsla[i + 2];
+    const a = hsla[i + 3];
+
     if (h < 0 || h > 1) {
       throw new Error("Hue must be between 0 and 1");
     }
@@ -30,8 +34,8 @@ export function validateHsl(rgba: Uint8ClampedArray) {
     if (l < 0 || l > 1) {
       throw new Error("Luminosity must be between 0 and 1");
     }
-    if (a < 0 || a > 255) {
-      throw new Error("Alpha channel must be between 0 and 255");
+    if (a < 0 || a > 1) {
+      throw new Error("Alpha must be between 0 and 1");
     }
   }
 }
@@ -57,8 +61,11 @@ export function isHueInRange(
   target: number,
   threshold: number
 ): boolean {
-  const hDeg = h * 360;
-  const diff = Math.min(Math.abs(hDeg - target), 360 - Math.abs(hDeg - target));
+  h = ((h % 1) + 1) % 1;
+  target = ((target % 1) + 1) % 1;
+  threshold = clamp(threshold, 0, 1);
+  const d = Math.abs(h - target);
+  const diff = d <= 0.5 ? d : 1 - d;
   return diff <= threshold;
 }
 
