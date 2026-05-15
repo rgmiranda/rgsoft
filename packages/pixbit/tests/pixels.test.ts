@@ -1,13 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { add, halftone } from "../src";
+import { add, duotone, halftone } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
   const testData: {
     data: Uint8ClampedArray<ArrayBuffer>;
     value: pixel;
-    w: number;
-    h: number;
     expected: Uint8ClampedArray<ArrayBuffer>;
   }[][] = [
     [
@@ -16,8 +14,6 @@ describe(add.name, () => {
           255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255, 255, 255, 255, 255,
         ]),
         value: [128, 128, 128, 128],
-        w: 2,
-        h: 2,
         expected: new Uint8ClampedArray([
           255, 128, 128, 255, 128, 255, 128, 255, 128, 128, 255, 255, 255, 255,
           255, 255,
@@ -28,8 +24,50 @@ describe(add.name, () => {
 
   it.each(testData)(
     "Add a pixel to the image data",
-    ({ data, value, w, h, expected }) => {
+    ({ data, value, expected }) => {
       const result = add(data, value);
+      expect(result).toEqual(expected);
+    },
+  );
+});
+
+describe(duotone.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    from: pixel;
+    to: pixel;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 255, 255]),
+        from: [0, 0, 0, 255],
+        to: [128, 128, 128, 255],
+        expected: new Uint8ClampedArray([128, 128, 128, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        from: [64, 64, 64, 255],
+        to: [128, 128, 128, 255],
+        expected: new Uint8ClampedArray([64, 64, 64, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        from: [64, 64, 64, 255],
+        to: [128, 128, 128, 255],
+        expected: new Uint8ClampedArray([83, 83, 83, 255]),
+      },
+    ],
+  ];
+
+  it.each(testData)(
+    "Applies a duotone effect to the image data",
+    ({ data, from, to, expected }) => {
+      const result = duotone(data, from, to);
       expect(result).toEqual(expected);
     },
   );
