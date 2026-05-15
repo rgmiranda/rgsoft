@@ -13,188 +13,217 @@ import {
   validateRgba,
 } from "./utils";
 
-export function add(imageData: ImageData, value: pixel): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const r = imageData.data[i + 0];
-    const g = imageData.data[i + 1];
-    const b = imageData.data[i + 2];
-    const a = imageData.data[i + 3];
+export function add(pixels: Uint8ClampedArray, value: pixel): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const [ra, ga, ba] = value;
-    const tr = clamp(r + ra, 0, 255);
-    const tg = clamp(g + ga, 0, 255);
-    const tb = clamp(b + ba, 0, 255);
-    newRgba.push(tr, tg, tb, a);
+    output[i + 0] = clamp(r + ra, 0, 255);
+    output[i + 1] = clamp(g + ga, 0, 255);
+    output[i + 2] = clamp(b + ba, 0, 255);
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function duotone(imageData: ImageData, from: pixel, to: pixel): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const r = imageData.data[i + 0];
-    const g = imageData.data[i + 1];
-    const b = imageData.data[i + 2];
-    const a = imageData.data[i + 3];
+export function duotone(
+  pixels: Uint8ClampedArray,
+  from: pixel,
+  to: pixel
+): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const [rf, gf, bf] = from;
     const [rt, gt, bt] = to;
     const gray = getBrightness(r, g, b);
-
-    const tr = mapRange(gray, 0, 255, rf, rt, true);
-    const tg = mapRange(gray, 0, 255, gf, gt, true);
-    const tb = mapRange(gray, 0, 255, bf, bt, true);
-    newRgba.push(tr, tg, tb, a);
+    output[i + 0] = mapRange(gray, 0, 255, rf, rt, true);
+    output[i + 1] = mapRange(gray, 0, 255, gf, gt, true);
+    output[i + 2] = mapRange(gray, 0, 255, bf, bt, true);
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
 export function colorPop(
-  imageData: ImageData,
+  pixels: Uint8ClampedArray,
   hueTarget: number,
   threshold: number = 20 / 360
-): ImageData {
-  validateRgba(imageData.data);
+): Uint8ClampedArray {
+  validateRgba(pixels);
   if (hueTarget < 0 || hueTarget > 1) {
     throw new Error("Invalid hue target");
   }
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const gray = getBrightness(r, g, b);
-
     const [h] = rgbToHsl(r, g, b);
-
     if (isHueInRange(h, hueTarget, threshold)) {
-      newRgba.push(r, g, b, a);
+      output[i + 0] = r;
+      output[i + 1] = g;
+      output[i + 2] = b;
     } else {
-      newRgba.push(gray, gray, gray, a);
+      output[i + 0] = gray;
+      output[i + 1] = gray;
+      output[i + 2] = gray;
     }
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function grayscale(imageData: ImageData): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
+export function grayscale(pixels: Uint8ClampedArray): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const gr = getBrightness(r, g, b);
-    newRgba.push(gr, gr, gr, a);
+    output[i + 0] = gr;
+    output[i + 1] = gr;
+    output[i + 2] = gr;
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function heatmap(imageData: ImageData): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
-
+export function heatmap(pixels: Uint8ClampedArray): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const brightness = getBrightness(r, g, b) / 255;
     const clamped = clamp(brightness, 0, 1);
-    const nr = Math.floor(255 * Math.min(1, clamped * 2));
-    const ng = Math.floor(255 * (1 - Math.abs(clamped * 2 - 1)));
-    const nb = Math.floor(255 * Math.min(1, (1 - clamped) * 2));
-
-    newRgba.push(nr, ng, nb, a);
+    output[i + 0] = Math.floor(255 * Math.min(1, clamped * 2));
+    output[i + 1] = Math.floor(255 * (1 - Math.abs(clamped * 2 - 1)));
+    output[i + 2] = Math.floor(255 * Math.min(1, (1 - clamped) * 2));
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
 export function multiply(
-  imageData: ImageData,
+  pixels: Uint8ClampedArray,
   value: pixel
-): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
+): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const [rm, gm, bm] = value;
-    const tr = clamp(r * rm, 0, 255);
-    const tg = clamp(g * gm, 0, 255);
-    const tb = clamp(b * bm, 0, 255);
-    newRgba.push(tr, tg, tb, a);
+    output[i + 0] = clamp(r * rm, 0, 255);
+    output[i + 1] = clamp(g * gm, 0, 255);
+    output[i + 2] = clamp(b * bm, 0, 255);
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function negative(imageData: ImageData): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
-    const tr = 255 - r;
-    const tg = 255 - g;
-    const tb = 255 - b;
-    newRgba.push(tr, tg, tb, a);
+export function negative(pixels: Uint8ClampedArray): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
+    output[i + 0] = 255 - r;
+    output[i + 1] = 255 - g;
+    output[i + 2] = 255 - b;
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function posterize(imageData: ImageData, channels: number = 64): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
-    const nr = Math.floor(r / channels) * channels;
-    const ng = Math.floor(g / channels) * channels;
-    const nb = Math.floor(b / channels) * channels;
-    newRgba.push(nr, ng, nb, a);
+export function posterize(
+  pixels: Uint8ClampedArray,
+  channels: number = 64
+): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
+    output[i + 0] = Math.floor(r / channels) * channels;
+    output[i + 1] = Math.floor(g / channels) * channels;
+    output[i + 2] = Math.floor(b / channels) * channels;
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function sepia(imageData: ImageData): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
-    const nr = sepiaRed(r, g, b);
-    const ng = sepiaGreen(r, g, b);
-    const nb = sepiaBlue(r, g, b);
-    newRgba.push(nr, ng, nb, a);
+export function sepia(pixels: Uint8ClampedArray): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
+    output[i + 0] = sepiaRed(r, g, b);
+    output[i + 1] = sepiaGreen(r, g, b);
+    output[i + 2] = sepiaBlue(r, g, b);
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
 export function threshold(
-  imageData: ImageData,
+  pixels: Uint8ClampedArray,
   threshold: number
-): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
+): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
     const gr = getBrightness(r, g, b) > threshold ? 255 : 0;
-    newRgba.push(gr, gr, gr, a);
+    output[i + 0] = gr;
+    output[i + 1] = gr;
+    output[i + 2] = gr;
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
-export function vintage(imageData: ImageData): ImageData {
-  validateRgba(imageData.data);
-  const newRgba = [];
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const [r, g, b, a] = imageData.data.slice(i, i + 4);
-    const nr = sepiaRed(r, g, b);
-    const ng = sepiaGreen(r, g, b);
-    const nb = sepiaBlue(r, g, b);
-    newRgba.push(nr, ng, nb, a);
+export function vintage(pixels: Uint8ClampedArray): Uint8ClampedArray {
+  validateRgba(pixels);
+  const output = new Uint8ClampedArray(pixels.length);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i + 0];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const a = pixels[i + 3];
+    output[i + 0] = sepiaRed(r, g, b);
+    output[i + 1] = sepiaGreen(r, g, b);
+    output[i + 2] = sepiaBlue(r, g, b);
+    output[i + 3] = a;
   }
-  const data = new Uint8ClampedArray(newRgba);
-  return new ImageData(data, imageData.width, imageData.height);
+  return output;
 }
 
 /**
