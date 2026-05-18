@@ -7,4 +7,9 @@ export const baseConfig = defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  outExtension({ format }) {
+    return {
+      js: format === "esm" ? ".mjs" : ".cjs",
+    };
+  },
 });

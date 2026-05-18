@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+### Patch Changes
+
+- Package update from CJS and ESM export
+
 ## [2.0.0] 2025-10-28
 
 - REMOVE: `Line` class
@@ -19,10 +25,10 @@
 ## [1.3.1] 2024-12-09
 
 - ADD: Probability Mass Functions:
-  * `Binomial`
-  * `NegativeBinomial`
-  * `Poisson`
+  - `Binomial`
+  - `NegativeBinomial`
+  - `Poisson`
 - ADD: Probability Density Functions
-  * `Uniform`
-  * `Exponential`
-  * `Gaussian`
+  - `Uniform`
+  - `Exponential`
+  - `Gaussian`

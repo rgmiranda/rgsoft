@@ -1,8 +1,8 @@
 {
   "name": "@rgsoft/math",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Yet another JS math library",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
