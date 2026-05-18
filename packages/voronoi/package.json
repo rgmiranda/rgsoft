@@ -38,13 +38,6 @@
     "@rgsoft/geometry": "workspace:^",
     "@rgsoft/math": "workspace:^"
   },
-  "devDependencies": {
-    "@vitest/coverage-v8": "^2.0.3",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.1.0",
-    "typescript": "^5.5.3",
-    "vitest": "^2.0.3"
-  },
   "publishConfig": {
     "access": "public"
   },

@@ -7,6 +7,7 @@ export const baseConfig = defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  target: "es2020",
   outExtension({ format }) {
     return {
       js: format === "esm" ? ".mjs" : ".cjs",
