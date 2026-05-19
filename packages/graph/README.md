@@ -4,7 +4,7 @@ Graphs library
 ## Installation
 
 ```sh
-npm install @rgsoft/stats
+npm install @rgsoft/graph
 ```
 
 ## Tests
