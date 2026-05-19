@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize, sepia } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize, sepia, threshold } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -375,6 +375,48 @@ describe(sepia.name, () => {
 
   it.each(testData)("Applies a sepia effect to the image data", ({ data, expected }) => {
     const result = sepia(data);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe(threshold.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    t: number;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([128, 128, 128, 255]),
+        t: 128,
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([129, 129, 129, 255]),
+        t: 128,
+        expected: new Uint8ClampedArray([255, 255, 255, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([152, 120, 54, 255]),
+        t: 128,
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([152, 150, 54, 255]),
+        t: 128,
+        expected: new Uint8ClampedArray([255, 255, 255, 255]),
+      },
+    ],
+  ];
+
+    it.each(testData)("Applies a threshold effect to the image data", ({ data, t, expected }) => {
+    const result = threshold(data, t);
     expect(result).toEqual(expected);
   });
 });
