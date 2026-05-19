@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, duotone, halftone } from "../src";
+import { add, colorPop, duotone, grayscale, halftone } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -71,6 +71,79 @@ describe(duotone.name, () => {
       expect(result).toEqual(expected);
     },
   );
+});
+
+describe(colorPop.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    hueTarget: number;
+    threshold?: number;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        hueTarget: 0,
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        hueTarget: 0.5,
+        expected: new Uint8ClampedArray([76, 76, 76, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 0, 255]),
+        hueTarget: 0.5,
+        expected: new Uint8ClampedArray([226, 226, 226, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 0, 255]),
+        hueTarget: 1 / 6,
+        expected: new Uint8ClampedArray([255, 255, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 0, 255]),
+        hueTarget: - 5 / 6,
+        expected: new Uint8ClampedArray([255, 255, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        hueTarget: 1,
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        hueTarget: 2,
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        hueTarget: -1,
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      },
+    ],
+  ];
+
+  it.each(testData)(
+    "Applies a color pop effect to the image data",
+    ({ data, hueTarget, threshold, expected }) => {
+      const result = colorPop(data, hueTarget, threshold);
+      expect(result).toEqual(expected);
+  });
 });
 
 describe(halftone.name, () => {

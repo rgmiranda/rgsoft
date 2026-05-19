@@ -60,7 +60,7 @@ export function colorPop(
 ): Uint8ClampedArray {
   validateRgba(pixels);
   if (hueTarget < 0 || hueTarget > 1) {
-    throw new Error("Invalid hue target");
+    hueTarget = ((hueTarget % 1) + 1) % 1;
   }
   const output = new Uint8ClampedArray(pixels.length);
   for (let i = 0; i < pixels.length; i += 4) {
