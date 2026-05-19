@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -295,6 +295,55 @@ describe(negative.name, () => {
 
   it.each(testData)("Converts image to its negative", ({ data, expected }) => {
     const result = negative(data);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe(posterize.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    channels: number;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        channels: 64,
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 255, 255]),
+        channels: 64,
+        expected: new Uint8ClampedArray([192, 192, 192, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([193, 193, 193, 255]),
+        channels: 64,
+        expected: new Uint8ClampedArray([192, 192, 192, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([191, 191, 191, 255]),
+        channels: 64,
+        expected: new Uint8ClampedArray([128, 128, 128, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([191, 191, 191, 255]),
+        channels: 32,
+        expected: new Uint8ClampedArray([160, 160, 160, 255]),
+      },
+    ],
+  ];
+
+  it.each(testData)("Posterizes an image pixels", ({ data, channels, expected }) => {
+    const result = posterize(data, channels);
     expect(result).toEqual(expected);
   });
 });
