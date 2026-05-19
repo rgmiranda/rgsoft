@@ -4,7 +4,7 @@ Geometry library
 ## Installation
 
 ```sh
-npm install @rgsoft/stats
+npm install @rgsoft/geometry
 ```
 
 ## Tests
