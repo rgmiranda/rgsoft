@@ -258,11 +258,11 @@ export function halftone(pixels: Uint8ClampedArray): Float32Array {
 /**
  *
  * @param { Uint8ClampedArray } pixels
- * @returns { Uint8ClampedArray }
+ * @returns { Float64Array }
  */
-export function hsv(pixels: Uint8ClampedArray): Uint8ClampedArray {
+export function hsv(pixels: Uint8ClampedArray): Float64Array {
   validateRgba(pixels);
-  const hsvPixels = new Uint8ClampedArray(pixels.length);
+  const hsvPixels = new Float64Array(pixels.length);
 
   for (let i = 0; i < pixels.length; i += 4) {
     const r = pixels[i + 0];

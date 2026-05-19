@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize, sepia, threshold } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize, sepia, threshold, vintage } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -417,6 +417,37 @@ describe(threshold.name, () => {
 
     it.each(testData)("Applies a threshold effect to the image data", ({ data, t, expected }) => {
     const result = threshold(data, t);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe(vintage.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 255, 255]),
+        expected: new Uint8ClampedArray([255, 255, 239, 255]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([128, 128, 128, 255]),
+        expected: new Uint8ClampedArray([173, 154, 120, 255]),
+      }
+    ],
+  ];
+
+  it.each(testData)("Applies a vintage effect to the image data", ({ data, expected }) => {
+    const result = vintage(data);
     expect(result).toEqual(expected);
   });
 });
