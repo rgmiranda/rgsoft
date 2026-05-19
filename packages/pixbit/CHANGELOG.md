@@ -1,33 +1,39 @@
 # @rgsoft/pixbit
 
+## 1.0.1
+
+### Patch Changes
+
+- Update CJS export
+
 ## 1.0.0
 
 ### Initial
 
 - Pixels methods:
-  * `add`
-  * `duotone`
-  * `colorPop`
-  * `grayscale`
-  * `halftone`
-  * `heatmap`
-  * `hsv`
-  * `multiply`
-  * `negative`
-  * `sepia`
-  * `posterize`
-  * `threshold`
-  * `vintage`
+  - `add`
+  - `duotone`
+  - `colorPop`
+  - `grayscale`
+  - `halftone`
+  - `heatmap`
+  - `hsv`
+  - `multiply`
+  - `negative`
+  - `sepia`
+  - `posterize`
+  - `threshold`
+  - `vintage`
 - Utils:
-  * `validateRgba`
-  * `validateHsl`
-  * `getBrightness`
-  * `sepiaRed`
-  * `sepiaGreen`
-  * `sepiaBlue`
-  * `isHueInRange`
-  * `rgbToHsl`
-  * `hueToRgb`
-  * `hslToRgb`
-  * `rgbToHsv`
-  * `hsvToRgb`
+  - `validateRgba`
+  - `validateHsl`
+  - `getBrightness`
+  - `sepiaRed`
+  - `sepiaGreen`
+  - `sepiaBlue`
+  - `isHueInRange`
+  - `rgbToHsl`
+  - `hueToRgb`
+  - `hslToRgb`
+  - `rgbToHsv`
+  - `hsvToRgb`
