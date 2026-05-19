@@ -1,6 +1,6 @@
 {
   "name": "@rgsoft/geometry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Geometry library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

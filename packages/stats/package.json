@@ -1,6 +1,6 @@
 {
   "name": "@rgsoft/stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Yet another JS math library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

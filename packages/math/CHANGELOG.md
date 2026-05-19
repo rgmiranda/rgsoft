@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.2
+
+### Patch Changes
+
+- Map range documentation
+- Update @rgsoft/math version
+
 ## 2.0.1
 
 ### Patch Changes
