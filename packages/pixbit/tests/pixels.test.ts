@@ -457,6 +457,10 @@ describe(halftone.name, () => {
   const halftoneTestData = [
     [
       {
+        rgba: new Uint8ClampedArray([0, 0, 0, 255]),
+        cmyk: new Float32Array([0, 0, 0, 1]),
+      },
+      {
         rgba: new Uint8ClampedArray([255, 0, 0, 255]),
         cmyk: new Float32Array([0, 1, 1, 0]),
       },
