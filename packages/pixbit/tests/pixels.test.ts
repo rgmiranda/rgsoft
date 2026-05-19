@@ -146,6 +146,50 @@ describe(colorPop.name, () => {
   });
 });
 
+describe(grayscale.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        expected: new Uint8ClampedArray([76, 76, 76, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 255, 0, 255]),
+        expected: new Uint8ClampedArray([150, 150, 150, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 255, 255]),
+        expected: new Uint8ClampedArray([29, 29, 29, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 255, 255]),
+        expected: new Uint8ClampedArray([255, 255, 255, 255]),
+      },
+    ]
+  ];
+
+  it.each(testData)("Converts the image data to grayscale", ({ data, expected }) => {
+    const result = grayscale(data);
+    expect(result).toEqual(expected);
+  });
+});
+
+
 describe(halftone.name, () => {
   const halftoneTestData = [
     [
