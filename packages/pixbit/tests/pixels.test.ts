@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -189,6 +189,42 @@ describe(grayscale.name, () => {
   });
 });
 
+describe(heatmap.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        expected: new Uint8ClampedArray([0, 0, 255, 255]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 255, 255]),
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([127, 127, 127, 255]),
+        expected: new Uint8ClampedArray([253, 253, 255, 255]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 255, 0, 255]),
+        expected: new Uint8ClampedArray([255, 210, 210, 255]),
+      }
+    ],
+  ];
+
+  it.each(testData)("Converts image to heatmap", ({ data, expected }) => {
+    const result = heatmap(data);
+    expect(result).toEqual(expected);
+  });
+});
 
 describe(halftone.name, () => {
   const halftoneTestData = [
