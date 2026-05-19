@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -222,6 +222,48 @@ describe(heatmap.name, () => {
 
   it.each(testData)("Converts image to heatmap", ({ data, expected }) => {
     const result = heatmap(data);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe(multiply.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    pixel: pixel;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([128, 124, 56, 255]),
+        pixel: [0, 0, 0],
+        expected: new Uint8ClampedArray([0, 0, 0, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([128, 124, 56, 255]),
+        pixel: [1, 1, 1],
+        expected: new Uint8ClampedArray([128, 124, 56, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([128, 124, 56, 255]),
+        pixel: [0.5, 0.5, 0.5],
+        expected: new Uint8ClampedArray([64, 62, 28, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([128, 124, 56, 255]),
+        pixel: [2, 2, 2],
+        expected: new Uint8ClampedArray([255, 248, 112, 255]),
+      },
+    ],
+  ];
+
+  it.each(testData)("Converts image to multiply", ({ data, pixel, expected }) => {
+    const result = multiply(data, pixel);
     expect(result).toEqual(expected);
   });
 });
