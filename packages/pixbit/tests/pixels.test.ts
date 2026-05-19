@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative } from "../src";
 import { pixel } from "../src/types";
 
 describe(add.name, () => {
@@ -262,8 +262,39 @@ describe(multiply.name, () => {
     ],
   ];
 
-  it.each(testData)("Converts image to multiply", ({ data, pixel, expected }) => {
+  it.each(testData)("Mutiplies pixels", ({ data, pixel, expected }) => {
     const result = multiply(data, pixel);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe(negative.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        expected: new Uint8ClampedArray([255, 255, 255, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+        expected: new Uint8ClampedArray([255, 255, 255, 255]),
+      },
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([128, 124, 56, 255]),
+        expected: new Uint8ClampedArray([127, 131, 199, 255]),
+      },
+    ],
+  ];
+
+  it.each(testData)("Converts image to its negative", ({ data, expected }) => {
+    const result = negative(data);
     expect(result).toEqual(expected);
   });
 });
