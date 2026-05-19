@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rgmiranda/pixbit.git"
+    "url": "git+https://github.com/rgmiranda/rgsoft.git"
   },
   "keywords": [
     "images",
@@ -31,10 +31,15 @@
   "author": "Ricardo Miranda <ricardo.gm.85@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rgmiranda/pixbit/issues"
+    "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
-  "homepage": "https://github.com/rgmiranda/pixbit#readme",
+  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
   "dependencies": {
     "@rgsoft/math": "workspace:^"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false
 }

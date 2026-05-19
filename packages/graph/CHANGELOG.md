@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.2
+
+### Patch Changes
+
+- Update ES2016 to ES202 output
+
 ## 1.0.1
 
 ### Patch Changes

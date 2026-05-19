@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.1.1
+
+### Patch Changes
+
+- Update ES2016 to ES202 output
+- Updated dependencies
+  - @rgsoft/geometry@1.0.2
+  - @rgsoft/linear@1.0.2
+  - @rgsoft/math@2.0.3
+
 ## 2.1.0
 
 ### Patch Changes
