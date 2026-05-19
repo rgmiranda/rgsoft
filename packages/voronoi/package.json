@@ -1,7 +1,7 @@
 {
   "name": "@rgsoft/voronoi",
-  "version": "1.0.1",
-  "description": "Quadtree library",
+  "version": "2.1.0",
+  "description": "Voronoi tessellation library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
