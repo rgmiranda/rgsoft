@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { add, colorPop, duotone, grayscale, halftone, heatmap, multiply, negative, posterize, sepia, threshold, vintage } from "../src";
+import { add, colorPop, duotone, grayscale, halftone, heatmap, hsv, multiply, negative, posterize, sepia, threshold, vintage } from "../src";
 import { pixel } from "../src/types";
+import { rgba } from "../src/pixels";
 
 describe(add.name, () => {
   const testData: {
@@ -488,5 +489,77 @@ describe(halftone.name, () => {
 
   it.each(halftoneTestData)("Converts from RGBA to CMYK", ({ rgba, cmyk }) => {
     expect(halftone(rgba)).toEqual(cmyk);
+  });
+});
+
+describe(hsv.name, () => {
+  const testData: {
+    data: Uint8ClampedArray<ArrayBuffer>;
+    expected: Float32Array<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Uint8ClampedArray([255, 0, 0, 255]),
+        expected: new Float32Array([0, 1, 1, 1]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([255, 255, 0, 255]),
+        expected: new Float32Array([1/6, 1, 1, 1]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 255, 255, 255]),
+        expected: new Float32Array([0.5, 1, 1, 1]),
+      }
+    ],
+    [
+      {
+        data: new Uint8ClampedArray([0, 0, 255, 255]),
+        expected: new Float32Array([2/3, 1, 1, 1]),
+      }
+    ],
+  ];
+
+  it.each(testData)("Converts from RGBA to HSV", ({ data, expected }) => {
+    expect(hsv(data)).toEqual(expected);
+  });
+});
+
+describe(rgba.name, () => {
+  const testData: {
+    data: Float32Array<ArrayBuffer>;
+    expected: Uint8ClampedArray<ArrayBuffer>;
+  }[][] = [
+    [
+      {
+        data: new Float32Array([0, 1, 1, 1]),
+        expected: new Uint8ClampedArray([255, 0, 0, 255]),
+      }
+    ],
+    [
+      {
+        data: new Float32Array([1/6, 1, 1, 1]),
+        expected: new Uint8ClampedArray([255, 255, 0, 255]),
+      }
+    ],
+    [
+      {
+        data: new Float32Array([0.5, 1, 1, 1]),
+        expected: new Uint8ClampedArray([0, 255, 255, 255]),
+      }
+    ],
+    [
+      {
+        data: new Float32Array([2/3, 1, 1, 1]),
+        expected: new Uint8ClampedArray([0, 0, 255, 255]),
+      }
+    ],
+  ];
+
+  it.each(testData)("Converts from HSV to RGBA", ({ data, expected }) => {
+    expect(rgba(data)).toEqual(expected);
   });
 });

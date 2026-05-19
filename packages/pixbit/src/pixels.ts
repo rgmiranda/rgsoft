@@ -157,7 +157,7 @@ export function negative(pixels: Uint8ClampedArray): Uint8ClampedArray {
 
 export function posterize(
   pixels: Uint8ClampedArray,
-  channels: number = 64
+  channels: number = 32
 ): Uint8ClampedArray {
   validateRgba(pixels);
   const output = new Uint8ClampedArray(pixels.length);
@@ -258,11 +258,11 @@ export function halftone(pixels: Uint8ClampedArray): Float32Array {
 /**
  *
  * @param { Uint8ClampedArray } pixels
- * @returns { Float64Array }
+ * @returns { Float32Array }
  */
-export function hsv(pixels: Uint8ClampedArray): Float64Array {
+export function hsv(pixels: Uint8ClampedArray): Float32Array {
   validateRgba(pixels);
-  const hsvPixels = new Float64Array(pixels.length);
+  const hsvPixels = new Float32Array(pixels.length);
 
   for (let i = 0; i < pixels.length; i += 4) {
     const r = pixels[i + 0];
@@ -272,7 +272,7 @@ export function hsv(pixels: Uint8ClampedArray): Float64Array {
     hsvPixels[i + 0] = hsv[0];
     hsvPixels[i + 1] = hsv[1];
     hsvPixels[i + 2] = hsv[2];
-    hsvPixels[i + 3] = pixels[i + 3];
+    hsvPixels[i + 3] = pixels[i + 3] / 255;
   }
 
   return hsvPixels
@@ -295,7 +295,7 @@ export function rgba(pixels: Float32Array): Uint8ClampedArray {
     rgbPixels[i + 0] = rgb[0];
     rgbPixels[i + 1] = rgb[1];
     rgbPixels[i + 2] = rgb[2];
-    rgbPixels[i + 3] = pixels[i + 3];
+    rgbPixels[i + 3] = pixels[i + 3] * 255;
   }
 
   return rgbPixels
