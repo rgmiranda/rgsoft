@@ -10,7 +10,15 @@
     "coverage": "pnpm -r coverage",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish"
+    "publish:geometry": "pnpm --filter @rgsoft/geometry publish --access public",
+    "publish:graph": "pnpm --filter @rgsoft/graph publish --access public",
+    "publish:linear": "pnpm --filter @rgsoft/linear publish --access public",
+    "publish:lsystem": "pnpm --filter @rgsoft/lsystem publish --access public",
+    "publish:math": "pnpm --filter @rgsoft/math publish --access public",
+    "publish:pixbit": "pnpm --filter @rgsoft/pixbit publish --access public",
+    "publish:quadtree": "pnpm --filter @rgsoft/quadtree publish --access public",
+    "publish:stats": "pnpm --filter @rgsoft/stats publish --access public",
+    "publish:voronoi": "pnpm --filter @rgsoft/voronoi publish --access public"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
