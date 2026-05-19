@@ -30,3 +30,15 @@ clamp(2.5, 0, 5); // 2.5
 clamp(0, 5, 10); // 5
 range(25, 5, 10); // 10
 ```
+
+## Map Range
+
+Maps a value in a range to a value in another range, optionally, clamping the
+resulting value. For example
+
+```javascript
+mapRange(0, -5, 5, 0, 10); // 5
+mapRange(5, 5, -5, 0, 10); // 0
+mapRange(-6, -5, 5, 0, 10, false); // -1
+mapRange(6, -5, 5, 0, 10, false); // 10
+```
