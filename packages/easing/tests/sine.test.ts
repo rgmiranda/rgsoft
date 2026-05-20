@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { easeInOutSine, easeInSine, easeOutSine } from '../src';
-describe(easeInSine, () => {
+describe(easeInSine.name, () => {
 
   const testData: [number, number][] = [
     [0, 0],
@@ -18,7 +18,7 @@ describe(easeInSine, () => {
   });
 });
 
-describe(easeOutSine, () => {
+describe(easeOutSine.name, () => {
 
   const testData: [number, number][] = [
     [0, 0],
@@ -36,7 +36,7 @@ describe(easeOutSine, () => {
   });
 });
 
-describe(easeInOutSine, () => {
+describe(easeInOutSine.name, () => {
 
   const testData: [number, number][] = [
     [0, 0],

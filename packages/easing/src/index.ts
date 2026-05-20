@@ -4,3 +4,4 @@ export * from './cubic';
 export * from './quart';
 export * from './quint';
 export * from './expo';
+export * from './circ';
