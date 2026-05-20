@@ -10,6 +10,7 @@
     "coverage": "pnpm -r coverage",
     "changeset": "changeset",
     "version-packages": "changeset version",
+    "publish:easing": "pnpm --filter @rgsoft/easing publish --access public",
     "publish:geometry": "pnpm --filter @rgsoft/geometry publish --access public",
     "publish:graph": "pnpm --filter @rgsoft/graph publish --access public",
     "publish:linear": "pnpm --filter @rgsoft/linear publish --access public",

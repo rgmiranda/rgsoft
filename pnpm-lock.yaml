@@ -24,6 +24,8 @@ importers:
         specifier: ^2.0.3
         version: 2.1.9
 
+  packages/easing: {}
+
   packages/geometry:
     dependencies:
       '@rgsoft/linear':
@@ -44,6 +46,8 @@ importers:
   packages/lsystem: {}
 
   packages/math: {}
+
+  packages/noise: {}
 
   packages/pixbit:
     dependencies:
