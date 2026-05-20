@@ -1,5 +1,5 @@
 /*
- * Quadratic easing functions.
+ * Fourth power easing functions.
  * @see https://easings.net/#easeInQuart
  * @see https://easings.net/#easeOutQuart
  * @see https://easings.net/#easeInOutQuart
