@@ -1,3 +1,11 @@
+/*
+ * Quadratic easing functions.
+ * @see https://easings.net/#easeInQuad
+ * @see https://easings.net/#easeOutQuad
+ * @see https://easings.net/#easeInOutQuad
+ * License: MIT
+ */
+
 export function easeInQuad(x: number): number {
   return x * x;
 }
