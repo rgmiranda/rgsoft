@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.1.2
+
+### Patch Changes
+
+- Fix CJS export
+- Updated dependencies
+  - @rgsoft/geometry@1.0.3
+  - @rgsoft/linear@1.0.3
+
 ## 2.1.1
 
 ### Patch Changes

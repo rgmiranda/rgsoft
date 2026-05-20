@@ -1,8 +1,8 @@
 {
   "name": "@rgsoft/lsystem",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "L-Systems library",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [

@@ -1,5 +1,11 @@
 # @rgsoft/lsystem
 
+## 1.0.2
+
+### Patch Changes
+
+- Fix CJS export
+
 ## 1.0.1
 
 ### Patch Changes
