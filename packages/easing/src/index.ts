@@ -5,3 +5,4 @@ export * from './quart';
 export * from './quint';
 export * from './expo';
 export * from './circ';
+export * from './back';
