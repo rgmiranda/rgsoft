@@ -7,3 +7,4 @@ export * from './expo';
 export * from './circ';
 export * from './back';
 export * from './elastic';
+export * from './bounce';
