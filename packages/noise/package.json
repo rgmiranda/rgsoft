@@ -1,0 +1,44 @@
+{
+  "name": "@rgsoft/noise",
+  "version": "1.0.0",
+  "description": "Noise generating libray",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgmiranda/rgsoft.git"
+  },
+  "keywords": [
+    "noise"
+  ],
+  "author": "Ricardo Miranda <rgmiranda@live.com.ar>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rgmiranda/rgsoft/issues"
+  },
+  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "dependencies": {
+    "@rgsoft/math": "workspace:^"
+  }
+}

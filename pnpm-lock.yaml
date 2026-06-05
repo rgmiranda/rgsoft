@@ -47,7 +47,11 @@ importers:
 
   packages/math: {}
 
-  packages/noise: {}
+  packages/noise:
+    dependencies:
+      '@rgsoft/math':
+        specifier: workspace:^
+        version: link:../math
 
   packages/pixbit:
     dependencies:
