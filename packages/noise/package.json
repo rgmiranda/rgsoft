@@ -39,6 +39,7 @@
   "type": "module",
   "sideEffects": false,
   "dependencies": {
+    "@rgsoft/linear": "workspace:^",
     "@rgsoft/math": "workspace:^"
   }
 }
