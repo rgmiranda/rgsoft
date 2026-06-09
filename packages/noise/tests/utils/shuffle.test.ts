@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shuffle } from '../../src/utils/shuffle';
+import { shuffle } from '../../src/utils';
 
 describe(shuffle.name, () => {
   const testData = [1, 2, 3, 4, 5];
