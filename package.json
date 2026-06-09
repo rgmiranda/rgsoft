@@ -16,6 +16,7 @@
     "publish:linear": "pnpm --filter @rgsoft/linear publish --access public",
     "publish:lsystem": "pnpm --filter @rgsoft/lsystem publish --access public",
     "publish:math": "pnpm --filter @rgsoft/math publish --access public",
+    "publish:noise": "pnpm --filter @rgsoft/noise publish --access public",
     "publish:pixbit": "pnpm --filter @rgsoft/pixbit publish --access public",
     "publish:quadtree": "pnpm --filter @rgsoft/quadtree publish --access public",
     "publish:stats": "pnpm --filter @rgsoft/stats publish --access public",

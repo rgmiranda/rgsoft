@@ -6,7 +6,6 @@ const gradients = [1, -1];
 const permSize = 256;
 
 export class Perlin1 extends Perlin {
-
   constructor(seed = "perlin1") {
     super(seed);
   }
@@ -24,5 +23,9 @@ export class Perlin1 extends Perlin {
     const u = fade(dx0);
 
     return lerp(n0, n1, u);
+  }
+
+  public noise(x: number, frequency = 1, amplitude = 1): number {
+    return this._noise(x * frequency) * amplitude;
   }
 }

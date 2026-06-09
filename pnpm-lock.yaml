@@ -49,9 +49,6 @@ importers:
 
   packages/noise:
     dependencies:
-      '@rgsoft/linear':
-        specifier: workspace:^
-        version: link:../linear
       '@rgsoft/math':
         specifier: workspace:^
         version: link:../math
