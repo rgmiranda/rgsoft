@@ -1,5 +1,6 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
 import { dot, fade, sfc32, shuffle, xmur3 } from "./utils";
+import { Noise } from "./noise";
 
 const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);
@@ -38,10 +39,11 @@ const gradients3: [number, number, number][] = [
   [-SQRT1_3, -SQRT1_3, -SQRT1_3],
 ];
 
-export class Perlin {
+export class Perlin extends Noise {
   protected permutation: Uint8Array;
 
   constructor(seed = "perlin") {
+    super();
     const seeder = xmur3(seed);
     const rng = sfc32(seeder(), seeder(), seeder(), seeder());
     let perms = shuffle(range(0, permSize), rng);
@@ -62,10 +64,6 @@ export class Perlin {
     const u = fade(dx0);
 
     return lerp(n0, n1, u);
-  }
-
-  public noise1(x: number, frequency = 1, amplitude = 1): number {
-    return this._noise1(x * frequency) * amplitude;
   }
 
   _noise2(x: number, y: number): number {
@@ -101,10 +99,6 @@ export class Perlin {
     const ix0 = lerp(nAA, nBA, u);
     const ix1 = lerp(nAB, nBB, u);
     return lerp(ix0, ix1, v);
-  }
-
-  public noise2(x: number, y: number, frequency = 1, amplitude = 1): number {
-    return this._noise2(x * frequency, y * frequency) * amplitude;
   }
 
   _noise3(x: number, y: number, z: number): number {
@@ -175,15 +169,5 @@ export class Perlin {
     const yB = lerp(xAB, xBB, v);
 
     return lerp(yA, yB, w);
-  }
-
-  public noise3(
-    x: number,
-    y: number,
-    z: number,
-    frequency = 1,
-    amplitude = 1,
-  ): number {
-    return this._noise3(x * frequency, y * frequency, z * frequency) * amplitude;
   }
 }
