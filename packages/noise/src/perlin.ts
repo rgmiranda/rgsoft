@@ -51,7 +51,7 @@ export class Perlin extends Noise {
     this.permutation = new Uint8Array(perms);
   }
 
-  _noise1(x: number): number {
+  public noise1(x: number): number {
     const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
@@ -66,7 +66,7 @@ export class Perlin extends Noise {
     return lerp(n0, n1, u);
   }
 
-  _noise2(x: number, y: number): number {
+  public noise2(x: number, y: number): number {
     const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
@@ -101,7 +101,7 @@ export class Perlin extends Noise {
     return lerp(ix0, ix1, v);
   }
 
-  _noise3(x: number, y: number, z: number): number {
+  public noise3(x: number, y: number, z: number): number {
     const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
