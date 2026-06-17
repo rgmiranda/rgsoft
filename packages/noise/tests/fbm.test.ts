@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { Simplex, FMB } from "../src";
+import { Simplex, FBM } from "../src";
 
 const G2 = (3 - Math.sqrt(3)) / 6;
 
-describe(FMB.name, () => {
-  const noise = new FMB(new Simplex("test-seed"), 4, 2, 0.5);
+describe(FBM.name, () => {
+  const noise = new FBM(new Simplex("test-seed"), 4, 2, 0.5);
 
   describe("noise1", () => {
     it("should generate consistent noise values for the same input", () => {
@@ -14,7 +14,7 @@ describe(FMB.name, () => {
     });
 
     it("should generate consistent noise values for the same seed", () => {
-      const noise2 = new FMB(new Simplex("test-seed"), 4, 2, 0.5);
+      const noise2 = new FBM(new Simplex("test-seed"), 4, 2, 0.5);
       const value1 = noise.noise1(0.5);
       const value2 = noise2.noise1(0.5);
       expect(value1).toBe(value2);
@@ -38,7 +38,7 @@ describe(FMB.name, () => {
     });
 
     it("should generate consistent noise values for the same seed", () => {
-      const noise2 = new FMB(new Simplex("test-seed"), 4, 2, 0.5);
+      const noise2 = new FBM(new Simplex("test-seed"), 4, 2, 0.5);
       const value1 = noise.noise2(0.5, 0.977);
       const value2 = noise2.noise2(0.5, 0.977);
       expect(value1).toBe(value2);
@@ -84,7 +84,7 @@ describe(FMB.name, () => {
     });
 
     it("should generate consistent noise values for the same seed", () => {
-      const noise2 = new FMB(new Simplex("test-seed"), 4, 2, 0.5);
+      const noise2 = new FBM(new Simplex("test-seed"), 4, 2, 0.5);
       const value1 = noise.noise3(0.5, 0.977, 1.6);
       const value2 = noise2.noise3(0.5, 0.977, 1.6);
       expect(value1).toBe(value2);
