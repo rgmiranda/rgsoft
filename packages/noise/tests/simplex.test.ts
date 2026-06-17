@@ -68,10 +68,16 @@ describe(Simplex.name, () => {
       expect(value1).toBe(value2);
     });
 
-    it("should produce cotinuous values", () => {
-      const a = simplex.noise3(1, 2, 3);
-      const b = simplex.noise3(1.001, 2, 3);
-      expect(Math.abs(a - b)).toBeLessThan(0.1);
+    const cotinuousValuesData: number[][] = [
+      [1, 2, 3, 1.0001, 2, 3, 0.01],
+      [2, 2, 3, 1, 2.0001, 3, 0.01],
+      [-5, 2, 0, -5, 2, 0.0001, 0.01],
+    ];
+
+    it.each(cotinuousValuesData)("should produce cotinuous values", (x0, y0, z0, x1, y1, z1, d) => {
+      const a = simplex.noise3(x0, y0, z0);
+      const b = simplex.noise3(x1, y1, z1);
+      expect(Math.abs(a - b)).toBeLessThan(d);
     });
 
     it("should produce limited values", () => {

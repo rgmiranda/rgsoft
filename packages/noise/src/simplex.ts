@@ -176,38 +176,26 @@ export class Simplex extends Noise {
     const y0 = y - oy;
     const z0 = z - oz;
 
-    let i1, j1, k1;
-    let i2, j2, k2;
+    let rankx = 0;
+    let ranky = 0;
+    let rankz = 0;
 
-    if (x0 >= y0) {
-      if (y0 >= z0) {
-        // X Y Z
-        [i1, j1, k1] = [1, 0, 0];
-        [i2, j2, k2] = [1, 1, 0];
-      } else if (x0 >= z0) {
-        // X Z Y
-        [i1, j1, k1] = [1, 0, 0];
-        [i2, j2, k2] = [1, 0, 1];
-      } else {
-        // Z X Y
-        [i1, j1, k1] = [0, 0, 1];
-        [i2, j2, k2] = [1, 0, 1];
-      }
-    } else {
-      if (y0 < z0) {
-        // Z Y X
-        [i1, j1, k1] = [0, 0, 1];
-        [i2, j2, k2] = [0, 1, 1];
-      } else if (x0 < z0) {
-        // Y Z X
-        [i1, j1, k1] = [0, 1, 0];
-        [i2, j2, k2] = [0, 1, 1];
-      } else {
-        // Y X Z
-        [i1, j1, k1] = [0, 1, 0];
-        [i2, j2, k2] = [1, 1, 0];
-      }
-    }
+    if (x0 > y0) rankx++;
+    else ranky++;
+
+    if (x0 > z0) rankx++;
+    else rankz++;
+
+    if (y0 > z0) ranky++;
+    else rankz++;
+
+    const i1 = rankx >= 2 ? 1 : 0;
+    const j1 = ranky >= 2 ? 1 : 0;
+    const k1 = rankz >= 2 ? 1 : 0;
+
+    const i2 = rankx >= 1 ? 1 : 0;
+    const j2 = ranky >= 1 ? 1 : 0;
+    const k2 = rankz >= 1 ? 1 : 0;
 
     const x1 = x0 - i1 + G3;
     const y1 = y0 - j1 + G3;
