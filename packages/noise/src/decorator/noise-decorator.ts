@@ -1,4 +1,4 @@
-import { Noise } from "./noise";
+import { Noise } from "../noise";
 
 export abstract class NoiseDecorator implements Noise {
   constructor(protected readonly source: Noise) {}

@@ -1,4 +1,4 @@
-import { Noise } from "./noise";
+import { Noise } from "../noise";
 import { NoiseDecorator } from "./noise-decorator";
 
 export class FBM extends NoiseDecorator {

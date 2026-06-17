@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Perlin } from "../src";
+import { Perlin } from "../../src";
 
 describe(Perlin.name, () => {
   const perlin = new Perlin("test-seed");

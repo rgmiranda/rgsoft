@@ -1,4 +1,2 @@
-export { FBM } from './fbm';
-export { Noise } from './noise';
-export { Perlin } from './perlin';
-export { Simplex } from './simplex';
+export * from './decorator';
+export * from './noise';

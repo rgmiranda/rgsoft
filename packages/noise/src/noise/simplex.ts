@@ -1,7 +1,6 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
 import { Noise } from "./noise";
-import { fade, sfc32, shuffle, xmur3 } from "./utils";
-import { dot } from "./utils/dot";
+import { dot, fade, sfc32, shuffle, xmur3 } from "../utils";
 
 const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);

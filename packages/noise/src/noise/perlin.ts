@@ -1,5 +1,5 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
-import { dot, fade, sfc32, shuffle, xmur3 } from "./utils";
+import { dot, fade, sfc32, shuffle, xmur3 } from "../utils";
 import { Noise } from "./noise";
 
 const permSize = 256;
