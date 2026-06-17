@@ -68,13 +68,16 @@ describe(Simplex.name, () => {
       expect(value1).toBe(value2);
     });
 
-    it("should generate zero values on integers", () => {
-      const value1 = simplex.noise3(0, 0, 0);
-      const value2 = simplex.noise3(1, 1, 1);
-      const value3 = simplex.noise3(10, 20, 30);
-      expect(value1).toBeCloseTo(0);
-      expect(value2).toBeCloseTo(0);
-      expect(value3).toBeCloseTo(0);
+    it("should produce cotinuous values", () => {
+      const a = simplex.noise3(1, 2, 3);
+      const b = simplex.noise3(1.001, 2, 3);
+      expect(Math.abs(a - b)).toBeLessThan(0.1);
+    });
+
+    it("should produce limited values", () => {
+      const value = simplex.noise3(0.5, 0.75, 0.25);
+      expect(value).toBeGreaterThanOrEqual(-1);
+      expect(value).toBeLessThanOrEqual(1);
     });
   });
 });
