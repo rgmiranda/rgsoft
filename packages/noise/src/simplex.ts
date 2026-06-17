@@ -44,11 +44,10 @@ const G2 = (3 - Math.sqrt(3)) / 6;
 const F3 = 1 / 3;
 const G3 = 1 / 6;
 
-export class Simplex extends Noise {
+export class Simplex implements Noise {
   protected permutation: Uint8Array;
 
   constructor(seed = "simplex") {
-    super();
     const seeder = xmur3(seed);
     const rng = sfc32(seeder(), seeder(), seeder(), seeder());
     let perms = shuffle(range(0, permSize), rng);

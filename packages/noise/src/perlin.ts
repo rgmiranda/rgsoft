@@ -39,11 +39,10 @@ const gradients3: [number, number, number][] = [
   [-SQRT1_3, -SQRT1_3, -SQRT1_3],
 ];
 
-export class Perlin extends Noise {
+export class Perlin implements Noise {
   protected permutation: Uint8Array;
 
   constructor(seed = "perlin") {
-    super();
     const seeder = xmur3(seed);
     const rng = sfc32(seeder(), seeder(), seeder(), seeder());
     let perms = shuffle(range(0, permSize), rng);

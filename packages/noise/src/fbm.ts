@@ -1,13 +1,17 @@
 import { Noise } from "./noise";
+import { NoiseDecorator } from "./noise-decorator";
 
-export class FBM extends Noise {
+export class FBM extends NoiseDecorator {
   constructor(
     private readonly noise: Noise,
     private readonly octaves = 1,
     private readonly lacunarity = 2,
     private readonly gain = 0.5,
   ) {
-    super();
+    super(noise);
+    if (octaves < 1) {
+      throw new Error("Octaves must be greater than or equal to 1");
+    }
   }
 
   private fbm(sample: (frequency: number) => number): number {
