@@ -52,6 +52,28 @@ describe(Simplex.name, () => {
       expect(value2).toBeCloseTo(0);
       expect(value3).toBeCloseTo(0);
     });
+
+    const cotinuousValuesData: number[][] = [
+      [1, 2, 1.0001, 2, 0.01],
+      [2, 2, 1, 2.0001, 3, 0.01],
+      [1 - 2 * G2, 1 - 2 * G2, 1.0001 - 2 * G2, 1 - 2 * G2, 3, 0.01],
+      [1 - 2 * G2, 1 - 2 * G2, 11 - 2 * G2, 0.9999 - 2 * G2, 3, 0.01],
+    ];
+
+    it.each(cotinuousValuesData)(
+      "should produce cotinuous values",
+      (x0, y0, x1, y1, d) => {
+        const a = simplex.noise2(x0, y0);
+        const b = simplex.noise2(x1, y1);
+        expect(Math.abs(a - b)).toBeLessThan(d);
+      },
+    );
+
+    it("should produce limited values", () => {
+      const value = simplex.noise2(0.5, 0.75);
+      expect(value).toBeGreaterThanOrEqual(-1);
+      expect(value).toBeLessThanOrEqual(1);
+    });
   });
 
   describe("noise3", () => {
@@ -74,11 +96,14 @@ describe(Simplex.name, () => {
       [-5, 2, 0, -5, 2, 0.0001, 0.01],
     ];
 
-    it.each(cotinuousValuesData)("should produce cotinuous values", (x0, y0, z0, x1, y1, z1, d) => {
-      const a = simplex.noise3(x0, y0, z0);
-      const b = simplex.noise3(x1, y1, z1);
-      expect(Math.abs(a - b)).toBeLessThan(d);
-    });
+    it.each(cotinuousValuesData)(
+      "should produce cotinuous values",
+      (x0, y0, z0, x1, y1, z1, d) => {
+        const a = simplex.noise3(x0, y0, z0);
+        const b = simplex.noise3(x1, y1, z1);
+        expect(Math.abs(a - b)).toBeLessThan(d);
+      },
+    );
 
     it("should produce limited values", () => {
       const value = simplex.noise3(0.5, 0.75, 0.25);
