@@ -1,6 +1,6 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
-import { dot, fade, sfc32, shuffle, xmur3 } from "../utils";
-import { Noise } from "./noise";
+import { dot, fade, rngFactory, shuffle } from "../utils";
+import { NoiseBase } from "./noise-base";
 
 const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);
@@ -39,12 +39,12 @@ const gradients3: [number, number, number][] = [
   [-SQRT1_3, -SQRT1_3, -SQRT1_3],
 ];
 
-export class Perlin implements Noise {
+export class Perlin extends NoiseBase {
   protected permutation: Uint8Array;
 
   constructor(seed = "perlin") {
-    const seeder = xmur3(seed);
-    const rng = sfc32(seeder(), seeder(), seeder(), seeder());
+    super();
+    const rng = rngFactory(seed);
     let perms = shuffle(range(0, permSize), rng);
     perms = perms.concat(perms);
     this.permutation = new Uint8Array(perms);

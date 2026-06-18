@@ -1,6 +1,7 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
 import { Noise } from "./noise";
-import { dot, fade, sfc32, shuffle, xmur3 } from "../utils";
+import { dot, fade, rngFactory, shuffle } from "../utils";
+import { NoiseBase } from "./noise-base";
 
 const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);
@@ -43,12 +44,12 @@ const G2 = (3 - Math.sqrt(3)) / 6;
 const F3 = 1 / 3;
 const G3 = 1 / 6;
 
-export class Simplex implements Noise {
+export class Simplex extends NoiseBase {
   protected permutation: Uint8Array;
 
   constructor(seed = "simplex") {
-    const seeder = xmur3(seed);
-    const rng = sfc32(seeder(), seeder(), seeder(), seeder());
+    super();
+    const rng = rngFactory(seed);
     let perms = shuffle(range(0, permSize), rng);
     perms = perms.concat(perms);
     this.permutation = new Uint8Array(perms);

@@ -1,1 +1,1 @@
-export { FBM } from './fbm';
+export { Abs } from './abs';
