@@ -1,37 +1,42 @@
-import { range } from "@rgsoft/math";
-import { rngFactory, shuffle, xmur3 } from "../utils";
+import { xmur3 } from "../utils";
 import { NoiseBase } from "./noise-base";
 
-const permSize = 256;
-
 export class WhiteNoise extends NoiseBase {
-  protected permutation: Uint8Array;
+  private readonly seedValue: number;
+
   constructor(seed = "white") {
     super();
-    const rng = rngFactory(seed);
-    let perms = shuffle(range(0, permSize), rng);
-    perms = perms.concat(perms);
-    this.permutation = new Uint8Array(perms);
+
+    this.seedValue = xmur3(seed)();
   }
 
-  private getHash(...args: number[]): number {
-    const hashSeed = args
-      .map((value, index) => `${index}:${value}`)
-      .join("|");
+  private hash(...coords: number[]): number {
+    let h = this.seedValue;
 
-    return xmur3(hashSeed)() & (permSize - 1);
+    for (const coord of coords) {
+      h ^= Math.floor(coord);
+      h = Math.imul(h, 0x7feb352d);
+      h ^= h >>> 15;
+      h = Math.imul(h, 0x846ca68b);
+      h ^= h >>> 16;
+    }
+
+    return h >>> 0;
   }
 
-  noise1(x: number): number {
-    const hash = this.getHash(x);
-    return this.permutation[hash] / (permSize - 1);
+  private toUnit(hash: number): number {
+    return (hash / 0x100000000) * 2 - 1;
   }
-  noise2(x: number, y: number): number {
-    const hash = this.getHash(x, y);
-    return this.permutation[hash] / (permSize - 1);
+
+  public noise1(x: number): number {
+    return this.toUnit(this.hash(x));
   }
-  noise3(x: number, y: number, z: number): number {
-    const hash = this.getHash(x, y, z);
-    return this.permutation[hash] / (permSize - 1);
+
+  public noise2(x: number, y: number): number {
+    return this.toUnit(this.hash(x, y));
+  }
+
+  public noise3(x: number, y: number, z: number): number {
+    return this.toUnit(this.hash(x, y, z));
   }
 }
