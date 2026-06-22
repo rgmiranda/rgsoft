@@ -64,4 +64,17 @@ describe(WhiteNoise.name, () => {
       expect(value1).toBe(value2);
     });
   });
+
+  it("should produce values within the expected range", () => {
+    const values = [
+      noise.noise1(0.5),
+      noise.noise2(0.5, 0.75),
+      noise.noise3(0.5, 0.75, 0.25),
+    ];
+
+    values.forEach((value) => {
+      expect(value).toBeGreaterThanOrEqual(-1);
+      expect(value).toBeLessThanOrEqual(1);
+    });
+  });
 });
