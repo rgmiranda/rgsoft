@@ -11,7 +11,7 @@ export class Curve extends NoiseDecorator {
     private readonly curve: (x: number) => number,
   ) {
     super(source);
-    this.range = source.range;
+    this.range = [...source.range];
   }
 
   private apply(x: number): number {

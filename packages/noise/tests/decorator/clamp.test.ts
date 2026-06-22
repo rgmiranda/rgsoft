@@ -14,6 +14,11 @@ describe(Clamp.name, () => {
     [1025.4, -0.002, 0.1],
   ];
 
+  it("updates the range", () => {
+    expect(sourceMock.range).toEqual([0, 1]);
+    expect(noise.range).toEqual([min, max]);
+  });
+
   it.each(testData)('applies the decorator', (x, y, z) => {
     const v1 = noise.noise1(x);
     expect(v1).toBeGreaterThanOrEqual(min);

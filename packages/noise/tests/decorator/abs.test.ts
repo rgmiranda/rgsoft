@@ -13,6 +13,11 @@ describe(Abs.name, () => {
     [1025.4, -0.002, 0.1],
   ];
 
+  it('updates the range', () => {
+    expect(source.range).toEqual([-1, 1]);
+    expect(noise.range).toEqual([0, 1]);
+  });
+
   it.each(testData)('applies the decorator', (x, y, z) => {
     expect(noise.noise1(x)).toBeGreaterThanOrEqual(0);
     expect(noise.noise2(x, y)).toBeGreaterThanOrEqual(0);
