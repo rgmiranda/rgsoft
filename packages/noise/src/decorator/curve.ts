@@ -3,20 +3,21 @@ import { Range } from "../types";
 import { NoiseDecorator } from "./noise-decorator";
 
 export class Curve extends NoiseDecorator {
+
+  public readonly range: Range;
+
   constructor(
     source: Noise,
     private readonly curve: (x: number) => number,
-    private readonly range: Range,
   ) {
     super(source);
+    this.range = source.range;
   }
 
   private apply(x: number): number {
     // [min,max] → [0,1]
     const t = (x - this.range[0]) / (this.range[1] - this.range[0]);
-
     const u = this.curve(t);
-
     // [0,1] → [min,max]
     return this.range[0] + u * (this.range[1] - this.range[0]);
   }

@@ -8,6 +8,9 @@ const values: number[] = [
 let i = 0;
 
 export const sourceMock: Noise = {
+
+  range: [0, 1],
+
   noise1: function (x: number): number {
     i = (i + 1) % values.length;
     return values[i];

@@ -9,7 +9,7 @@ export class Clamp extends NoiseDecorator {
   ) {
     super(source);
     if (range[0] > range[1]) {
-      throw new Error('Min cannot be greater than max');
+      throw new Error('Min cannot be greater than max in range');
     }
   }
 

@@ -26,4 +26,10 @@ describe(Clamp.name, () => {
     expect(v3).toBeLessThanOrEqual(max);
   });
 
+  it('fails on invalid range', () => {
+    expect(() => new Clamp(sourceMock, [1, 0])).toThrowError(
+      "Min cannot be greater than max in range",
+    );
+  });
+
 });

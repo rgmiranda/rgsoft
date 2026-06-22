@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { Simplex, FBM } from "../../src";
+import { sourceMock } from "../decorator/source.mock";
 
 const G2 = (3 - Math.sqrt(3)) / 6;
 
 describe(FBM.name, () => {
   const noise = new FBM(new Simplex("test-seed"), 4, 2, 0.5);
+
+  it('fails on invalid octaves number', () => {
+    expect(() => new FBM(sourceMock, 0, 2, 0.5)).toThrowError(
+      "Octaves must be greater than or equal to 1",
+    );
+  });
 
   describe("noise1", () => {
     it("should generate consistent noise values for the same input", () => {
