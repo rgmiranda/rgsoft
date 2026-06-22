@@ -5,7 +5,7 @@ import { sourceMock } from "./source.mock";
 const min = 0.25, max = 0.5;
 
 describe(Clamp.name, () => {
-  const noise = new Clamp(sourceMock, 0.25, 0.5);
+  const noise = new Clamp(sourceMock, [min, max]);
 
   const testData: [number, number, number][] = [
     [0.45, -0.0067, 74.0015],
