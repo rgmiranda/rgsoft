@@ -70,9 +70,9 @@ export class ValueNoise extends NoiseBase {
     const ix01 = lerp(v001, v101, u);
     const ix11 = lerp(v011, v111, u);
 
-    const y0 = lerp(ix00, ix10, v);
-    const y1 = lerp(ix01, ix11, v);
+    const iy0 = lerp(ix00, ix10, v);
+    const iy1 = lerp(ix01, ix11, v);
 
-    return lerp(y0, y1, w);
+    return lerp(iy0, iy1, w);
   }
 }

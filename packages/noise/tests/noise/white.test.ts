@@ -5,15 +5,15 @@ describe(WhiteNoise.name, () => {
   const noise = new WhiteNoise("test-seed");
 
   it("should not collide on ambiguous coordinate tuples", () => {
-    const hash1 = (noise as any).hash(1, 23);
-    const hash2 = (noise as any).hash(12, 3);
+    const hash1 = (noise as any).hash2(1, 23);
+    const hash2 = (noise as any).hash2(12, 3);
 
     expect(hash1).not.toBe(hash2);
   });
 
   it("should not collide when decimal boundaries shift", () => {
-    const hash1 = (noise as any).hash(0.1, 23);
-    const hash2 = (noise as any).hash(0.12, 3);
+    const hash1 = (noise as any).hash2(0.1, 23);
+    const hash2 = (noise as any).hash2(0.12, 3);
 
     expect(hash1).not.toBe(hash2);
   });
