@@ -38,6 +38,12 @@ describe(PermutationTable.name, () => {
     expect(table.get(-1)).toBe(table.get(7));
   });
 
+  it("should throw when the size is not a power of two", () => {
+    expect(() => new PermutationTable("seed-123", 10)).toThrow(
+      "Permutation table size must be a power of two.",
+    );
+  });
+
   it("should produce deterministic random values within the unit interval", () => {
     const table = new PermutationTable("seed-123", 8);
     const value = table.random01(10, 2);

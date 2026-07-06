@@ -11,6 +11,11 @@ export class PermutationTable {
     seed: string,
     public readonly size = 256,
   ) {
+
+    if ((size & (size - 1)) !== 0) {
+      throw new Error("Permutation table size must be a power of two.");
+    }
+
     this.mask = size - 1;
     const rng = rngFactory(seed);
     const values = shuffle(range(0, size), rng);
