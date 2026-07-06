@@ -1,8 +1,7 @@
-import { lerp, range, SQRT1_2 } from "@rgsoft/math";
-import { dot, fade, rngFactory, shuffle } from "../utils";
+import { lerp, SQRT1_2 } from "@rgsoft/math";
+import { dot, fade, PermutationTable } from "../utils";
 import { NoiseBase } from "./noise-base";
 
-const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);
 
 const gradients1 = [1, -1];
@@ -40,24 +39,20 @@ const gradients3: [number, number, number][] = [
 ];
 
 export class Perlin extends NoiseBase {
-  protected permutation: Uint8Array;
+  protected permutation: PermutationTable;
 
   constructor(seed = "perlin") {
     super();
-    const rng = rngFactory(seed);
-    let perms = shuffle(range(0, permSize), rng);
-    perms = perms.concat(perms);
-    this.permutation = new Uint8Array(perms);
+    this.permutation = new PermutationTable(seed);
   }
 
   public noise1(x: number): number {
-    const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
     const dx0 = x - x0;
     const dx1 = x - x1;
-    const g1 = gradients1[this.permutation[xp] % gradients1.length];
-    const g2 = gradients1[this.permutation[xp + 1] % gradients1.length];
+    const g1 = gradients1[this.permutation.hash1(x) % gradients1.length];
+    const g2 = gradients1[this.permutation.hash1(x + 1) % gradients1.length];
     const n0 = g1 * dx0;
     const n1 = g2 * dx1;
     const u = fade(dx0);
@@ -66,22 +61,20 @@ export class Perlin extends NoiseBase {
   }
 
   public noise2(x: number, y: number): number {
-    const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
     const dx0 = x - x0;
     const dx1 = x - x1;
 
-    const yp = Math.floor(y) & (permSize - 1);
     const y0 = Math.floor(y);
     const y1 = y0 + 1;
     const dy0 = y - y0;
     const dy1 = y - y1;
 
-    const aa = this.permutation[this.permutation[xp] + yp];
-    const ab = this.permutation[this.permutation[xp] + yp + 1];
-    const ba = this.permutation[this.permutation[xp + 1] + yp];
-    const bb = this.permutation[this.permutation[xp + 1] + yp + 1];
+    const aa = this.permutation.hash2(x, y);
+    const ab = this.permutation.hash2(x, y + 1);
+    const ba = this.permutation.hash2(x + 1, y);
+    const bb = this.permutation.hash2(x + 1, y + 1);
 
     const gAA = gradients2[aa % gradients2.length];
     const gBA = gradients2[ba % gradients2.length];
@@ -101,40 +94,29 @@ export class Perlin extends NoiseBase {
   }
 
   public noise3(x: number, y: number, z: number): number {
-    const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
     const dx0 = x - x0;
     const dx1 = x - x1;
 
-    const yp = Math.floor(y) & (permSize - 1);
     const y0 = Math.floor(y);
     const y1 = y0 + 1;
     const dy0 = y - y0;
     const dy1 = y - y1;
 
-    const zp = Math.floor(z) & (permSize - 1);
     const z0 = Math.floor(z);
     const z1 = z0 + 1;
     const dz0 = z - z0;
     const dz1 = z - z1;
 
-    const a = this.permutation[xp] + yp;
-    const b = this.permutation[xp + 1] + yp;
-
-    const aa = this.permutation[a] + zp;
-    const ab = this.permutation[a + 1] + zp;
-    const ba = this.permutation[b] + zp;
-    const bb = this.permutation[b + 1] + zp;
-
-    const aaa = this.permutation[aa];
-    const aab = this.permutation[aa + 1];
-    const aba = this.permutation[ab];
-    const abb = this.permutation[ab + 1];
-    const baa = this.permutation[ba];
-    const bab = this.permutation[ba + 1];
-    const bba = this.permutation[bb];
-    const bbb = this.permutation[bb + 1];
+    const aaa = this.permutation.hash3(x, y, z);
+    const aab = this.permutation.hash3(x, y, z + 1);
+    const aba = this.permutation.hash3(x, y + 1, z);
+    const abb = this.permutation.hash3(x, y + 1, z + 1);
+    const baa = this.permutation.hash3(x + 1, y, z);
+    const bab = this.permutation.hash3(x + 1, y, z + 1);
+    const bba = this.permutation.hash3(x + 1, y + 1, z);
+    const bbb = this.permutation.hash3(x + 1, y + 1, z + 1);
 
     const gAAA = gradients3[aaa % gradients3.length];
     const gAAB = gradients3[aab % gradients3.length];

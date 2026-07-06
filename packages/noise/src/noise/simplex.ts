@@ -1,8 +1,7 @@
-import { lerp, range, SQRT1_2 } from "@rgsoft/math";
-import { dot, fade, rngFactory, shuffle } from "../utils";
+import { lerp, SQRT1_2 } from "@rgsoft/math";
+import { dot, fade, PermutationTable } from "../utils";
 import { NoiseBase } from "./noise-base";
 
-const permSize = 256;
 const SQRT1_3 = 1 / Math.sqrt(3);
 const gradients1 = [1, -1];
 const gradients2: [number, number][] = [
@@ -44,24 +43,20 @@ const F3 = 1 / 3;
 const G3 = 1 / 6;
 
 export class Simplex extends NoiseBase {
-  protected permutation: Uint8Array;
+  protected permutation: PermutationTable;
 
   constructor(seed = "simplex") {
     super();
-    const rng = rngFactory(seed);
-    let perms = shuffle(range(0, permSize), rng);
-    perms = perms.concat(perms);
-    this.permutation = new Uint8Array(perms);
+    this.permutation = new PermutationTable(seed);
   }
 
   public noise1(x: number): number {
-    const xp = Math.floor(x) & (permSize - 1);
     const x0 = Math.floor(x);
     const x1 = x0 + 1;
     const dx0 = x - x0;
     const dx1 = x - x1;
-    const g1 = gradients1[this.permutation[xp] % gradients1.length];
-    const g2 = gradients1[this.permutation[xp + 1] % gradients1.length];
+    const g1 = gradients1[this.permutation.hash1(x) % gradients1.length];
+    const g2 = gradients1[this.permutation.hash1(x + 1) % gradients1.length];
     const n0 = g1 * dx0;
     const n1 = g2 * dx1;
     const u = fade(dx0);
@@ -73,8 +68,6 @@ export class Simplex extends NoiseBase {
     const s = (x + y) * F2;
     const i = Math.floor(x + s);
     const j = Math.floor(y + s);
-    const ii = i & (permSize - 1);
-    const jj = j & (permSize - 1);
 
     const t = (i + j) * G2;
     const ox = i - t;
@@ -97,13 +90,13 @@ export class Simplex extends NoiseBase {
     const x2 = x0 - 1 + 2 * G2;
     const y2 = y0 - 1 + 2 * G2;
 
-    const hash0 = this.permutation[ii + this.permutation[jj]];
-    const hash1 = this.permutation[ii + i1 + this.permutation[jj + j1]];
-    const hash2 = this.permutation[ii + 1 + this.permutation[jj + 1]];
+    const hash0 = this.permutation.hash2(i, j);
+    const hash1 = this.permutation.hash2(i + i1, j + j1);
+    const hash2 = this.permutation.hash2(i + 1, j + 1);
 
-    const grad0 = gradients2[this.permutation[hash0] % gradients2.length];
-    const grad1 = gradients2[this.permutation[hash1] % gradients2.length];
-    const grad2 = gradients2[this.permutation[hash2] % gradients2.length];
+    const grad0 = gradients2[hash0 % gradients2.length];
+    const grad1 = gradients2[hash1 % gradients2.length];
+    const grad2 = gradients2[hash2 % gradients2.length];
 
     const dot0 = dot(grad0, [x0, y0]);
     const dot1 = dot(grad1, [x1, y1]);
@@ -161,10 +154,6 @@ export class Simplex extends NoiseBase {
     const j = Math.floor(y + s);
     const k = Math.floor(z + s);
 
-    const ii = i & (permSize - 1);
-    const jj = j & (permSize - 1);
-    const kk = k & (permSize - 1);
-
     const t = (i + j + k) * G3;
     const ox = i - t;
     const oy = j - t;
@@ -207,20 +196,10 @@ export class Simplex extends NoiseBase {
     const y3 = y0 - 1 + 3 * G3;
     const z3 = z0 - 1 + 3 * G3;
 
-    const hash0 =
-      this.permutation[ii + this.permutation[jj + this.permutation[kk]]];
-    const hash1 =
-      this.permutation[
-        ii + i1 + this.permutation[jj + j1 + this.permutation[kk + k1]]
-      ];
-    const hash2 =
-      this.permutation[
-        ii + i2 + this.permutation[jj + j2 + this.permutation[kk + k2]]
-      ];
-    const hash3 =
-      this.permutation[
-        ii + 1 + this.permutation[jj + 1 + this.permutation[kk + 1]]
-      ];
+    const hash0 = this.permutation.hash3(x, y, z);
+    const hash1 = this.permutation.hash3(x + i1, y + j1, z + k1);
+    const hash2 = this.permutation.hash3(x + i2, y + j2, z + k2);
+    const hash3 = this.permutation.hash3(x + 1, y + 1, z + 1);
 
     const grad0 = gradients3[hash0 % gradients3.length];
     const grad1 = gradients3[hash1 % gradients3.length];
