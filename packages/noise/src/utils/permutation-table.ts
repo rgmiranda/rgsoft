@@ -8,7 +8,7 @@ export class PermutationTable {
   private readonly table: Uint8Array<ArrayBuffer>;
 
   constructor(
-    seed: string,
+    seed: string = 'permutation',
     public readonly size = 256,
   ) {
 
