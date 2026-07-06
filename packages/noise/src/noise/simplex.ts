@@ -1,5 +1,4 @@
 import { lerp, range, SQRT1_2 } from "@rgsoft/math";
-import { Noise } from "./noise";
 import { dot, fade, rngFactory, shuffle } from "../utils";
 import { NoiseBase } from "./noise-base";
 
