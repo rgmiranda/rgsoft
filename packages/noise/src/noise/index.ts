@@ -1,3 +1,4 @@
+export { DomainWarp } from './domain-warp';
 export { NoiseBase } from './noise-base';
 export { Noise } from './noise';
 export { Perlin } from './perlin';
