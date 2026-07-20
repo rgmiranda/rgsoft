@@ -48,4 +48,19 @@ describe(Worley.name, () => {
 
     expect(() => noise.noise2(0.3, 0.8)).toThrow("Function not implemented.");
   });
+
+  it("should cover all branches in evaluate1 with varied inputs", () => {
+    const noise = new Worley("seed-coverage");
+
+    // Test with various 1D inputs to ensure all conditional branches are exercised
+    const inputs = [0.1, 0.25, 0.5, 0.75, 1.5, 2.3, -0.5, 10.7];
+    const results = inputs.map((input) => noise.noise1(input));
+
+    // All results should be valid numbers
+    expect(results).toHaveLength(8);
+    results.forEach((result) => {
+      expect(result).toBeTypeOf("number");
+      expect(Number.isFinite(result)).toBe(true);
+    });
+  });
 });
