@@ -28,6 +28,15 @@ describe(Simplex.name, () => {
       expect(value2).toBeCloseTo(0);
       expect(value3).toBeCloseTo(0);
     });
+
+    it("should generate zero values on lattice points", () => {
+      const value1 = simplex.noise1(0);
+      const value2 = simplex.noise1(1);
+      const value3 = simplex.noise1(2);
+      expect(value1).toBeCloseTo(0);
+      expect(value2).toBeCloseTo(0);
+      expect(value3).toBeCloseTo(0);
+    });
   });
 
   describe("noise2", () => {
@@ -48,6 +57,15 @@ describe(Simplex.name, () => {
       const value1 = simplex.noise2(0, 0);
       const value2 = simplex.noise2(1 - 2 * G2, 1 - 2 * G2);
       const value3 = simplex.noise2(4 - 5 * G2, 1 - 5 * G2);
+      expect(value1).toBeCloseTo(0);
+      expect(value2).toBeCloseTo(0);
+      expect(value3).toBeCloseTo(0);
+    });
+
+    it("should generate zero values on lattice points", () => {
+      const value1 = simplex.noise2(0, 0);
+      const value2 = simplex.noise2(1, 1);
+      const value3 = simplex.noise2(2, 3);
       expect(value1).toBeCloseTo(0);
       expect(value2).toBeCloseTo(0);
       expect(value3).toBeCloseTo(0);
@@ -109,6 +127,49 @@ describe(Simplex.name, () => {
       const value = simplex.noise3(0.5, 0.75, 0.25);
       expect(value).toBeGreaterThanOrEqual(-1);
       expect(value).toBeLessThanOrEqual(1);
+    });
+
+    it("should generate zero values on lattice points", () => {
+      const value1 = simplex.noise3(0, 0, 0);
+      const value2 = simplex.noise3(1, 1, 1);
+      const value3 = simplex.noise3(2, 3, 4);
+      expect(value1).toBeCloseTo(0);
+      expect(value2).toBeCloseTo(0);
+      expect(value3).toBeCloseTo(0);
+    });
+  });
+
+  describe("noise4", () => {
+    it("should generate consistent noise values for the same input", () => {
+      const value1 = simplex.noise4(0.5, 0.75, 0.25, 0.125);
+      const value2 = simplex.noise4(0.5, 0.75, 0.25, 0.125);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate zero values on lattice points", () => {
+      const value1 = simplex.noise4(0, 0, 0, 0);
+      const value2 = simplex.noise4(
+        0.8618033988749895,
+        -0.1381966011250105,
+        -0.1381966011250105,
+        -0.1381966011250105,
+      );
+      const value3 = simplex.noise4(
+        0.723606797749979,
+        0.723606797749979,
+        -0.276393202250021,
+        -0.276393202250021,
+      );
+      const value4 = simplex.noise4(
+        0.447213595499958,
+        0.447213595499958,
+        0.447213595499958,
+        0.447213595499958,
+      );
+      expect(value1).toBeCloseTo(0);
+      expect(value2).toBeCloseTo(0);
+      expect(value3).toBeCloseTo(0);
+      expect(value4).toBeCloseTo(0);
     });
   });
 });

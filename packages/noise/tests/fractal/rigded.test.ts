@@ -111,4 +111,24 @@ describe(Ridged.name, () => {
       expect(value).toBeLessThanOrEqual(1);
     });
   });
+
+  describe("noise4", () => {
+    it("should generate consistent noise values for the same input", () => {
+      const value1 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      const value2 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate consistent noise values for the same seed", () => {
+      const noise2 = new Ridged(new Simplex("test-seed"), 4, 2, 0.5);
+      const value1 = noise.noise4(0.5, 0.977, 1.6, 0.25);
+      const value2 = noise2.noise4(0.5, 0.977, 1.6, 0.25);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate one values at the origin", () => {
+      const value = noise.noise4(0, 0, 0, 0);
+      expect(value).toBeCloseTo(1);
+    });
+  });
 });
