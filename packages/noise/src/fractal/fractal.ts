@@ -50,4 +50,10 @@ export abstract class Fractal extends NoiseDecorator {
       this.noise.noise3(x * frequency, y * frequency, z * frequency),
     );
   }
+
+  public noise4(x: number, y: number, z: number, w: number): number {
+    return this.sum((frequency) =>
+      this.noise.noise4(x * frequency, y * frequency, z * frequency, w * frequency),
+    );
+  }
 }

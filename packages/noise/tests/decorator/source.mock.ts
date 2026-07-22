@@ -23,4 +23,8 @@ export const sourceMock: Noise = {
     i = (i + 1) % values.length;
     return values[i];
   },
+  noise4: function (x: number, y: number, z: number, w: number): number {
+    i = (i + 1) % values.length;
+    return values[i];
+  },
 };

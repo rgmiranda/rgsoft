@@ -20,4 +20,7 @@ export class Invert extends NoiseDecorator {
   noise3(x: number, y: number, z: number): number {
     return -1 * this.source.noise3(x, y, z);
   }
+  noise4(x: number, y: number, z: number, w: number): number {
+    return -1 * this.source.noise4(x, y, z, w);
+  }
 }

@@ -76,4 +76,28 @@ describe(ValueNoise.name, () => {
       expect(value3).toBe(white.noise3(10, 20, 30));
     });
   });
+
+  describe("noise4", () => {
+    it("should generate consistent noise values for the same input", () => {
+      const value1 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      const value2 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate consistent noise values for the same seed", () => {
+      const perlin1 = new ValueNoise("test-seed");
+      const value1 = noise.noise4(0.5, 0.977, 1.6, 0.25);
+      const value2 = perlin1.noise4(0.5, 0.977, 1.6, 0.25);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate white noise values on integer lattice points", () => {
+      const value1 = noise.noise4(0, 0, 0, 0);
+      const value2 = noise.noise4(1, 1, 1, 1);
+      const value3 = noise.noise4(10, 20, 30, 40);
+      expect(value1).toBe(white.noise4(0, 0, 0, 0));
+      expect(value2).toBe(white.noise4(1, 1, 1, 1));
+      expect(value3).toBe(white.noise4(10, 20, 30, 40));
+    });
+  });
 });

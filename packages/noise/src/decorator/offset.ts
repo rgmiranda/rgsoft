@@ -19,4 +19,7 @@ export class Offset extends NoiseDecorator {
   noise3(x: number, y: number, z: number): number {
     return this.source.noise3(x, y ,z) + this.offset;
   }
+  noise4(x: number, y: number, z: number, w: number): number {
+    return this.source.noise4(x, y, z, w) + this.offset;
+  }
 }

@@ -47,6 +47,13 @@ export class PermutationTable {
     return this.table[(x + hy) & this.mask];
   }
 
+  hash4(x: number, y: number, z: number, w: number): number {
+    const hw = this.table[w & this.mask];
+    const hz = this.table[(z + hw) & this.mask];
+    const hy = this.table[(y + hz) & this.mask];
+    return this.table[(x + hy) & this.mask];
+  }
+
   get(index: number): number {
     return this.table[index & this.mask];
   }

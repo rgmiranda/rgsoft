@@ -22,4 +22,7 @@ export class Space extends NoiseDecorator {
   noise3(x: number, y: number, z: number): number {
     return this.source.noise3(this.space * x, this.space * y, this.space * z);
   }
+  noise4(x: number, y: number, z: number, w: number): number {
+    return this.source.noise4(this.space * x, this.space * y, this.space * z, this.space * w);
+  }
 }

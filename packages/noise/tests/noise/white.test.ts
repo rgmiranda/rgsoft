@@ -65,11 +65,27 @@ describe(WhiteNoise.name, () => {
     });
   });
 
+  describe("noise4", () => {
+    it("should generate consistent noise values for the same input", () => {
+      const value1 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      const value2 = noise.noise4(0.5, 0.75, 0.25, 0.125);
+      expect(value1).toBe(value2);
+    });
+
+    it("should generate consistent noise values for the same seed", () => {
+      const perlin1 = new WhiteNoise("test-seed");
+      const value1 = noise.noise4(0.5, 0.977, 1.6, 0.25);
+      const value2 = perlin1.noise4(0.5, 0.977, 1.6, 0.25);
+      expect(value1).toBe(value2);
+    });
+  });
+
   it("should produce values within the expected range", () => {
     const values = [
       noise.noise1(0.5),
       noise.noise2(0.5, 0.75),
       noise.noise3(0.5, 0.75, 0.25),
+      noise.noise4(0.5, 0.75, 0.25, 0.125),
     ];
 
     values.forEach((value) => {

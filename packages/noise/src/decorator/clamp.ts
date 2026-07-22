@@ -22,4 +22,7 @@ export class Clamp extends NoiseDecorator {
   noise3(x: number, y: number, z: number): number {
     return Math.max(Math.min(this.source.noise3(x, y, z), this.range[1]), this.range[0]);
   }
+  noise4(x: number, y: number, z: number, w: number): number {
+    return Math.max(Math.min(this.source.noise4(x, y, z, w), this.range[1]), this.range[0]);
+  }
 }

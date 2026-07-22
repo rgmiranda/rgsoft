@@ -21,4 +21,7 @@ export class Abs extends NoiseDecorator {
   noise3(x: number, y: number, z: number): number {
     return Math.abs(this.source.noise3(x, y, z));
   }
+  noise4(x: number, y: number, z: number, w: number): number {
+    return Math.abs(this.source.noise4(x, y, z, w));
+  }
 }

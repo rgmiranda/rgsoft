@@ -137,6 +137,54 @@ export class Worley extends NoiseBase {
     return [f1, f2, f3];
   }
 
+  private evaluate4(x: number, y: number, z: number, w: number): [number, number, number] {
+    const cx = Math.floor(x);
+    const cy = Math.floor(y);
+    const cz = Math.floor(z);
+    const cw = Math.floor(w);
+
+    let f1 = Infinity;
+    let f2 = Infinity;
+    let f3 = Infinity;
+
+    for (let l = -1; l <= 1; l++) {
+
+      for (let k = -1; k <= 1; k++) {
+
+        for (let j = -1; j <= 1; j++) {
+
+          for (let i = -1; i <= 1; i++) {
+            const h = this.permutation.hash4(x + i, y + j, z + k, w + l);
+
+            const ox = this.permutation.random01(h, 0);
+            const oy = this.permutation.random01(h, 1);
+            const oz = this.permutation.random01(h, 2);
+            const ow = this.permutation.random01(h, 3);
+
+            const fx = cx + i + ox;
+            const fy = cy + j + oy;
+            const fz = cz + k + oz;
+            const fw = cw + l + ow;
+            const dist = this.distance(x - fx, y - fy, z - fz, w - fw);
+
+            if (dist < f1) {
+              f3 = f2;
+              f2 = f1;
+              f1 = dist;
+            } else if (dist < f2) {
+              f3 = f2;
+              f2 = dist;
+            } else if (dist < f3) {
+              f3 = dist;
+            }
+          }
+        }
+      }
+    }
+
+    return [f1, f2, f3];
+  }
+
   private select(f1: number, f2: number, f3: number): number {
     switch (this.type) {
       case WorleyType.F1:
@@ -167,6 +215,11 @@ export class Worley extends NoiseBase {
 
   noise3(x: number, y: number, z: number): number {
     const [f1, f2, f3] = this.evaluate3(x, y, z);
+    return this.select(f1, f2, f3);
+  }
+
+  noise4(x: number, y: number, z: number, w: number): number {
+    const [f1, f2, f3] = this.evaluate4(x, y, z, w);
     return this.select(f1, f2, f3);
   }
 }

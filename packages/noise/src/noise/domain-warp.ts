@@ -41,4 +41,17 @@ export class DomainWarp extends NoiseBase {
       z + wz * this.strength,
     );
   }
+
+  noise4(x: number, y: number, z: number, w: number): number {
+    const wx = this.warp.noise4(x - 7.133, y + 4.032, z + 77.416, w - 60.965);
+    const wy = this.warp.noise4(x - 45.37, y - 39.912, z - 84.105, w + 40.094);
+    const wz = this.warp.noise4(x + 87.221, y + 38.102, z - 91.070, w +31.676);
+    const ww = this.warp.noise4(x + 6.408, y - 32.459, z + 87.719, w - 47.325);
+    return this.source.noise4(
+      x + wx * this.strength,
+      y + wy * this.strength,
+      z + wz * this.strength,
+      w + ww * this.strength,
+    );
+  }
 }

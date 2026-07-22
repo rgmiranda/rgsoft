@@ -38,6 +38,70 @@ const gradients3: [number, number, number][] = [
   [-SQRT1_3, -SQRT1_3, -SQRT1_3],
 ];
 
+const gradients4: [number, number, number, number][] = [
+  [SQRT1_2, SQRT1_2, 0, 0],
+  [SQRT1_2, -SQRT1_2, 0, 0],
+  [-SQRT1_2, SQRT1_2, 0, 0],
+  [-SQRT1_2, -SQRT1_2, 0, 0],
+
+  [SQRT1_2, 0, SQRT1_2, 0],
+  [SQRT1_2, 0, -SQRT1_2, 0],
+  [-SQRT1_2, 0, SQRT1_2, 0],
+  [-SQRT1_2, 0, -SQRT1_2, 0],
+
+  [SQRT1_2, 0, 0, SQRT1_2],
+  [SQRT1_2, 0, 0, -SQRT1_2],
+  [-SQRT1_2, 0, 0, SQRT1_2],
+  [-SQRT1_2, 0, 0, -SQRT1_2],
+
+  [0, SQRT1_2, 0, SQRT1_2],
+  [0, SQRT1_2, 0, -SQRT1_2],
+  [0, -SQRT1_2, 0, SQRT1_2],
+  [0, -SQRT1_2, 0, -SQRT1_2],
+
+  [0, 0, SQRT1_2, SQRT1_2],
+  [0, 0, SQRT1_2, -SQRT1_2],
+  [0, 0, -SQRT1_2, SQRT1_2],
+  [0, 0, -SQRT1_2, -SQRT1_2],
+
+  [SQRT1_3, SQRT1_3, SQRT1_3, 0],
+  [-SQRT1_3, SQRT1_3, SQRT1_3, 0],
+  [SQRT1_3, -SQRT1_3, SQRT1_3, 0],
+  [-SQRT1_3, -SQRT1_3, SQRT1_3, 0],
+
+  [SQRT1_3, SQRT1_3, 0, -SQRT1_3],
+  [-SQRT1_3, SQRT1_3, 0, -SQRT1_3],
+  [SQRT1_3, -SQRT1_3, 0, -SQRT1_3],
+  [-SQRT1_3, -SQRT1_3, 0, -SQRT1_3],
+
+  [SQRT1_3, 0, SQRT1_3, -SQRT1_3],
+  [-SQRT1_3, 0, SQRT1_3, -SQRT1_3],
+  [SQRT1_3, 0, -SQRT1_3, -SQRT1_3],
+  [-SQRT1_3, 0, -SQRT1_3, -SQRT1_3],
+
+  [0, SQRT1_3, SQRT1_3, -SQRT1_3],
+  [0, -SQRT1_3, SQRT1_3, -SQRT1_3],
+  [0, SQRT1_3, -SQRT1_3, -SQRT1_3],
+  [0, -SQRT1_3, -SQRT1_3, -SQRT1_3],
+
+  [0.5, 0.5, 0.5, 0.5],
+  [0.5, 0.5, 0.5, -0.5],
+  [0.5, 0.5, -0.5, 0.5],
+  [0.5, 0.5, -0.5, -0.5],
+  [0.5, -0.5, 0.5, 0.5],
+  [0.5, -0.5, 0.5, -0.5],
+  [0.5, -0.5, -0.5, 0.5],
+  [0.5, -0.5, -0.5, -0.5],
+  [-0.5, 0.5, 0.5, 0.5],
+  [-0.5, 0.5, 0.5, -0.5],
+  [-0.5, 0.5, -0.5, 0.5],
+  [-0.5, 0.5, -0.5, -0.5],
+  [-0.5, -0.5, 0.5, 0.5],
+  [-0.5, -0.5, 0.5, -0.5],
+  [-0.5, -0.5, -0.5, 0.5],
+  [-0.5, -0.5, -0.5, -0.5],
+];
+
 export class Perlin extends NoiseBase {
   protected permutation: PermutationTable;
 
@@ -150,5 +214,106 @@ export class Perlin extends NoiseBase {
     const yB = lerp(xAB, xBB, v);
 
     return lerp(yA, yB, w);
+  }
+
+  public noise4(x: number, y: number, z: number, w: number): number {
+    const x0 = Math.floor(x);
+    const x1 = x0 + 1;
+    const dx0 = x - x0;
+    const dx1 = x - x1;
+
+    const y0 = Math.floor(y);
+    const y1 = y0 + 1;
+    const dy0 = y - y0;
+    const dy1 = y - y1;
+
+    const z0 = Math.floor(z);
+    const z1 = z0 + 1;
+    const dz0 = z - z0;
+    const dz1 = z - z1;
+
+    const w0 = Math.floor(w);
+    const w1 = w0 + 1;
+    const dw0 = w - w0;
+    const dw1 = w - w1;
+
+    const aaaa = this.permutation.hash4(x, y, z, w);
+    const aaab = this.permutation.hash4(x, y, z, w + 1);
+    const aaba = this.permutation.hash4(x, y, z + 1, w);
+    const aabb = this.permutation.hash4(x, y, z + 1, w + 1);
+    const abaa = this.permutation.hash4(x, y + 1, z, w);
+    const abab = this.permutation.hash4(x, y + 1, z, w + 1);
+    const abba = this.permutation.hash4(x, y + 1, z + 1, w);
+    const abbb = this.permutation.hash4(x, y + 1, z + 1, w + 1);
+    const baaa = this.permutation.hash4(x + 1, y, z, w);
+    const baab = this.permutation.hash4(x + 1, y, z, w + 1);
+    const baba = this.permutation.hash4(x + 1, y, z + 1, w);
+    const babb = this.permutation.hash4(x + 1, y, z + 1, w + 1);
+    const bbaa = this.permutation.hash4(x + 1, y + 1, z, w);
+    const bbab = this.permutation.hash4(x + 1, y + 1, z, w + 1);
+    const bbba = this.permutation.hash4(x + 1, y + 1, z + 1, w);
+    const bbbb = this.permutation.hash4(x + 1, y + 1, z + 1, w + 1);
+
+    const gAAAA = gradients4[aaaa % gradients4.length];
+    const gAAAB = gradients4[aaab % gradients4.length];
+    const gAABA = gradients4[aaba % gradients4.length];
+    const gAABB = gradients4[aabb % gradients4.length];
+    const gABAA = gradients4[abaa % gradients4.length];
+    const gABAB = gradients4[abab % gradients4.length];
+    const gABBA = gradients4[abba % gradients4.length];
+    const gABBB = gradients4[abbb % gradients4.length];
+    const gBAAA = gradients4[baaa % gradients4.length];
+    const gBAAB = gradients4[baab % gradients4.length];
+    const gBABA = gradients4[baba % gradients4.length];
+    const gBABB = gradients4[babb % gradients4.length];
+    const gBBAA = gradients4[bbaa % gradients4.length];
+    const gBBAB = gradients4[bbab % gradients4.length];
+    const gBBBA = gradients4[bbba % gradients4.length];
+    const gBBBB = gradients4[bbbb % gradients4.length];
+
+    const nAAAA = dot(gAAAA, [dx0, dy0, dz0, dw0]);
+    const nAAAB = dot(gAAAB, [dx0, dy0, dz0, dw1]);
+    const nAABA = dot(gAABA, [dx0, dy0, dz1, dw0]);
+    const nAABB = dot(gAABB, [dx0, dy0, dz1, dw1]);
+    const nABAA = dot(gABAA, [dx0, dy1, dz0, dw0]);
+    const nABAB = dot(gABAB, [dx0, dy1, dz0, dw1]);
+    const nABBA = dot(gABBA, [dx0, dy1, dz1, dw0]);
+    const nABBB = dot(gABBB, [dx0, dy1, dz1, dw1]);
+    const nBAAA = dot(gBAAA, [dx1, dy0, dz0, dw0]);
+    const nBAAB = dot(gBAAB, [dx1, dy0, dz0, dw1]);
+    const nBABA = dot(gBABA, [dx1, dy0, dz1, dw0]);
+    const nBABB = dot(gBABB, [dx1, dy0, dz1, dw1]);
+    const nBBAA = dot(gBBAA, [dx1, dy1, dz0, dw0]);
+    const nBBAB = dot(gBBAB, [dx1, dy1, dz0, dw1]);
+    const nBBBA = dot(gBBBA, [dx1, dy1, dz1, dw0]);
+    const nBBBB = dot(gBBBB, [dx1, dy1, dz1, dw1]);
+
+    const ux = fade(dx0);
+    const uy = fade(dy0);
+    const uz = fade(dz0);
+    const uw = fade(dw0);
+
+    const xAAA = lerp(nAAAA, nBAAA, ux);
+    const xBAA = lerp(nABAA, nBBAA, ux);
+
+    const xABA = lerp(nAABA, nBABA, ux);
+    const xBBA = lerp(nABBA, nBBBA, ux);
+
+    const xAAB = lerp(nAAAB, nBAAB, ux);
+    const xBAB = lerp(nABAB, nBBAB, ux);
+
+    const xABB = lerp(nAABB, nBABB, ux);
+    const xBBB = lerp(nABBB, nBBBB, ux);
+
+    const yAA = lerp(xAAA, xBAA, uy);
+    const yBA = lerp(xABA, xBBA, uy);
+
+    const yAB = lerp(xAAB, xBAB, uy);
+    const yBB = lerp(xABB, xBBB, uy);
+
+    const zA = lerp(yAA, yBA, uz);
+    const zB = lerp(yAB, yBB, uz);
+
+    return lerp(zA, zB, uw);
   }
 }

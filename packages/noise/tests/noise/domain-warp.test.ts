@@ -18,6 +18,10 @@ class ConstantNoise implements Noise {
   noise3(): number {
     return this.value;
   }
+
+  noise4(): number {
+    return this.value;
+  }
 }
 
 describe(DomainWarp.name, () => {
@@ -27,6 +31,7 @@ describe(DomainWarp.name, () => {
       noise1: () => 0,
       noise2: () => 0,
       noise3: () => 0,
+      noise4: () => 0,
     };
     const warp = new ConstantNoise(0.5);
 
@@ -41,12 +46,14 @@ describe(DomainWarp.name, () => {
       noise1: (x) => x,
       noise2: () => 0,
       noise3: () => 0,
+      noise4: () => 0,
     };
     const warp: Noise = {
       range: [0, 1] as const,
       noise1: () => 0.5,
       noise2: () => 0,
       noise3: () => 0,
+      noise4: () => 0,
     };
     const noise = new DomainWarp(source, warp);
 
@@ -60,16 +67,58 @@ describe(DomainWarp.name, () => {
       noise1: () => 0,
       noise2: (x, y) => x + y,
       noise3: (x, y, z) => x + y + z,
+      noise4: (x, y, z, w) => x + y + z + w,
     };
     const warp: Noise = {
       range: [0, 1] as const,
       noise1: () => 0.5,
       noise2: () => 0.5,
       noise3: () => 0.5,
+      noise4: () => 0.5,
     };
     const noise = new DomainWarp(source, warp, { strength: 10 });
 
     expect(noise.noise2(1, 2)).toBe(1 + 2 + (0.5 + 0.5) * 10);
     expect(noise.noise3(1, 2, 3)).toBe(1 + 2 + 3 + (0.5 + 0.5 + 0.5) * 10);
+  });
+
+  it("should apply warp offsets to noise4 with the default strength", () => {
+    const source: Noise = {
+      range: [0, 1] as const,
+      noise1: () => 0,
+      noise2: () => 0,
+      noise3: () => 0,
+      noise4: (x, y, z, w) => x + y + z + w,
+    };
+    const warp: Noise = {
+      range: [0, 1] as const,
+      noise1: () => 0,
+      noise2: () => 0,
+      noise3: () => 0,
+      noise4: () => 0.5,
+    };
+    const noise = new DomainWarp(source, warp);
+
+    expect(noise.noise4(1, 2, 3, 4)).toBe(1 + 2 + 3 + 4 + 4 * 0.5 * 20);
+  });
+
+  it("should apply warp offsets to noise4 with a custom strength", () => {
+    const source: Noise = {
+      range: [0, 1] as const,
+      noise1: () => 0,
+      noise2: () => 0,
+      noise3: () => 0,
+      noise4: (x, y, z, w) => x + y + z + w,
+    };
+    const warp: Noise = {
+      range: [0, 1] as const,
+      noise1: () => 0,
+      noise2: () => 0,
+      noise3: () => 0,
+      noise4: () => 0.25,
+    };
+    const noise = new DomainWarp(source, warp, { strength: 10 });
+
+    expect(noise.noise4(1, 2, 3, 4)).toBe(1 + 2 + 3 + 4 + 4 * 0.25 * 10);
   });
 });

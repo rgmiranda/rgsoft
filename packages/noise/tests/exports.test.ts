@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { Noise } from "../../src/noise";
-import { Range } from "../../src/types";
+import { Noise } from "../src/noise";
+import { Range } from "../src/types";
 
 class TestNoise implements Noise {
   public readonly range: Range = [0, 1];
@@ -16,6 +16,10 @@ class TestNoise implements Noise {
   public noise3(): number {
     return 0;
   }
+
+  public noise4(): number {
+    return 0;
+  }
 }
 
 describe("exports", () => {
@@ -25,6 +29,7 @@ describe("exports", () => {
     expect(noise.noise1(0)).toBe(0);
     expect(noise.noise2(0, 0)).toBe(0);
     expect(noise.noise3(0, 0, 0)).toBe(0);
+    expect(noise.noise4(0, 0, 0, 0)).toBe(0);
   });
 
   it("should allow importing Range from src/types", () => {

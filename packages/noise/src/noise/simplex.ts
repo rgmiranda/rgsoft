@@ -43,6 +43,9 @@ const F3 = 1 / 3;
 const G3 = 1 / 6;
 
 export class Simplex extends NoiseBase {
+  noise4(x: number, y: number, z: number, w: number): number {
+    throw new Error("Method not implemented.");
+  }
   protected permutation: PermutationTable;
 
   constructor(seed = "simplex") {
