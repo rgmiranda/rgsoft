@@ -1,6 +1,7 @@
 export { DomainWarp } from './domain-warp';
 export { NoiseBase } from './noise-base';
 export { Noise } from './noise';
+export { OpenSimplex } from './open-simplex';
 export { Perlin } from './perlin';
 export { Simplex } from './simplex';
 export { Tileable } from './tileable';
