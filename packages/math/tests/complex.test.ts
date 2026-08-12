@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Complex } from "../src";
+import { Complex, PI } from "../src";
 
 describe(Complex.name, () => {
   it("creates a new complex instance", () => {
@@ -141,6 +141,20 @@ describe(Complex.name, () => {
 
     expect(cpx.real).toBe(64);
     expect(cpx.imaginary).toBe(0);
+  });
+
+  it("applies the exponencial function to a complex number", () => {
+    let cpx = new Complex(0, 0);
+    cpx = cpx.exp();
+
+    expect(cpx.real).toBe(1);
+    expect(cpx.imaginary).toBe(0);
+
+    cpx = new Complex(0, PI);
+    cpx = cpx.exp();
+
+    expect(cpx.real).toBeCloseTo(-1);
+    expect(cpx.imaginary).toBeCloseTo(0);
   });
 
   it("gets the argument of a complex number", () => {

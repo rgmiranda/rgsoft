@@ -96,6 +96,13 @@ export class Complex {
     return new Complex(real, imaginary);
   }
 
+  exp(): Complex {
+    const ex = Math.exp(this.real);
+    const real = ex * Math.cos(this.imaginary);
+    const imaginary = ex * Math.sin(this.imaginary);
+    return new Complex(real, imaginary);
+  }
+
   conjugate(): Complex {
     return new Complex(this.real, -1 * this.imaginary);
   }
