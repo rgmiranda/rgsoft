@@ -5,13 +5,13 @@ describe(Complex.name, () => {
   it("creates a new complex instance", () => {
     let cpx = new Complex(0, 1);
     expect(cpx).toBeInstanceOf(Complex);
-    expect(cpx.a).toBe(0);
-    expect(cpx.b).toBe(1);
+    expect(cpx.real).toBe(0);
+    expect(cpx.imaginary).toBe(1);
 
     cpx = Complex.fromPolar(Math.SQRT2, Math.PI * 0.25);
     expect(cpx).toBeInstanceOf(Complex);
-    expect(cpx.a).toBeCloseTo(1, 6);
-    expect(cpx.b).toBeCloseTo(1, 6);
+    expect(cpx.real).toBeCloseTo(1, 6);
+    expect(cpx.imaginary).toBeCloseTo(1, 6);
   });
 
   const magnitudes = [
@@ -32,16 +32,16 @@ describe(Complex.name, () => {
   it("calculates the conjugate", () => {
     const cpx = new Complex(8, 4);
     const conj = cpx.conjugate();
-    expect(conj.a).toBe(cpx.a);
-    expect(conj.b).toBe(-1 * cpx.b);
+    expect(conj.real).toBe(cpx.real);
+    expect(conj.imaginary).toBe(-1 * cpx.imaginary);
   });
 
   it("adds a real number", () => {
     let cpx = new Complex(8, 5);
     cpx = cpx.add(22);
 
-    expect(cpx.a).toBe(30);
-    expect(cpx.b).toBe(5);
+    expect(cpx.real).toBe(30);
+    expect(cpx.imaginary).toBe(5);
   });
 
   it("adds a complex number", () => {
@@ -49,16 +49,16 @@ describe(Complex.name, () => {
     let cpx2 = new Complex(-5, -8);
     const cpx = cpx1.add(cpx2);
 
-    expect(cpx.a).toBe(3);
-    expect(cpx.b).toBe(-3);
+    expect(cpx.real).toBe(3);
+    expect(cpx.imaginary).toBe(-3);
   });
 
   it("subs a real number", () => {
     let cpx = new Complex(-7, 2);
     cpx = cpx.sub(-8);
 
-    expect(cpx.a).toBe(1);
-    expect(cpx.b).toBe(2);
+    expect(cpx.real).toBe(1);
+    expect(cpx.imaginary).toBe(2);
   });
 
   it("subs a complex number", () => {
@@ -66,16 +66,16 @@ describe(Complex.name, () => {
     let cpx2 = new Complex(-5, -8);
     const cpx = cpx1.sub(cpx2);
 
-    expect(cpx.a).toBe(13);
-    expect(cpx.b).toBe(13);
+    expect(cpx.real).toBe(13);
+    expect(cpx.imaginary).toBe(13);
   });
 
   it("multiplies by real number", () => {
     let cpx = new Complex(8, 5);
     cpx = cpx.mult(2);
 
-    expect(cpx.a).toBe(16);
-    expect(cpx.b).toBe(10);
+    expect(cpx.real).toBe(16);
+    expect(cpx.imaginary).toBe(10);
   });
 
   it("multiplies by complex number", () => {
@@ -83,16 +83,16 @@ describe(Complex.name, () => {
     let cpx2 = new Complex(-1, -1);
     const cpx = cpx1.mult(cpx2);
 
-    expect(cpx.a).toBe(-1);
-    expect(cpx.b).toBe(-3);
+    expect(cpx.real).toBe(-1);
+    expect(cpx.imaginary).toBe(-3);
   });
 
   it("divides by real number", () => {
     let cpx = new Complex(8, 5);
     cpx = cpx.div(2);
 
-    expect(cpx.a).toBe(4);
-    expect(cpx.b).toBe(2.5);
+    expect(cpx.real).toBe(4);
+    expect(cpx.imaginary).toBe(2.5);
   });
 
   it("fails on division by zero", () => {
@@ -105,15 +105,15 @@ describe(Complex.name, () => {
     let cpx2 = new Complex(-1, -1);
     let cpx = cpx1.div(cpx2);
 
-    expect(cpx.a).toBe(-1.5);
-    expect(cpx.b).toBe(0.5);
+    expect(cpx.real).toBe(-1.5);
+    expect(cpx.imaginary).toBe(0.5);
 
     cpx1 = new Complex(-2, -2);
     cpx2 = new Complex(-2, 0);
     cpx = cpx1.div(cpx2);
 
-    expect(cpx.a).toBe(1);
-    expect(cpx.b).toBe(1);
+    expect(cpx.real).toBe(1);
+    expect(cpx.imaginary).toBe(1);
   });
 
   it("fails on division by zero complex", () => {
@@ -126,8 +126,8 @@ describe(Complex.name, () => {
     let cpx = new Complex(4, 0);
     cpx = cpx.sqrt();
 
-    expect(cpx.a).toBe(2);
-    expect(cpx.b).toBe(0);
+    expect(cpx.real).toBe(2);
+    expect(cpx.imaginary).toBe(0);
 
     cpx = new Complex(3, 4);
     cpx = cpx.sqrt();
@@ -139,8 +139,8 @@ describe(Complex.name, () => {
     let cpx = new Complex(4, 0);
     cpx = cpx.pow(3);
 
-    expect(cpx.a).toBe(64);
-    expect(cpx.b).toBe(0);
+    expect(cpx.real).toBe(64);
+    expect(cpx.imaginary).toBe(0);
   });
 
   it("gets the argument of a complex number", () => {

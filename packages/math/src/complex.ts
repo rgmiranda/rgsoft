@@ -2,7 +2,7 @@ export class Complex {
   private _mag?: number;
   private _arg?: number;
 
-  constructor(public readonly a: number, public readonly b: number) { }
+  constructor(public readonly real: number, public readonly imaginary: number) { }
 
   static fromPolar(r: number, theta: number): Complex {
     return new Complex(r * Math.cos(theta), r * Math.sin(theta));
@@ -17,14 +17,14 @@ export class Complex {
    * @param { number | Complex} n
    */
   add(n: number | Complex): Complex {
-    let { a, b } = this;
+    let { real, imaginary } = this;
     if (typeof n === "number") {
-      a += n;
+      real += n;
     } else if (n instanceof Complex) {
-      a += n.a;
-      b += n.b;
+      real += n.real;
+      imaginary += n.imaginary;
     }
-    return new Complex(a, b);
+    return new Complex(real, imaginary);
   }
 
   /**
@@ -32,14 +32,14 @@ export class Complex {
    * @param { number | Complex} n
    */
   sub(n: number | Complex): Complex {
-    let { a, b } = this;
+    let { real, imaginary } = this;
     if (typeof n === "number") {
-      a -= n;
+      real -= n;
     } else if (n instanceof Complex) {
-      a -= n.a;
-      b -= n.b;
+      real -= n.real;
+      imaginary -= n.imaginary;
     }
-    return new Complex(a, b);
+    return new Complex(real, imaginary);
   }
 
   /**
@@ -47,15 +47,15 @@ export class Complex {
    * @param { number | Complex} n
    */
   mult(n: number | Complex): Complex {
-    let { a, b } = this;
+    let { real, imaginary } = this;
     if (typeof n === "number") {
-      a *= n;
-      b *= n;
+      real *= n;
+      imaginary *= n;
     } else if (n instanceof Complex) {
-      a = this.a * n.a - this.b * n.b;
-      b = this.a * n.b + this.b * n.a;
+      real = this.real * n.real - this.imaginary * n.imaginary;
+      imaginary = this.real * n.imaginary + this.imaginary * n.real;
     }
-    return new Complex(a, b);
+    return new Complex(real, imaginary);
   }
 
   /**
@@ -63,21 +63,21 @@ export class Complex {
    * @param { number | Complex} n
    */
   div(n: number | Complex): Complex {
-    let { a, b } = this;
+    let { real, imaginary } = this;
 
-    if (n === 0 || (n instanceof Complex && n.a === 0 && n.b === 0)) {
+    if (n === 0 || (n instanceof Complex && n.real === 0 && n.imaginary === 0)) {
       throw new Error("Division by zero");
     }
 
     if (typeof n === "number") {
-      a /= n;
-      b /= n;
+      real /= n;
+      imaginary /= n;
     } else if (n instanceof Complex) {
-      const d = n.a * n.a + n.b * n.b;
-      a = (this.a * n.a + this.b * n.b) / d;
-      b = (this.b * n.a - this.a * n.b) / d;
+      const d = n.real * n.real + n.imaginary * n.imaginary;
+      real = (this.real * n.real + this.imaginary * n.imaginary) / d;
+      imaginary = (this.imaginary * n.real - this.real * n.imaginary) / d;
     }
-    return new Complex(a, b);
+    return new Complex(real, imaginary);
   }
 
   pow(n: number): Complex {
@@ -87,39 +87,39 @@ export class Complex {
   }
 
   sqrt(): Complex {
-    let { a, b } = this;
+    let { real, imaginary } = this;
     const m = Math.sqrt(this.mag);
-    const phi = Math.atan2(this.b, this.a) * 0.5;
-    a = m * Math.cos(phi);
-    b = m * Math.sin(phi);
+    const phi = Math.atan2(this.imaginary, this.real) * 0.5;
+    real = m * Math.cos(phi);
+    imaginary = m * Math.sin(phi);
 
-    return new Complex(a, b);
+    return new Complex(real, imaginary);
   }
 
   conjugate(): Complex {
-    return new Complex(this.a, -1 * this.b);
+    return new Complex(this.real, -1 * this.imaginary);
   }
 
   equals(n: Complex): boolean {
-    return this.a === n.a && this.b === n.b;
+    return this.real === n.real && this.imaginary === n.imaginary;
   }
 
   toString(): string {
     let str = "";
-    if (this.a !== 0) {
-      str += `${this.a}`;
+    if (this.real !== 0) {
+      str += `${this.real}`;
     }
-    if (this.b > 0) {
-      if (this.b === 1) {
+    if (this.imaginary > 0) {
+      if (this.imaginary === 1) {
         str += ` + i`;
       } else {
-        str += ` + ${this.b}i`;
+        str += ` + ${this.imaginary}i`;
       }
-    } else if (this.b < 0) {
-      if (this.b === -1) {
+    } else if (this.imaginary < 0) {
+      if (this.imaginary === -1) {
         str += ` - i`;
       } else {
-        str += ` - ${Math.abs(this.b)}i`;
+        str += ` - ${Math.abs(this.imaginary)}i`;
       }
     }
     return str.trim();
@@ -130,7 +130,7 @@ export class Complex {
    */
   get mag(): number {
     if (this._mag === undefined) {
-      this._mag = Math.sqrt(this.a * this.a + this.b * this.b);
+      this._mag = Math.sqrt(this.real * this.real + this.imaginary * this.imaginary);
     }
     return this._mag;
   }
@@ -140,7 +140,7 @@ export class Complex {
    */
   get arg(): number {
     if (!this._arg) {
-      this._arg = Math.atan2(this.b, this.a);
+      this._arg = Math.atan2(this.imaginary, this.real);
     }
     return this._arg;
   }
