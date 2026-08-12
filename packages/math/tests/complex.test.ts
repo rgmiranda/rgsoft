@@ -157,6 +157,23 @@ describe(Complex.name, () => {
     expect(cpx.imaginary).toBeCloseTo(0);
   });
 
+  it("calculates the logarithm of a complex number", () => {
+    let cpx = new Complex(1, 0);
+    cpx = cpx.log();
+
+    expect(cpx.real).toBeCloseTo(0);
+    expect(cpx.imaginary).toBeCloseTo(0);
+
+    cpx = new Complex(0, 1);
+    cpx = cpx.log();
+
+    expect(cpx.real).toBeCloseTo(0);
+    expect(cpx.imaginary).toBeCloseTo(PI * 0.5);
+
+    cpx = new Complex(0, 0);
+    expect(() => cpx.log()).toThrowError('Zero received');
+  });
+
   it("gets the argument of a complex number", () => {
     let cpx = new Complex(4, 0);
     expect(cpx.arg).toBe(0);

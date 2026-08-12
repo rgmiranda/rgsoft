@@ -1,3 +1,5 @@
+import { EPSILON } from "./constants";
+
 export class Complex {
   private _mag?: number;
   private _arg?: number;
@@ -101,6 +103,13 @@ export class Complex {
     const real = ex * Math.cos(this.imaginary);
     const imaginary = ex * Math.sin(this.imaginary);
     return new Complex(real, imaginary);
+  }
+
+  log(): Complex {
+    if (this.mag <= EPSILON) {
+      throw new Error('Zero received');
+    }
+    return new Complex(Math.log(this.mag), this.arg);
   }
 
   conjugate(): Complex {
