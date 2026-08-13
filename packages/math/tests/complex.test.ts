@@ -223,8 +223,7 @@ describe(Complex.name, () => {
     const cos2 = new Complex(1, 2).cos().pow(2);
     const sum = sin2.add(cos2);
 
-    expect(sum.real).toBeCloseTo(1);
-    expect(sum.imaginary).toBeCloseTo(0);
+    expect(sum.isClose(Complex.one)).toBeTruthy();
   });
 
   it("gets the argument of a complex number", () => {
@@ -235,7 +234,7 @@ describe(Complex.name, () => {
     expect(cpx.arg).toBe(Math.PI * 0.25);
   });
 
-  it("gets the argument of a complex number", () => {
+  it("checks equality of two complex numbers", () => {
     let c = new Complex(4, 0);
     let p = new Complex(4, 0);
     expect(p.equals(c)).toBeTruthy();
@@ -243,6 +242,16 @@ describe(Complex.name, () => {
     c = new Complex(4, -5);
     p = new Complex(4, 0);
     expect(p.equals(c)).toBeFalsy();
+  });
+
+  it("checks closeness of two complex numbers", () => {
+    let c = new Complex(4 + 1e-8, 0);
+    let p = new Complex(4, 1e-8);
+    expect(p.isClose(c, 1e-6)).toBeTruthy();
+    expect(p.isClose(c, 1e-10)).toBeFalsy();
+
+    const delta = new Complex(7.5e-11, 7.5e-11);
+    expect(delta.isClose(Complex.zero, 1e-10)).toBeFalsy();
   });
 
   const toStringData = [

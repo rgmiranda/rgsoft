@@ -126,12 +126,27 @@ export class Complex {
     return num.div(den);
   }
 
+  tan(): Complex | undefined {
+    const cz = this.cos();
+    if (cz.isClose(Complex.zero)) {
+      return undefined;
+    }
+    const sz = this.sin();
+    return sz.div(cz);
+  }
+
   conjugate(): Complex {
     return new Complex(this.real, -1 * this.imaginary);
   }
 
   equals(n: Complex): boolean {
     return this.real === n.real && this.imaginary === n.imaginary;
+  }
+
+  isClose(n: Complex, e = EPSILON): boolean {
+    const dr = this.real - n.real;
+    const di = this.imaginary - n.imaginary;
+    return Math.hypot(dr, di) < e;
   }
 
   toString(): string {
