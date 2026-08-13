@@ -171,7 +171,60 @@ describe(Complex.name, () => {
     expect(cpx.imaginary).toBeCloseTo(PI * 0.5);
 
     cpx = new Complex(0, 0);
-    expect(() => cpx.log()).toThrowError('Zero received');
+    expect(() => cpx.log()).toThrowError("Zero received");
+  });
+
+  it("calculates the sine of a purely real complex number", () => {
+    let cpx = new Complex(1, 0);
+    cpx = cpx.sin();
+
+    expect(cpx.real).toBeCloseTo(Math.sin(1));
+    expect(cpx.imaginary).toBeCloseTo(0);
+  });
+
+  it("calculates the cosine of a purely real complex number", () => {
+    let cpx = new Complex(1, 0);
+    cpx = cpx.cos();
+
+    expect(cpx.real).toBeCloseTo(Math.cos(1));
+    expect(cpx.imaginary).toBeCloseTo(0);
+  });
+
+  it("calculates the sine of a purely imaginary number", () => {
+    const cpx = new Complex(0, 1).sin();
+
+    expect(cpx.real).toBeCloseTo(0);
+    expect(cpx.imaginary).toBeCloseTo(Math.sinh(1));
+  });
+
+  it("calculates the cosine of a purely imaginary number", () => {
+    const cpx = new Complex(0, 1).cos();
+
+    expect(cpx.real).toBeCloseTo(Math.cosh(1));
+    expect(cpx.imaginary).toBeCloseTo(0);
+  });
+
+  it("calculates the sine of a complex number", () => {
+    const cpx = new Complex(1, 2).sin();
+
+    expect(cpx.real).toBeCloseTo(Math.sin(1) * Math.cosh(2));
+    expect(cpx.imaginary).toBeCloseTo(Math.cos(1) * Math.sinh(2));
+  });
+
+  it("calculates the cosine of a complex number", () => {
+    const cpx = new Complex(1, 2).cos();
+
+    expect(cpx.real).toBeCloseTo(Math.cos(1) * Math.cosh(2));
+    expect(cpx.imaginary).toBeCloseTo(-Math.sin(1) * Math.sinh(2));
+  });
+
+  it("verifies sine and cosine sum", () => {
+    const sin2 = new Complex(1, 2).sin().pow(2);
+    const cos2 = new Complex(1, 2).cos().pow(2);
+    const sum = sin2.add(cos2);
+
+    expect(sum.real).toBeCloseTo(1);
+    expect(sum.imaginary).toBeCloseTo(0);
   });
 
   it("gets the argument of a complex number", () => {

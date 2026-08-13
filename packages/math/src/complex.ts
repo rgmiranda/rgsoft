@@ -112,6 +112,20 @@ export class Complex {
     return new Complex(Math.log(this.mag), this.arg);
   }
 
+  sin(): Complex {
+    let num = this.mult(Complex.i).exp();
+    num = num.sub(this.mult(-1).mult(Complex.i).exp());
+    const den = Complex.i.mult(2);
+    return num.div(den);
+  }
+
+  cos(): Complex {
+    let num = this.mult(Complex.i).exp();
+    num = num.add(this.mult(-1).mult(Complex.i).exp());
+    const den = 2;
+    return num.div(den);
+  }
+
   conjugate(): Complex {
     return new Complex(this.real, -1 * this.imaginary);
   }
