@@ -24,10 +24,11 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
-    "@vitest/coverage-v8": "^2.0.3",
+    "@vitest/coverage-v8": "^4.1.10",
     "tsup": "^8.1.0",
     "typescript": "^5.5.3",
-    "vitest": "^2.0.3"
+    "vite": "^6.4.3",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@11.1.3"
 }
