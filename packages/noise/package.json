@@ -17,6 +17,7 @@
   },
   "scripts": {
     "test": "vitest",
+    "bench": "vitest bench",
     "coverage": "vitest run --coverage",
     "build": "tsup"
   },
