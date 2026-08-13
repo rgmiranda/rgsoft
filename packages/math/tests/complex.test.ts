@@ -218,6 +218,19 @@ describe(Complex.name, () => {
     expect(cpx.imaginary).toBeCloseTo(-Math.sin(1) * Math.sinh(2));
   });
 
+  it("calculates the tangent of a complex number", () => {
+    const z = new Complex(1, 2);
+    const cpx = z.tan();
+    const expected = z.sin().div(z.cos());
+
+    expect(cpx).toBeDefined();
+    expect(cpx!.real).toBeCloseTo(expected.real, 6);
+    expect(cpx!.imaginary).toBeCloseTo(expected.imaginary, 6);
+
+    const undefinedTan = new Complex(Math.PI * 0.5, 0).tan();
+    expect(undefinedTan).toBeUndefined();
+  });
+
   it("verifies sine and cosine sum", () => {
     const sin2 = new Complex(1, 2).sin().pow(2);
     const cos2 = new Complex(1, 2).cos().pow(2);
