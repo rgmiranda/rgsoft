@@ -117,3 +117,70 @@ let c = new Complex(4, 0);
 c = c.sqrt();
 console.log(`${c}`); // 2 + 0i
 ```
+
+## Power
+
+```js
+let c = new Complex(4, 0);
+c = c.pow(3);
+console.log(`${c}`); // 64 + 0i
+```
+
+## Exponential
+
+```js
+let c = new Complex(0, Math.PI);
+c = c.exp();
+console.log(`${c.real}`); // -1 (approximately)
+```
+
+## Logarithm
+
+```js
+let c = new Complex(1, 0);
+c = c.log();
+console.log(`${c.real}`); // 0
+```
+
+## Sine
+
+```js
+let c = new Complex(1, 0);
+c = c.sin();
+console.log(`${c.real}`); // Math.sin(1)
+```
+
+## Cosine
+
+```js
+let c = new Complex(1, 0);
+c = c.cos();
+console.log(`${c.real}`); // Math.cos(1)
+```
+
+## Tangent
+
+```js
+let c = new Complex(1, 2);
+c = c.tan();
+console.log(`${c}`); // Complex number result
+```
+
+## Equality
+
+### Exact Equality
+
+```js
+let c1 = new Complex(4, 0);
+let c2 = new Complex(4, 0);
+console.log(c1.equals(c2)); // true
+```
+
+### Approximate Equality
+
+```js
+let c1 = new Complex(4, 0);
+let c2 = new Complex(4 + 1e-8, 1e-8);
+console.log(c1.isClose(c2, 1e-6)); // true
+console.log(c1.isClose(c2, 1e-10)); // false
+```
