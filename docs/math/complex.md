@@ -1,17 +1,21 @@
-
 # Complex Numbers
 
-The complex number library has some methods for performing calculations on
-complex numbers. To create a complex number of the form `a +  bi`:
+## Overview
+
+The complex-number API models values in the form `a + bi` and keeps the underlying real and imaginary parts immutable.
+
+- `Complex` — Immutable complex value container.
+- `Complex.fromPolar(r, theta)` — Creates a complex number from a magnitude and angle.
+- `add`, `sub`, `mult`, `div` — Adds, subtracts, multiplies, and divides by a scalar or another complex number.
+- `pow`, `sqrt`, `exp`, `log`, `sin`, `cos`, `tan` — Applies standard complex functions.
+- `conjugate`, `equals`, `isClose` — Returns the conjugate or compares values exactly or approximately.
+- `mag`, `arg` — Access the magnitude and angle of the complex value.
 
 ```js
 const cpx = new Complex(a, b);
 ```
 
----
-> 📝 Every complex number is inmutable; both, the real and the imaginary
-> parts are readonly.
----
+> 📝 Every complex number is immutable; both the real and imaginary parts are readonly.
 
 ## Magnitude
 
@@ -29,7 +33,7 @@ console.log(`${c.conjugate()}`); // 2 - 7i
 
 ## Addition
 
-## Scalar Addition
+### Scalar Addition
 
 ```js
 // r + (a + bi) = (a + r) + bi
@@ -38,7 +42,7 @@ const c2 = c1.add(4);
 console.log(`${c2}`); // 9 + 12i
 ```
 
-## Complex Addition
+### Complex Addition
 
 ```js
 // (a + bi) + (c + di) = (a + c) + (b + d)i
@@ -48,9 +52,9 @@ const c3 = c1.add(c2);
 console.log(`${c3}`); // 1 + 2i
 ```
 
-## Substraction
+## Subtraction
 
-## Scalar Substraction
+### Scalar Subtraction
 
 ```js
 // (a + bi) - r = (a - r) + bi
@@ -59,19 +63,19 @@ const c2 = c1.sub(10);
 console.log(`${c2}`); // -1 + 1i
 ```
 
-## Complex Substraction
+### Complex Subtraction
 
 ```js
 // (a + bi) - (c + di) = (a - c) + (b - d)i
 const c1 = new Complex(4, -8);
 const c2 = new Complex(-3, 6);
-const c3 = c1.add(c2);
-console.log(`${c3}`); // 1 + 2i
+const c3 = c1.sub(c2);
+console.log(`${c3}`); // 7 - 14i
 ```
 
 ## Multiplication
 
-## Scalar Multiplication
+### Scalar Multiplication
 
 ```js
 // r (a + bi) = ra + bi
@@ -80,19 +84,19 @@ const c2 = c1.mult(-5);
 console.log(`${c2}`); // -20 + 5i
 ```
 
-## Complex Multiplication
+### Complex Multiplication
 
 ```js
 // (a + bi) (c + di) = (ac - bd) + (ad + bc)i
 const c1 = new Complex(3, -1);
 const c2 = new Complex(-2, 1);
-const c3 = c2.mult(c2);
-console.log(`${c3}`); // -5 + 5i
+const c3 = c1.mult(c2);
+console.log(`${c3}`); // 1 + 5i
 ```
 
 ## Division
 
-## Scalar Division
+### Scalar Division
 
 ```js
 // (a + bi) / r = a / r + (b / r)i
@@ -101,7 +105,7 @@ const c2 = c1.div(-2);
 console.log(`${c2}`); // -2 + 0.5i
 ```
 
-## Complex Division
+### Complex Division
 
 ```js
 let c1 = new Complex(2, 1);
@@ -183,4 +187,11 @@ let c1 = new Complex(4, 0);
 let c2 = new Complex(4 + 1e-8, 1e-8);
 console.log(c1.isClose(c2, 1e-6)); // true
 console.log(c1.isClose(c2, 1e-10)); // false
+```
+
+## Polar Constructor
+
+```js
+const z = Complex.fromPolar(5, Math.PI / 2);
+console.log(`${z}`); // approximately 0 + 5i
 ```
