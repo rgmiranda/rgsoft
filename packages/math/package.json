@@ -1,6 +1,6 @@
 {
   "name": "@rgsoft/math",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Yet another JS math library",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -39,7 +39,7 @@
   "bugs": {
     "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
-  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "homepage": "https://github.com/rgmiranda/rgsoft/tree/main/packages/math#readme",
   "publishConfig": {
     "access": "public"
   },
