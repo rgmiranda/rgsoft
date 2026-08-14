@@ -15,4 +15,4 @@ npm run test
 
 ## Usage
 
-[Usage docs](docs/index.md)
+[Usage docs](../../docs/math/index.md)
