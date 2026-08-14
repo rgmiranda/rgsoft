@@ -1,7 +1,7 @@
 import { bench } from "vitest";
 import { Simplex, Perlin, OpenSimplex, ValueNoise, WhiteNoise } from '../src';
 
-const dataSize = 1e4;
+const dataSize = 1e3;
 
 const dx = new Float64Array(dataSize);
 const dy = new Float64Array(dataSize);

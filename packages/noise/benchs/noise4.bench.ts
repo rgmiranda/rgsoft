@@ -21,11 +21,13 @@ const value = new ValueNoise();
 const white = new WhiteNoise();
 
 let sink = 0;
+let totalCount = 0;
 
 bench("OpenSimplex 3D", () => {
   let sum = 0;
   for (let i = 0; i < dataSize; i++) {
     sum += open.noise4(dx[i], dy[i], dz[i], dw[i]);
+    totalCount++;
   }
   sink += sum;
 });
