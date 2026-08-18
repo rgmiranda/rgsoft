@@ -1,6 +1,6 @@
 {
   "name": "@rgsoft/easing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easing functions library",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -22,7 +22,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rgmiranda/rgsoft.git"
+    "url": "git+https://github.com/rgmiranda/rgsoft.git",
+    "directory": "packages/easing"
   },
   "keywords": [
     "easing"
@@ -32,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
-  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "homepage": "https://github.com/rgmiranda/rgsoft/blob/main/packages/easing/README.md",
   "publishConfig": {
     "access": "public"
   },

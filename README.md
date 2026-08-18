@@ -2,7 +2,7 @@
 
 ## Packages
 
-- [easing](./packages/easing/)
+- [easing](./docs/geometry/index.md)
 - [geometry](./docs/geometry/index.md)
 - [graph](./docs/graph/index.md)
 - [linear](./packages/linear/)
