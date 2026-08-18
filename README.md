@@ -4,7 +4,7 @@
 
 - [easing](./packages/easing/)
 - [geometry](./docs/geometry/index.md)
-- [graph](./packages/graph/)
+- [graph](./docs/graph/index.md)
 - [linear](./packages/linear/)
 - [lsystem](./packages/lsystem/)
 - [math](./docs/math/index.md)
