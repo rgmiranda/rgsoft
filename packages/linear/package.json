@@ -22,7 +22,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rgmiranda/rgsoft.git"
+    "url": "git+https://github.com/rgmiranda/rgsoft.git",
+    "directory": "packages/linear"
   },
   "keywords": [
     "vectors",
@@ -34,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
-  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "homepage": "https://github.com/rgmiranda/rgsoft/blob/main/packages/linear/README.md",
   "dependencies": {
     "@rgsoft/math": "workspace:^"
   },
