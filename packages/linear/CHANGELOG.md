@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.4
+
+### Patch Changes
+
+- Update docs and README
+
 ## 1.0.3
 
 ### Patch Changes

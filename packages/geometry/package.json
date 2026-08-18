@@ -22,7 +22,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rgmiranda/rgsoft.git"
+    "url": "git+https://github.com/rgmiranda/rgsoft.git",
+    "directory": "packages/geometry"
   },
   "keywords": [
     "geometry",
@@ -36,7 +37,7 @@
   "bugs": {
     "url": "https://github.com/rgmiranda/rgsoft/issues"
   },
-  "homepage": "https://github.com/rgmiranda/rgsoft#readme",
+  "homepage": "https://github.com/rgmiranda/rgsoft/tree/main/packages/geometry/README.md",
   "dependencies": {
     "@rgsoft/linear": "workspace:^",
     "@rgsoft/math": "workspace:^"

@@ -10,10 +10,10 @@ npm install @rgsoft/geometry
 
 ## Documentation
 
-- [Main Documentation](../../docs/geometry/index.md) — Overview and quick start guide
-- [Areas & Shapes](../../docs/geometry/areas.md) — Circles, rectangles, polygons, and triangles with intersection and containment testing
-- [Lines & Segments](../../docs/geometry/lines.md) — 2D and 3D lines and line segments with geometric operations
-- [Planes](../../docs/geometry/planes.md) — 3D plane representations and operations
+- [Main Documentation](https://github.com/rgmiranda/rgsoft/blob/main/docs/geometry/index.md) — Overview and quick start guide
+- [Areas & Shapes](https://github.com/rgmiranda/rgsoft/blob/main/docs/geometry/areas.md) — Circles, rectangles, polygons, and triangles with intersection and containment testing
+- [Lines & Segments](https://github.com/rgmiranda/rgsoft/blob/main/docs/geometry/lines.md) — 2D and 3D lines and line segments with geometric operations
+- [Planes](https://github.com/rgmiranda/rgsoft/blob/main/docs/geometry/planes.md) — 3D plane representations and operations
 
 ## Quick Start
 
