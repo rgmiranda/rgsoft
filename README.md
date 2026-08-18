@@ -3,7 +3,7 @@
 ## Packages
 
 - [easing](./packages/easing/)
-- [geometry](./packages/geometry/)
+- [geometry](./docs/geometry/index.md)
 - [graph](./packages/graph/)
 - [linear](./packages/linear/)
 - [lsystem](./packages/lsystem/)
