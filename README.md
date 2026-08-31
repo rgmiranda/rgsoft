@@ -9,6 +9,7 @@
 - [lsystem](./packages/lsystem/)
 - [math](./docs/math/index.md)
 - [noise](./packages/noise/)
+- [numeric](./packages/numeric/)
 - [pixbit](./packages/pixbit/)
 - [quadtree](./packages/quadtree/)
 - [stats](./packages/stats/)

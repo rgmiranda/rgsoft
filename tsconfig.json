@@ -7,6 +7,8 @@
     { "path": "./packages/linear" },
     { "path": "./packages/lsystem" },
     { "path": "./packages/math" },
+    { "path": "./packages/noise" },
+    { "path": "./packages/numeric" },
     { "path": "./packages/pixbit" },
     { "path": "./packages/stats" },
     { "path": "./packages/voronoi" }
