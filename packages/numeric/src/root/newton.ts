@@ -62,8 +62,6 @@ export function newtonRaphson(
       };
     }
     x0 = x1;
-    y0 = f(x0);
-    m = df(x0);
     i++;
   }
 
