@@ -3,7 +3,7 @@
 │
 ├── [ ] root
 │   ├── [X] bisection
-│   ├── [ ] newton
+│   ├── [X] newton
 │   ├── [ ] secant
 │   └── [ ] regula-falsi
 │
