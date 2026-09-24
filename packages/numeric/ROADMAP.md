@@ -4,7 +4,7 @@
 ├── [ ] root
 │   ├── [X] bisection
 │   ├── [X] newton
-│   ├── [ ] secant
+│   ├── [X] secant
 │   └── [ ] regula-falsi
 │
 ├── [ ] interpolation
