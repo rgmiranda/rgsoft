@@ -10,7 +10,7 @@
 - [math](./docs/math/index.md)
 - [noise](./packages/noise/)
 - [numeric](./packages/numeric/)
-- [pixbit](./packages/pixbit/)
+- [pixbit](./docs/pixbit/index.md)
 - [quadtree](./packages/quadtree/)
 - [stats](./packages/stats/)
 - [voronoi](./packages/voronoi/)
