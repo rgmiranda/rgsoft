@@ -1,6 +1,6 @@
 {
   "name": "@rgsoft/pixbit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Pixel manipulation library",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
